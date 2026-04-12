@@ -72,8 +72,9 @@ export const useMapStore = create<MapStore>((set, get) => ({
   },
 }));
 
-// Hook to hydrate store from localStorage after mount (avoids hydration mismatch)
-export function useHydrateStore() {
+// Hydrate store from localStorage after mount (avoids hydration mismatch)
+// Note: This is NOT a React hook - it's a plain function that updates Zustand state directly
+export function hydrateStore() {
   if (typeof window === "undefined" || isHydrated) return;
 
   isHydrated = true;

@@ -4,7 +4,6 @@ import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { useMapStore } from "@/lib/store";
 import type { Locale } from "@/i18n/routing";
-import { SearchInput } from "./SearchInput";
 
 export default function Sidebar() {
   const t = useTranslations("sidebar");
@@ -14,15 +13,6 @@ export default function Sidebar() {
 
   const sidebarOpen = useMapStore((s) => s.sidebarOpen);
   const setSidebarOpen = useMapStore((s) => s.setSidebarOpen);
-  const showBuildings = useMapStore((s) => s.showBuildings);
-  const setShowBuildings = useMapStore((s) => s.setShowBuildings);
-  const showSatellite = useMapStore((s) => s.showSatellite);
-  const setShowSatellite = useMapStore((s) => s.setShowSatellite);
-
-  const toggleLocale = () => {
-    const newLocale: Locale = locale === "es" ? "en" : "es";
-    router.replace(pathname, { locale: newLocale });
-  };
 
   return (
     <>
@@ -63,6 +53,7 @@ export default function Sidebar() {
           w-[380px] h-full
           bg-neutral-950
           border-r border-neutral-800
+          shadow-[4px_0_24px_-2px_rgba(0,0,0,0.5)]
           transform transition-transform duration-300 ease-out
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
           flex flex-col
@@ -78,65 +69,6 @@ export default function Sidebar() {
             {t("subtitle")}
           </p>
         </header>
-
-        {/* Search */}
-        <div className="px-6 py-5 border-b border-neutral-800">
-          <SearchInput placeholder={t("search.placeholder")} />
-        </div>
-
-        {/* Layer controls */}
-        <div className="px-6 py-5 border-b border-neutral-800">
-          <h2 className="font-mono text-[10px] font-medium text-neutral-500 uppercase tracking-[0.2em] mb-5">
-            {t("layers.header")}
-          </h2>
-
-          <div className="space-y-3">
-            {/* Satellite toggle */}
-            <button
-              onClick={() => setShowSatellite(!showSatellite)}
-              className="flex items-center gap-3 w-full group"
-            >
-              <span
-                className={`w-4 h-4 rounded-full border-2 transition-all flex items-center justify-center ${
-                  showSatellite
-                    ? "border-amber-500 bg-amber-500"
-                    : "border-neutral-500 bg-transparent group-hover:border-neutral-400"
-                }`}
-              >
-                {showSatellite && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-950" />
-                )}
-              </span>
-              <span className="font-mono text-sm text-neutral-400 group-hover:text-neutral-200 transition-colors uppercase tracking-wide">
-                {t("layers.satellite")}
-              </span>
-            </button>
-
-            {/* Buildings toggle */}
-            <button
-              onClick={() => setShowBuildings(!showBuildings)}
-              className="flex items-center gap-3 w-full group"
-            >
-              <span
-                className={`w-4 h-4 rounded-full border-2 transition-all flex items-center justify-center ${
-                  showBuildings
-                    ? "border-amber-500 bg-amber-500"
-                    : "border-neutral-500 bg-transparent group-hover:border-neutral-400"
-                }`}
-              >
-                {showBuildings && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-950" />
-                )}
-              </span>
-              <span className="font-mono text-sm text-neutral-400 group-hover:text-neutral-200 transition-colors uppercase tracking-wide">
-                {t("layers.buildings")}
-              </span>
-              <span className="font-mono ml-auto px-2 py-0.5 text-[10px] font-medium bg-amber-500/15 text-amber-400 rounded tracking-wide">
-                33.8M
-              </span>
-            </button>
-          </div>
-        </div>
 
         {/* Stats section */}
         <div className="flex-1 px-6 py-5 overflow-y-auto">

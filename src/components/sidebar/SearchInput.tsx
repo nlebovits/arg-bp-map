@@ -10,7 +10,7 @@ interface SearchInputProps {
 
 export function SearchInput({ placeholder = "Search address..." }: SearchInputProps) {
   const [query, setQuery] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [dismissedForQuery, setDismissedForQuery] = useState<string | null>(null);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
@@ -18,17 +18,24 @@ export function SearchInput({ placeholder = "Search address..." }: SearchInputPr
   const { suggestions, isLoading, clear } = useGeocode(query);
   const flyTo = useMapStore((s) => s.flyTo);
 
-  // Show dropdown when we have suggestions
-  useEffect(() => {
-    setIsOpen(suggestions.length > 0);
+  // Derive isOpen from state (no useEffect needed)
+  const isOpen = suggestions.length > 0 && query !== dismissedForQuery;
+
+  // Handle query change - reset highlight
+  const handleQueryChange = useCallback((newQuery: string) => {
+    setQuery(newQuery);
     setHighlightedIndex(-1);
-  }, [suggestions]);
+    // Clear dismissal when user types new characters
+    if (newQuery !== dismissedForQuery) {
+      setDismissedForQuery(null);
+    }
+  }, [dismissedForQuery]);
 
   const handleSelect = useCallback(
     (suggestion: GeocodeSuggestion) => {
       flyTo(suggestion.lng, suggestion.lat);
       setQuery(suggestion.name);
-      setIsOpen(false);
+      setDismissedForQuery(suggestion.name);
       clear();
       inputRef.current?.blur();
     },
@@ -59,13 +66,13 @@ export function SearchInput({ placeholder = "Search address..." }: SearchInputPr
           }
           break;
         case "Escape":
-          setIsOpen(false);
+          setDismissedForQuery(query);
           setHighlightedIndex(-1);
           inputRef.current?.blur();
           break;
       }
     },
-    [isOpen, suggestions, highlightedIndex, handleSelect]
+    [isOpen, suggestions, highlightedIndex, handleSelect, query]
   );
 
   // Scroll highlighted item into view
@@ -96,22 +103,24 @@ export function SearchInput({ placeholder = "Search address..." }: SearchInputPr
           ref={inputRef}
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => handleQueryChange(e.target.value)}
           onKeyDown={handleKeyDown}
-          onFocus={() => suggestions.length > 0 && setIsOpen(true)}
+          onFocus={() => setDismissedForQuery(null)}
           onBlur={() => {
             // Delay to allow click on suggestion
-            setTimeout(() => setIsOpen(false), 150);
+            setTimeout(() => setDismissedForQuery(query), 150);
           }}
           placeholder={placeholder}
           className="w-full pl-11 pr-4 py-3 bg-neutral-900 border border-neutral-700 rounded-md
                      font-mono text-sm text-neutral-200 placeholder:text-neutral-500
                      focus:outline-none focus:ring-1 focus:ring-amber-500/50 focus:border-amber-500/50
                      transition-all"
+          role="combobox"
           aria-label="Search for an address"
           aria-expanded={isOpen}
           aria-haspopup="listbox"
           aria-controls="search-suggestions"
+          aria-autocomplete="list"
           autoComplete="off"
         />
         {isLoading && (

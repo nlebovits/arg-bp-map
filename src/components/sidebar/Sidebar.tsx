@@ -1,16 +1,27 @@
 "use client";
 
+import { useTranslations, useLocale } from "next-intl";
+import { useRouter, usePathname } from "@/i18n/navigation";
 import { useMapStore } from "@/lib/store";
+import type { Locale } from "@/i18n/routing";
 
 export default function Sidebar() {
+  const t = useTranslations("sidebar");
+  const locale = useLocale() as Locale;
+  const router = useRouter();
+  const pathname = usePathname();
+
   const sidebarOpen = useMapStore((s) => s.sidebarOpen);
   const setSidebarOpen = useMapStore((s) => s.setSidebarOpen);
   const showBuildings = useMapStore((s) => s.showBuildings);
   const setShowBuildings = useMapStore((s) => s.setShowBuildings);
   const showSatellite = useMapStore((s) => s.showSatellite);
   const setShowSatellite = useMapStore((s) => s.setShowSatellite);
-  const locale = useMapStore((s) => s.locale);
-  const setLocale = useMapStore((s) => s.setLocale);
+
+  const toggleLocale = () => {
+    const newLocale: Locale = locale === "es" ? "en" : "es";
+    router.replace(pathname, { locale: newLocale });
+  };
 
   return (
     <>
@@ -60,12 +71,10 @@ export default function Sidebar() {
         {/* Header */}
         <header className="px-6 py-6 border-b border-neutral-800">
           <h1 className="font-mono text-lg font-medium text-neutral-100 tracking-wide uppercase">
-            {locale === "es"
-              ? "Asentamientos Informales"
-              : "Informal Settlements"}
+            {t("title")}
           </h1>
           <p className="font-mono text-xs text-neutral-500 mt-2 tracking-wider uppercase">
-            Argentina
+            {t("subtitle")}
           </p>
         </header>
 
@@ -87,9 +96,7 @@ export default function Sidebar() {
             </svg>
             <input
               type="text"
-              placeholder={
-                locale === "es" ? "Buscar ubicación..." : "Search location..."
-              }
+              placeholder={t("search.placeholder")}
               className="w-full pl-11 pr-4 py-3 bg-neutral-900 border border-neutral-700 rounded-md text-sm text-neutral-200 placeholder-neutral-500 font-mono focus:outline-none focus:ring-1 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all"
             />
           </div>
@@ -98,7 +105,7 @@ export default function Sidebar() {
         {/* Layer controls */}
         <div className="px-6 py-5 border-b border-neutral-800">
           <h2 className="font-mono text-[10px] font-medium text-neutral-500 uppercase tracking-[0.2em] mb-5">
-            {locale === "es" ? "Capas" : "Layers"}
+            {t("layers.header")}
           </h2>
 
           <div className="space-y-4">
@@ -125,7 +132,7 @@ export default function Sidebar() {
                 </div>
               </div>
               <span className="font-mono text-sm text-neutral-400 group-hover:text-neutral-200 transition-colors">
-                {locale === "es" ? "Imagen satelital" : "Satellite imagery"}
+                {t("layers.satellite")}
               </span>
             </label>
 
@@ -153,7 +160,7 @@ export default function Sidebar() {
               </div>
               <div className="flex items-center gap-3">
                 <span className="font-mono text-sm text-neutral-400 group-hover:text-neutral-200 transition-colors">
-                  {locale === "es" ? "Edificios detectados" : "Detected buildings"}
+                  {t("layers.buildings")}
                 </span>
                 <span className="font-mono px-2 py-0.5 text-[10px] font-medium bg-amber-500/15 text-amber-400 rounded tracking-wide">
                   33.8M
@@ -166,14 +173,12 @@ export default function Sidebar() {
         {/* Stats section */}
         <div className="flex-1 px-6 py-5 overflow-y-auto">
           <h2 className="font-mono text-[10px] font-medium text-neutral-500 uppercase tracking-[0.2em] mb-5">
-            {locale === "es" ? "Estadísticas" : "Statistics"}
+            {t("stats.header")}
           </h2>
 
           <div className="rounded-md bg-neutral-900/50 border border-neutral-800 p-5">
             <p className="font-mono text-xs text-neutral-500 leading-relaxed">
-              {locale === "es"
-                ? "Zoom a un asentamiento para ver estadísticas detalladas."
-                : "Zoom to a settlement to view detailed statistics."}
+              {t("stats.placeholder")}
             </p>
           </div>
         </div>
@@ -182,11 +187,11 @@ export default function Sidebar() {
         <footer className="px-6 py-4 border-t border-neutral-800">
           <div className="flex items-center justify-between">
             <span className="font-mono text-[10px] text-neutral-500 uppercase tracking-[0.15em]">
-              {locale === "es" ? "Idioma" : "Language"}
+              {t("language.label")}
             </span>
             <div className="flex font-mono text-xs">
               <button
-                onClick={() => setLocale("es")}
+                onClick={() => router.replace(pathname, { locale: "es" })}
                 className={`px-3 py-1.5 rounded-l-md border transition-all ${
                   locale === "es"
                     ? "bg-amber-500 text-neutral-950 border-amber-500 font-medium"
@@ -196,7 +201,7 @@ export default function Sidebar() {
                 ES
               </button>
               <button
-                onClick={() => setLocale("en")}
+                onClick={() => router.replace(pathname, { locale: "en" })}
                 className={`px-3 py-1.5 rounded-r-md border-t border-r border-b transition-all ${
                   locale === "en"
                     ? "bg-amber-500 text-neutral-950 border-amber-500 font-medium"

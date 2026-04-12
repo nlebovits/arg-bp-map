@@ -1,0 +1,51 @@
+{
+  "metadata": {
+    "title": "Informal Settlements | Argentina",
+    "description": "Explore informal settlements in Argentina and compare official RENABAP data with satellite-derived building footprints."
+  },
+  "sidebar": {
+    "title": "Informal Settlements",
+    "subtitle": "Argentina",
+    "search": {
+      "placeholder": "Search location..."
+    },
+    "layers": {
+      "header": "Layers",
+      "satellite": "Satellite imagery",
+      "buildings": "Detected buildings"
+    },
+    "stats": {
+      "header": "Statistics",
+      "placeholder": "Zoom to a settlement to view detailed statistics."
+    },
+    "language": {
+      "label": "Language"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "loadingTiles": "Loading tiles..."
+  },
+  "tutorial": {
+    "welcome": {
+      "title": "Welcome",
+      "description": "Explore building footprints in Argentina's informal settlements."
+    },
+    "howTo": {
+      "title": "How to use",
+      "description": "Toggle layers, search locations, zoom to see buildings."
+    },
+    "data": {
+      "title": "The data",
+      "description": "33.8M satellite-detected buildings vs official RENABAP data."
+    },
+    "getStarted": {
+      "title": "Get started",
+      "description": "Zoom into any settlement to begin."
+    },
+    "next": "Next",
+    "skip": "Skip",
+    "start": "Get Started",
+    "dontShowAgain": "Don't show again"
+  }
+}

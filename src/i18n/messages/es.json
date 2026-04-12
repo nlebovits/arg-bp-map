@@ -1,0 +1,51 @@
+{
+  "metadata": {
+    "title": "Asentamientos Informales | Argentina",
+    "description": "Explora los asentamientos informales de Argentina y compara datos oficiales de RENABAP con huellas de edificios derivadas de satélite."
+  },
+  "sidebar": {
+    "title": "Asentamientos Informales",
+    "subtitle": "Argentina",
+    "search": {
+      "placeholder": "Buscar ubicación..."
+    },
+    "layers": {
+      "header": "Capas",
+      "satellite": "Imagen satelital",
+      "buildings": "Edificios detectados"
+    },
+    "stats": {
+      "header": "Estadísticas",
+      "placeholder": "Zoom a un asentamiento para ver estadísticas detalladas."
+    },
+    "language": {
+      "label": "Idioma"
+    }
+  },
+  "common": {
+    "loading": "Cargando...",
+    "loadingTiles": "Cargando tiles..."
+  },
+  "tutorial": {
+    "welcome": {
+      "title": "Bienvenido",
+      "description": "Explora las huellas de edificios en asentamientos informales de Argentina."
+    },
+    "howTo": {
+      "title": "Cómo usar",
+      "description": "Activa/desactiva capas, busca ubicaciones, haz zoom para ver edificios."
+    },
+    "data": {
+      "title": "Los datos",
+      "description": "33.8M de edificios detectados por satélite vs datos oficiales de RENABAP."
+    },
+    "getStarted": {
+      "title": "Comenzar",
+      "description": "Haz zoom en cualquier asentamiento para empezar."
+    },
+    "next": "Siguiente",
+    "skip": "Omitir",
+    "start": "Comenzar",
+    "dontShowAgain": "No mostrar de nuevo"
+  }
+}

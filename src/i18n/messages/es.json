@@ -1,0 +1,43 @@
+{
+  "metadata": {
+    "title": "Mapa de Buenos Aires",
+    "description": "Explora el mapa interactivo de Buenos Aires, Argentina"
+  },
+  "sidebar": {
+    "title": "Explorar Mapa",
+    "search": {
+      "label": "Buscar ubicación",
+      "placeholder": "Ingrese una dirección o lugar..."
+    },
+    "filters": {
+      "header": "Filtros",
+      "categories": "Categorías",
+      "showAll": "Mostrar todos",
+      "hideAll": "Ocultar todos"
+    },
+    "layers": {
+      "header": "Capas",
+      "satellite": "Satélite",
+      "streets": "Calles",
+      "terrain": "Terreno"
+    },
+    "actions": {
+      "zoomIn": "Acercar",
+      "zoomOut": "Alejar",
+      "resetView": "Restablecer vista",
+      "myLocation": "Mi ubicación"
+    }
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "retry": "Reintentar",
+    "close": "Cerrar",
+    "save": "Guardar",
+    "cancel": "Cancelar"
+  },
+  "language": {
+    "toggle": "Cambiar idioma",
+    "current": "Español"
+  }
+}

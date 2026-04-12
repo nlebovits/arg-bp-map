@@ -1,0 +1,43 @@
+{
+  "metadata": {
+    "title": "Buenos Aires Map",
+    "description": "Explore the interactive map of Buenos Aires, Argentina"
+  },
+  "sidebar": {
+    "title": "Explore Map",
+    "search": {
+      "label": "Search location",
+      "placeholder": "Enter an address or place..."
+    },
+    "filters": {
+      "header": "Filters",
+      "categories": "Categories",
+      "showAll": "Show all",
+      "hideAll": "Hide all"
+    },
+    "layers": {
+      "header": "Layers",
+      "satellite": "Satellite",
+      "streets": "Streets",
+      "terrain": "Terrain"
+    },
+    "actions": {
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "resetView": "Reset view",
+      "myLocation": "My location"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "language": {
+    "toggle": "Switch language",
+    "current": "English"
+  }
+}

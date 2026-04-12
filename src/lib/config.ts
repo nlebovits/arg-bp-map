@@ -27,6 +27,14 @@ export const SOURCES = {
     attribution:
       '<a href="https://source.coop/vida/google-microsoft-osm-open-buildings">Google-Microsoft-OSM Open Buildings</a>',
   },
+
+  // RENABAP informal settlements (GeoJSON - will be converted to PMTiles later)
+  renabap: {
+    type: "geojson" as const,
+    data: "/data/renabap.geojson",
+    attribution:
+      '<a href="https://www.argentina.gob.ar/habitat/renabap">RENABAP</a> &copy; Gobierno de Argentina',
+  },
 };
 
 // Layer IDs for reference
@@ -37,11 +45,9 @@ export const LAYERS = {
     fill: "buildings-fill",
     outline: "buildings-outline",
   },
-  // We'll add settlement layers when you provide the PMTiles
-  settlements: {
-    sourceLayer: "settlements",
-    fill: "settlements-fill",
-    outline: "settlements-outline",
+  renabap: {
+    outline: "renabap-outline",
+    highlight: "renabap-highlight",
   },
 };
 
@@ -66,8 +72,12 @@ export const COLORS = {
     fill: "rgba(255, 200, 100, 0.6)",
     outline: "rgba(200, 150, 50, 0.9)",
   },
-  settlements: {
-    fill: "rgba(255, 100, 100, 0.3)",
-    outline: "rgba(200, 50, 50, 0.9)",
+  renabap: {
+    fill: "rgba(239, 68, 68, 0.25)", // Red with transparency
+    outline: "rgba(239, 68, 68, 0.8)", // Solid red outline
+    highlight: "rgba(239, 68, 68, 0.5)", // Highlighted state
   },
 };
+
+// Barrio Sin Nombre ID for tutorial highlighting
+export const BARRIO_SIN_NOMBRE_ID = 46;

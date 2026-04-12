@@ -5,6 +5,25 @@ import { useRouter, usePathname } from "@/i18n/navigation";
 import { useMapStore } from "@/lib/store";
 import type { Locale } from "@/i18n/routing";
 
+// Replay icon
+function ReplayIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+      />
+    </svg>
+  );
+}
+
 export default function Sidebar() {
   const t = useTranslations("sidebar");
   const locale = useLocale() as Locale;
@@ -13,6 +32,19 @@ export default function Sidebar() {
 
   const sidebarOpen = useMapStore((s) => s.sidebarOpen);
   const setSidebarOpen = useMapStore((s) => s.setSidebarOpen);
+  const setShowTutorial = useMapStore((s) => s.setShowTutorial);
+  const setTutorialActive = useMapStore((s) => s.setTutorialActive);
+  const setTutorialStep = useMapStore((s) => s.setTutorialStep);
+
+  const handleReplayTutorial = () => {
+    setTutorialStep(0);
+    setTutorialActive(true);
+    setShowTutorial(true);
+    // Close sidebar on mobile when starting tutorial
+    if (window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
+  };
 
   return (
     <>
@@ -83,8 +115,18 @@ export default function Sidebar() {
           </div>
         </div>
 
-        {/* Footer with language toggle */}
-        <footer className="px-6 py-4 border-t border-neutral-800">
+        {/* Footer */}
+        <footer className="px-6 py-4 border-t border-neutral-800 space-y-4">
+          {/* Replay tutorial button - compact */}
+          <button
+            onClick={handleReplayTutorial}
+            className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-neutral-500 hover:text-neutral-300 transition-colors"
+          >
+            <ReplayIcon className="w-3 h-3" />
+            {t("replayTutorial")}
+          </button>
+
+          {/* Language toggle */}
           <div className="flex items-center justify-between">
             <span className="font-mono text-[10px] text-neutral-500 uppercase tracking-[0.15em]">
               {t("language.label")}

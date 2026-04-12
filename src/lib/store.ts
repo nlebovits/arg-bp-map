@@ -5,12 +5,36 @@ import type { MapStore } from "@/types";
 
 export type Locale = "es" | "en";
 
-// Argentina center point
-const INITIAL_VIEW = {
-  lng: -64.0,
-  lat: -34.0,
-  zoom: 5,
+// Tutorial step coordinates for flyTo animations
+export const TUTORIAL_LOCATIONS = {
+  // Step 1: Argentina overview (hook)
+  argentina: {
+    lng: -64.0,
+    lat: -34.0,
+    zoom: 5,
+  },
+  // Step 2: La Plata region
+  laPlata: {
+    lng: -57.95,
+    lat: -34.92,
+    zoom: 11,
+  },
+  // Step 3: Barrio Sin Nombre (Los Hornos)
+  barrioSinNombre: {
+    lng: -57.9948,
+    lat: -34.9646,
+    zoom: 15,
+  },
+  // Step 4: Back to national view
+  national: {
+    lng: -64.0,
+    lat: -34.0,
+    zoom: 5,
+  },
 };
+
+// Total number of tutorial steps
+export const TUTORIAL_STEPS = 5;
 
 // Track if store has been hydrated from localStorage
 let isHydrated = false;
@@ -25,7 +49,7 @@ export const useMapStore = create<MapStore>((set, get) => ({
   setMapLoading: (mapLoading) => set({ mapLoading }),
 
   // View state
-  viewState: INITIAL_VIEW,
+  viewState: TUTORIAL_LOCATIONS.argentina,
   setViewState: (viewState) => set({ viewState }),
 
   // Layer visibility
@@ -43,7 +67,8 @@ export const useMapStore = create<MapStore>((set, get) => ({
   // UI
   sidebarOpen: true,
   setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
-  // Initialize with server-safe defaults (hydrated in useHydrateStore)
+
+  // Tutorial state
   tutorialSeen: false,
   setTutorialSeen: (tutorialSeen) => {
     if (typeof window !== "undefined") {
@@ -52,13 +77,21 @@ export const useMapStore = create<MapStore>((set, get) => ({
     set({ tutorialSeen });
   },
 
+  // Tutorial modal visibility - start hidden to match server, hydrate on client
+  showTutorial: false,
+  setShowTutorial: (showTutorial) => set({ showTutorial }),
+
+  // Tutorial step tracking (0-indexed, 5 steps total)
+  tutorialStep: 0,
+  setTutorialStep: (tutorialStep) => set({ tutorialStep }),
+
+  // Tutorial active state (for map dimming)
+  tutorialActive: false,
+  setTutorialActive: (tutorialActive) => set({ tutorialActive }),
+
   // Locale (kept for backward compat, URL is source of truth now)
   locale: "es",
   setLocale: (locale) => set({ locale }),
-
-  // Tutorial modal - start hidden to match server, hydrate on client
-  showTutorial: false,
-  setShowTutorial: (showTutorial) => set({ showTutorial }),
 
   // Navigation
   flyTo: (lng: number, lat: number, zoom: number = 14) => {
@@ -68,6 +101,38 @@ export const useMapStore = create<MapStore>((set, get) => ({
       center: [lng, lat],
       zoom,
       duration: 1500,
+    });
+  },
+
+  // Tutorial-specific flyTo with custom duration
+  tutorialFlyTo: (step: number) => {
+    const { map } = get();
+    if (!map) return;
+
+    let location;
+    switch (step) {
+      case 0: // Hook - Argentina overview
+        location = TUTORIAL_LOCATIONS.argentina;
+        break;
+      case 1: // La Plata
+        location = TUTORIAL_LOCATIONS.laPlata;
+        break;
+      case 2: // Barrio Sin Nombre
+        location = TUTORIAL_LOCATIONS.barrioSinNombre;
+        break;
+      case 3: // National view
+      case 4: // Features (stay at national)
+        location = TUTORIAL_LOCATIONS.national;
+        break;
+      default:
+        location = TUTORIAL_LOCATIONS.argentina;
+    }
+
+    map.flyTo({
+      center: [location.lng, location.lat],
+      zoom: location.zoom,
+      duration: 2000,
+      essential: true,
     });
   },
 }));
@@ -82,6 +147,8 @@ export function hydrateStore() {
   useMapStore.setState({
     tutorialSeen,
     showTutorial: !tutorialSeen,
+    tutorialActive: !tutorialSeen,
+    tutorialStep: 0,
   });
 }
 

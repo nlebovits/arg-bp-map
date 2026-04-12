@@ -1,241 +1,411 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useStore, type Locale } from "@/lib/store";
+import { useTranslations } from "next-intl";
+import { useMapStore, TUTORIAL_STEPS } from "@/lib/store";
 
-interface SlideContent {
-  title: string;
-  description: string;
-  illustration: string;
+// Step indicator dots
+function StepIndicator({
+  currentStep,
+  totalSteps,
+  onStepClick,
+}: {
+  currentStep: number;
+  totalSteps: number;
+  onStepClick: (step: number) => void;
+}) {
+  return (
+    <div className="flex gap-2 justify-center">
+      {Array.from({ length: totalSteps }).map((_, index) => (
+        <button
+          key={index}
+          onClick={() => onStepClick(index)}
+          className={`w-2 h-2 rounded-full transition-all duration-300 ${
+            index === currentStep
+              ? "bg-amber-500 w-6"
+              : index < currentStep
+                ? "bg-amber-500/50 hover:bg-amber-500/70"
+                : "bg-neutral-600 hover:bg-neutral-500"
+          }`}
+          aria-label={`Go to step ${index + 1}`}
+        />
+      ))}
+    </div>
+  );
 }
 
-const SLIDES: Record<Locale, SlideContent[]> = {
-  es: [
-    {
-      title: "Bienvenido",
-      description:
-        "Explora las huellas de edificios en asentamientos informales de Argentina.",
-      illustration: "map",
-    },
-    {
-      title: "Cómo usar",
-      description:
-        "Alterna capas, busca ubicaciones y haz zoom para ver los edificios en detalle.",
-      illustration: "layers",
-    },
-    {
-      title: "Los datos",
-      description:
-        "33.8M de edificios detectados por imágenes satelitales vs datos oficiales de RENABAP.",
-      illustration: "data",
-    },
-    {
-      title: "Comienza",
-      description:
-        "Haz zoom en cualquier asentamiento para comenzar a explorar.",
-      illustration: "start",
-    },
-  ],
-  en: [
-    {
-      title: "Welcome",
-      description:
-        "Explore building footprints in informal settlements across Argentina.",
-      illustration: "map",
-    },
-    {
-      title: "How to use",
-      description:
-        "Toggle layers, search locations, and zoom in to see buildings in detail.",
-      illustration: "layers",
-    },
-    {
-      title: "The data",
-      description:
-        "33.8M buildings detected from satellite imagery vs official RENABAP data.",
-      illustration: "data",
-    },
-    {
-      title: "Get started",
-      description: "Zoom into any settlement to begin exploring.",
-      illustration: "start",
-    },
-  ],
-};
+// Stat comparison block used in steps 2, 3, 4
+function StatComparison({
+  label1,
+  value1,
+  sub1,
+  label2,
+  value2,
+  sub2,
+  conclusion,
+}: {
+  label1: string;
+  value1: string;
+  sub1?: string;
+  label2: string;
+  value2: string;
+  sub2?: string;
+  conclusion: string;
+}) {
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        {/* Official data */}
+        <div className="bg-neutral-800/50 rounded-lg p-4 border border-neutral-700">
+          <p className="text-[10px] font-mono uppercase tracking-wider text-neutral-500 mb-1">
+            {label1}
+          </p>
+          <p className="text-2xl font-mono font-bold text-neutral-300">
+            {value1}
+          </p>
+          {sub1 && (
+            <p className="text-xs text-neutral-500 mt-1">{sub1}</p>
+          )}
+        </div>
 
-const BUTTON_LABELS: Record<Locale, { next: string; skip: string; start: string; dontShow: string }> = {
-  es: {
-    next: "Siguiente",
-    skip: "Omitir",
-    start: "Comenzar",
-    dontShow: "No mostrar de nuevo",
-  },
-  en: {
-    next: "Next",
-    skip: "Skip",
-    start: "Get Started",
-    dontShow: "Don't show again",
-  },
-};
+        {/* Satellite data */}
+        <div className="bg-amber-500/10 rounded-lg p-4 border border-amber-500/30">
+          <p className="text-[10px] font-mono uppercase tracking-wider text-amber-500/70 mb-1">
+            {label2}
+          </p>
+          <p className="text-2xl font-mono font-bold text-amber-500">
+            {value2}
+          </p>
+          {sub2 && (
+            <p className="text-xs text-amber-500/70 mt-1">{sub2}</p>
+          )}
+        </div>
+      </div>
 
-function SlideIllustration({ type }: { type: string }) {
-  const iconClasses = "w-16 h-16 text-amber-500";
-
-  switch (type) {
-    case "map":
-      return (
-        <svg className={iconClasses} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-        </svg>
-      );
-    case "layers":
-      return (
-        <svg className={iconClasses} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-        </svg>
-      );
-    case "data":
-      return (
-        <svg className={iconClasses} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-        </svg>
-      );
-    case "start":
-      return (
-        <svg className={iconClasses} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
-        </svg>
-      );
-    default:
-      return null;
-  }
+      <p className="text-sm text-neutral-300 leading-relaxed bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+        {conclusion}
+      </p>
+    </div>
+  );
 }
 
+// Step 1: The Hook
+function Step1Content() {
+  const t = useTranslations("tutorial.step1");
+
+  return (
+    <div className="text-center space-y-6">
+      <div className="w-16 h-16 mx-auto bg-amber-500/20 rounded-full flex items-center justify-center">
+        <svg
+          className="w-8 h-8 text-amber-500"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
+          />
+        </svg>
+      </div>
+
+      <h2 className="text-2xl font-mono font-semibold text-neutral-100">
+        {t("title")}
+      </h2>
+
+      <p className="text-neutral-400 leading-relaxed whitespace-pre-line max-w-sm mx-auto">
+        {t("description")}
+      </p>
+    </div>
+  );
+}
+
+// Step 2: La Plata case study
+function Step2Content() {
+  const t = useTranslations("tutorial.step2");
+
+  return (
+    <div className="space-y-5">
+      <h2 className="text-xl font-mono font-semibold text-neutral-100 text-center">
+        {t("title")}
+      </h2>
+
+      <StatComparison
+        label1={t("stat1Label")}
+        value1={t("stat1Value")}
+        sub1={t("stat1Sub")}
+        label2={t("stat2Label")}
+        value2={t("stat2Value")}
+        sub2={t("stat2Sub")}
+        conclusion={t("conclusion")}
+      />
+    </div>
+  );
+}
+
+// Step 3: Barrio Sin Nombre
+function Step3Content() {
+  const t = useTranslations("tutorial.step3");
+
+  return (
+    <div className="space-y-5">
+      <div className="text-center">
+        <h2 className="text-xl font-mono font-semibold text-neutral-100">
+          {t("title")}
+        </h2>
+        <p className="text-xs text-neutral-500 mt-1 font-mono">
+          Los Hornos, La Plata
+        </p>
+      </div>
+
+      <StatComparison
+        label1={t("stat1Label")}
+        value1={t("stat1Value")}
+        label2={t("stat2Label")}
+        value2={t("stat2Value")}
+        conclusion={t("conclusion")}
+      />
+    </div>
+  );
+}
+
+// Step 4: National scale
+function Step4Content() {
+  const t = useTranslations("tutorial.step4");
+
+  return (
+    <div className="space-y-5">
+      <h2 className="text-xl font-mono font-semibold text-neutral-100 text-center">
+        {t("title")}
+      </h2>
+
+      <StatComparison
+        label1={t("stat1Label")}
+        value1={t("stat1Value")}
+        label2={t("stat2Label")}
+        value2={t("stat2Value")}
+        conclusion={t("conclusion")}
+      />
+    </div>
+  );
+}
+
+// Step 5: Features + CTA
+function Step5Content() {
+  const t = useTranslations("tutorial.step5");
+
+  return (
+    <div className="space-y-5">
+      <h2 className="text-xl font-mono font-semibold text-neutral-100 text-center">
+        {t("title")}
+      </h2>
+
+      <div className="space-y-3">
+        <div className="flex items-center gap-3 bg-neutral-800/50 rounded-lg p-3 border border-neutral-700">
+          <span className="text-lg">🔍</span>
+          <span className="text-sm text-neutral-300">{t("feature1")}</span>
+        </div>
+        <div className="flex items-center gap-3 bg-neutral-800/50 rounded-lg p-3 border border-neutral-700">
+          <span className="text-lg">📊</span>
+          <span className="text-sm text-neutral-300">{t("feature2")}</span>
+        </div>
+        <div className="flex items-center gap-3 bg-neutral-800/50 rounded-lg p-3 border border-neutral-700">
+          <span className="text-lg">🗺️</span>
+          <span className="text-sm text-neutral-300">{t("feature3")}</span>
+        </div>
+      </div>
+
+      {/* Source.Cooperative attribution */}
+      <div className="bg-gradient-to-r from-amber-500/10 to-red-500/10 rounded-lg p-4 border border-amber-500/20">
+        <p className="text-xs text-neutral-400 text-center">
+          {t("dataSource")}{" "}
+          <a
+            href="https://source.coop/vida/google-microsoft-osm-open-buildings"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-amber-500 hover:text-amber-400 font-medium underline underline-offset-2"
+          >
+            {t("sourceCoopLink")}
+          </a>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// Main tutorial modal component
 export function TutorialModal() {
-  const { locale, setTutorialSeen, setShowTutorial } = useStore();
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [dontShowAgain, setDontShowAgain] = useState(true);
+  const t = useTranslations("tutorial");
 
-  const slides = SLIDES[locale];
-  const labels = BUTTON_LABELS[locale];
-  const isLastSlide = currentSlide === slides.length - 1;
+  const tutorialStep = useMapStore((s) => s.tutorialStep);
+  const setTutorialStep = useMapStore((s) => s.setTutorialStep);
+  const setTutorialSeen = useMapStore((s) => s.setTutorialSeen);
+  const setShowTutorial = useMapStore((s) => s.setShowTutorial);
+  const setTutorialActive = useMapStore((s) => s.setTutorialActive);
+  const tutorialFlyTo = useMapStore((s) => s.tutorialFlyTo);
 
-  const handleClose = useCallback(() => {
-    if (dontShowAgain) {
-      setTutorialSeen(true);
-    }
-    setShowTutorial(false);
-  }, [dontShowAgain, setTutorialSeen, setShowTutorial]);
+  const isFirstStep = tutorialStep === 0;
+  const isLastStep = tutorialStep === TUTORIAL_STEPS - 1;
+
+  // Fly to location when step changes
+  useEffect(() => {
+    tutorialFlyTo(tutorialStep);
+  }, [tutorialStep, tutorialFlyTo]);
+
+  const handleClose = useCallback(
+    (markAsSeen: boolean) => {
+      if (markAsSeen) {
+        setTutorialSeen(true);
+      }
+      setShowTutorial(false);
+      setTutorialActive(false);
+      setTutorialStep(0);
+    },
+    [setTutorialSeen, setShowTutorial, setTutorialActive, setTutorialStep]
+  );
 
   const handleNext = useCallback(() => {
-    if (isLastSlide) {
-      handleClose();
+    if (isLastStep) {
+      handleClose(true);
     } else {
-      setCurrentSlide((prev) => prev + 1);
+      setTutorialStep(tutorialStep + 1);
     }
-  }, [isLastSlide, handleClose]);
+  }, [isLastStep, handleClose, setTutorialStep, tutorialStep]);
+
+  const handleBack = useCallback(() => {
+    if (!isFirstStep) {
+      setTutorialStep(tutorialStep - 1);
+    }
+  }, [isFirstStep, setTutorialStep, tutorialStep]);
 
   const handleSkip = useCallback(() => {
-    setTutorialSeen(true);
-    setShowTutorial(false);
-  }, [setTutorialSeen, setShowTutorial]);
+    handleClose(true);
+  }, [handleClose]);
 
-  const currentContent = slides[currentSlide];
+  const handleStepClick = useCallback(
+    (step: number) => {
+      setTutorialStep(step);
+    },
+    [setTutorialStep]
+  );
+
+  // Render step content
+  const renderStepContent = () => {
+    switch (tutorialStep) {
+      case 0:
+        return <Step1Content />;
+      case 1:
+        return <Step2Content />;
+      case 2:
+        return <Step3Content />;
+      case 3:
+        return <Step4Content />;
+      case 4:
+        return <Step5Content />;
+      default:
+        return <Step1Content />;
+    }
+  };
+
+  // Position card based on step:
+  // - Steps 0 & 4 (hook & features): centered
+  // - Steps 1, 2, 3 (map views): bottom-right corner so map is visible
+  const isMapViewStep = tutorialStep >= 1 && tutorialStep <= 3;
+  const positionClasses = isMapViewStep
+    ? "items-end justify-end p-6" // bottom-right corner
+    : "items-center justify-center"; // centered
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
-      onClick={handleClose}
+      className={`fixed inset-0 z-50 flex pointer-events-none md:left-[380px] ${positionClasses}`}
     >
+      {/* Tutorial card */}
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
+        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 20 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="relative w-full max-w-md mx-4 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-md mx-4 bg-neutral-900/95 backdrop-blur-md border border-neutral-700 rounded-xl shadow-2xl overflow-hidden pointer-events-auto"
       >
-        {/* Progress dots */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 flex gap-2">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                index === currentSlide
-                  ? "bg-amber-500"
-                  : "bg-zinc-600 hover:bg-zinc-500"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
+        {/* Skip button (top right) */}
+        {!isLastStep && (
+          <button
+            onClick={handleSkip}
+            className="absolute top-3 right-3 text-xs font-mono text-neutral-500 hover:text-neutral-300 transition-colors z-10"
+          >
+            {t("skip")}
+          </button>
+        )}
 
-        {/* Slide content */}
-        <div className="px-8 pt-12 pb-6 min-h-[280px]">
+        {/* Step content */}
+        <div className="px-6 pt-8 pb-4 min-h-[320px]">
           <AnimatePresence mode="wait">
             <motion.div
-              key={currentSlide}
+              key={tutorialStep}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.2 }}
-              className="flex flex-col items-center text-center"
+              transition={{ duration: 0.25 }}
             >
-              {/* Illustration */}
-              <div className="mb-6 p-4 bg-zinc-800/50 rounded-full">
-                <SlideIllustration type={currentContent.illustration} />
-              </div>
-
-              {/* Title */}
-              <h2 className="text-2xl font-mono font-semibold text-zinc-100 mb-3">
-                {currentContent.title}
-              </h2>
-
-              {/* Description */}
-              <p className="text-zinc-400 leading-relaxed">
-                {currentContent.description}
-              </p>
+              {renderStepContent()}
             </motion.div>
           </AnimatePresence>
         </div>
 
         {/* Footer */}
-        <div className="px-8 pb-6 space-y-4">
-          {/* Don't show again checkbox - only on last slide */}
-          {isLastSlide && (
-            <label className="flex items-center justify-center gap-2 text-sm text-zinc-400 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={dontShowAgain}
-                onChange={(e) => setDontShowAgain(e.target.checked)}
-                className="w-4 h-4 rounded border-zinc-600 bg-zinc-800 text-amber-500 focus:ring-amber-500 focus:ring-offset-0"
-              />
-              <span>{labels.dontShow}</span>
-            </label>
-          )}
+        <div className="px-6 pb-5 space-y-4">
+          {/* Step indicator */}
+          <StepIndicator
+            currentStep={tutorialStep}
+            totalSteps={TUTORIAL_STEPS}
+            onStepClick={handleStepClick}
+          />
 
           {/* Navigation buttons */}
           <div className="flex gap-3">
-            {!isLastSlide && (
+            {!isFirstStep && (
               <button
-                onClick={handleSkip}
-                className="flex-1 px-4 py-2.5 text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-colors"
+                onClick={handleBack}
+                className="flex-1 px-4 py-2.5 text-sm font-mono font-medium text-neutral-400 hover:text-neutral-200 border border-neutral-700 hover:border-neutral-500 rounded-lg transition-colors"
               >
-                {labels.skip}
+                {t("back")}
               </button>
             )}
             <button
               onClick={handleNext}
-              className="flex-1 px-4 py-2.5 text-sm font-medium bg-amber-600 hover:bg-amber-500 text-zinc-900 rounded-lg transition-colors"
+              className={`flex-1 px-4 py-2.5 text-sm font-mono font-medium rounded-lg transition-colors ${
+                isLastStep
+                  ? "bg-amber-500 hover:bg-amber-400 text-neutral-900"
+                  : "bg-neutral-700 hover:bg-neutral-600 text-neutral-100"
+              }`}
             >
-              {isLastSlide ? labels.start : labels.next}
+              {isLastStep ? t("start") : t("next")}
             </button>
           </div>
+
+          {/* Don't show again checkbox - only on last step */}
+          {isLastStep && (
+            <label className="flex items-center justify-center gap-2 text-xs text-neutral-500 cursor-pointer">
+              <input
+                type="checkbox"
+                defaultChecked={true}
+                onChange={(e) => {
+                  if (!e.target.checked) {
+                    // If unchecked, they want to see it again
+                    setTutorialSeen(false);
+                  }
+                }}
+                className="w-3.5 h-3.5 rounded border-neutral-600 bg-neutral-800 text-amber-500 focus:ring-amber-500 focus:ring-offset-0"
+              />
+              <span>{t("dontShowAgain")}</span>
+            </label>
+          )}
         </div>
       </motion.div>
     </motion.div>

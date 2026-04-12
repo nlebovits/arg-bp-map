@@ -17,6 +17,7 @@ import {
   MAP_BOUNDS,
   INITIAL_VIEW,
   COLORS,
+  BARRIO_SIN_NOMBRE_ID,
 } from "@/lib/config";
 import BuildingsLayer from "./layers/BuildingsLayer";
 import ArgentinaMask from "./layers/ArgentinaMask";
@@ -28,6 +29,9 @@ export default function Map() {
   const setMap = useMapStore((s) => s.setMap);
   const setMapLoading = useMapStore((s) => s.setMapLoading);
   const showSatellite = useMapStore((s) => s.showSatellite);
+  const showSettlements = useMapStore((s) => s.showSettlements);
+  const tutorialActive = useMapStore((s) => s.tutorialActive);
+  const tutorialStep = useMapStore((s) => s.tutorialStep);
 
   // Initialize map
   useEffect(() => {
@@ -294,8 +298,55 @@ export default function Map() {
       "top-right"
     );
 
-    // Loading events
+    // Load RENABAP GeoJSON after map loads
     mapInstance.on("load", () => {
+      // Add RENABAP source
+      mapInstance.addSource("renabap", {
+        type: "geojson",
+        data: SOURCES.renabap.data,
+      });
+
+      // Add RENABAP outline layer (dashed, no fill)
+      mapInstance.addLayer(
+        {
+          id: LAYERS.renabap.outline,
+          type: "line",
+          source: "renabap",
+          paint: {
+            "line-color": COLORS.renabap.outline,
+            "line-width": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              4,
+              1,
+              10,
+              2,
+              14,
+              2.5,
+            ],
+            "line-opacity": 0.9,
+            "line-dasharray": [3, 2],
+          },
+        },
+        LAYERS.buildings.fill // Insert below buildings
+      );
+
+      // Add highlight layer for tutorial (Barrio Sin Nombre)
+      mapInstance.addLayer(
+        {
+          id: LAYERS.renabap.highlight,
+          type: "line",
+          source: "renabap",
+          filter: ["==", ["get", "id_renabap"], BARRIO_SIN_NOMBRE_ID],
+          paint: {
+            "line-color": "#fbbf24", // amber-400
+            "line-width": 4,
+            "line-opacity": 0,
+          },
+        }
+      );
+
       setMapLoading(false);
     });
 
@@ -324,9 +375,44 @@ export default function Map() {
     }
   }, [map, showSatellite]);
 
+  // Toggle RENABAP settlements visibility
+  useEffect(() => {
+    if (!map || !map.getStyle()) return;
+    if (map.getLayer(LAYERS.renabap.outline)) {
+      map.setLayoutProperty(
+        LAYERS.renabap.outline,
+        "visibility",
+        showSettlements ? "visible" : "none"
+      );
+    }
+  }, [map, showSettlements]);
+
+  // Tutorial step 3: Highlight Barrio Sin Nombre
+  useEffect(() => {
+    if (!map || !map.getStyle()) return;
+    if (!map.getLayer(LAYERS.renabap.highlight)) return;
+
+    // Show highlight on step 3 (Barrio Sin Nombre)
+    const highlightOpacity = tutorialActive && tutorialStep === 2 ? 1 : 0;
+    map.setPaintProperty(
+      LAYERS.renabap.highlight,
+      "line-opacity",
+      highlightOpacity
+    );
+  }, [map, tutorialActive, tutorialStep]);
+
   return (
     <div className="absolute inset-0">
       <div ref={containerRef} className="w-full h-full" />
+
+      {/* Tutorial dimming overlay - only on step 0 (the hook) */}
+      {tutorialActive && tutorialStep === 0 && (
+        <div
+          className="absolute inset-0 bg-black/60 backdrop-blur-[2px] pointer-events-none transition-opacity duration-500"
+          style={{ zIndex: 40 }}
+        />
+      )}
+
       {/* Layer management components */}
       <ArgentinaMask />
       <BuildingsLayer />

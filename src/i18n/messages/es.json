@@ -12,7 +12,8 @@
     "layers": {
       "header": "Capas",
       "satellite": "Imagen satelital",
-      "buildings": "Edificios detectados"
+      "buildings": "Edificios detectados",
+      "settlements": "Asentamientos RENABAP"
     },
     "stats": {
       "header": "Estadísticas",
@@ -20,7 +21,8 @@
     },
     "language": {
       "label": "Idioma"
-    }
+    },
+    "replayTutorial": "Repetir Tutorial"
   },
   "common": {
     "loading": "Cargando...",
@@ -29,28 +31,52 @@
   "map": {
     "layers": "Capas del Mapa",
     "satellite": "Satélite",
-    "buildings": "Edificios"
+    "buildings": "Edificios",
+    "settlements": "Asentamientos"
   },
   "tutorial": {
-    "welcome": {
-      "title": "Bienvenido",
-      "description": "Explora las huellas de edificios en asentamientos informales de Argentina."
+    "step1": {
+      "title": "Datos globales, impacto local",
+      "description": "Los datos censales envejecen rápidamente. Los registros oficiales de Argentina no se han actualizado desde 2023—pero los asentamientos informales crecen cada día.\n\n¿Y si las imágenes satelitales pudieran llenar ese vacío?"
     },
-    "howTo": {
-      "title": "Cómo usar",
-      "description": "Activa/desactiva capas, busca ubicaciones, haz zoom para ver edificios."
+    "step2": {
+      "title": "La Plata: El caso de estudio",
+      "stat1Label": "Datos oficiales (RENABAP 2023)",
+      "stat1Value": "33.888 familias",
+      "stat1Sub": "30.753 viviendas registradas",
+      "stat2Label": "Huellas de edificios satelitales (2025)",
+      "stat2Value": "72.328 edificios",
+      "stat2Sub": "detectados por imágenes",
+      "conclusion": "Son 41.575 edificios sin contabilizar—representando entre 137.000 y 229.000 personas ausentes de los registros oficiales."
     },
-    "data": {
-      "title": "Los datos",
-      "description": "33.8M de edificios detectados por satélite vs datos oficiales de RENABAP."
+    "step3": {
+      "title": "Barrio Sin Nombre: 12x subconteo",
+      "stat1Label": "Estimación RENABAP",
+      "stat1Value": "330 familias",
+      "stat2Label": "Huellas de edificios",
+      "stat2Value": "4.000+ edificios",
+      "conclusion": "Los datos oficiales capturan menos del 10% de las estructuras en este único asentamiento."
     },
-    "getStarted": {
-      "title": "Comenzar",
-      "description": "Haz zoom en cualquier asentamiento para empezar."
+    "step4": {
+      "title": "Este patrón se repite a nivel nacional",
+      "stat1Label": "Total de asentamientos informales",
+      "stat1Value": "6.467 barrios",
+      "stat2Label": "Población oficial",
+      "stat2Value": "1,24M familias",
+      "conclusion": "Si el patrón de La Plata se mantiene, más de un millón de familias podrían estar ausentes de los registros oficiales de Argentina."
+    },
+    "step5": {
+      "title": "Explora los datos tú mismo",
+      "feature1": "Busca cualquier asentamiento por nombre",
+      "feature2": "Compara RENABAP vs recuento de edificios",
+      "feature3": "Haz zoom para ver huellas individuales",
+      "dataSource": "Huellas de edificios de Google-Microsoft-OSM Open Buildings, alojados en",
+      "sourceCoopLink": "Source.Cooperative"
     },
     "next": "Siguiente",
-    "skip": "Omitir",
-    "start": "Comenzar",
+    "back": "Atrás",
+    "skip": "Omitir tutorial",
+    "start": "Comenzar a Explorar",
     "dontShowAgain": "No mostrar de nuevo"
   }
 }

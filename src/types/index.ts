@@ -52,6 +52,17 @@ export interface MapStore {
   showTutorial: boolean;
   setShowTutorial: (show: boolean) => void;
 
+  // Tutorial step tracking
+  tutorialStep: number;
+  setTutorialStep: (step: number) => void;
+
+  // Tutorial active state (for map dimming)
+  tutorialActive: boolean;
+  setTutorialActive: (active: boolean) => void;
+
   // Navigation
   flyTo: (lng: number, lat: number, zoom?: number) => void;
+
+  // Tutorial-specific navigation
+  tutorialFlyTo: (step: number) => void;
 }

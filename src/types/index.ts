@@ -48,6 +48,10 @@ export interface MapStore {
   locale: "es" | "en";
   setLocale: (locale: "es" | "en") => void;
 
+  // Tutorial modal
+  showTutorial: boolean;
+  setShowTutorial: (show: boolean) => void;
+
   // Navigation
   flyTo: (lng: number, lat: number, zoom?: number) => void;
 }

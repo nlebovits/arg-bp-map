@@ -3,6 +3,8 @@
 import { create } from "zustand";
 import type { MapStore } from "@/types";
 
+export type Locale = "es" | "en";
+
 // Argentina center point
 const INITIAL_VIEW = {
   lng: -64.0,
@@ -53,6 +55,13 @@ export const useMapStore = create<MapStore>((set, get) => ({
   locale: "es",
   setLocale: (locale) => set({ locale }),
 
+  // Tutorial modal
+  showTutorial:
+    typeof window !== "undefined"
+      ? localStorage.getItem("tutorialSeen") !== "true"
+      : true,
+  setShowTutorial: (showTutorial) => set({ showTutorial }),
+
   // Navigation
   flyTo: (lng: number, lat: number, zoom: number = 14) => {
     const { map } = get();
@@ -64,3 +73,6 @@ export const useMapStore = create<MapStore>((set, get) => ({
     });
   },
 }));
+
+// Alias for backward compatibility
+export const useStore = useMapStore;

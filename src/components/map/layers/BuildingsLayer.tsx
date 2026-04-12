@@ -16,7 +16,7 @@ export default function BuildingsLayer() {
 
   // Toggle layer visibility
   useEffect(() => {
-    if (!map) return;
+    if (!map || !map.getStyle()) return;
 
     const visibility = showBuildings ? "visible" : "none";
 
@@ -117,7 +117,8 @@ export default function BuildingsLayer() {
     }
 
     return () => {
-      if (map.getLayer(LAYERS.buildings.fill)) {
+      // Guard against map being destroyed during cleanup
+      if (map.getStyle() && map.getLayer(LAYERS.buildings.fill)) {
         map.off("mouseenter", LAYERS.buildings.fill, handleMouseEnter);
         map.off("mousemove", LAYERS.buildings.fill, handleMouseMove);
         map.off("mouseleave", LAYERS.buildings.fill, handleMouseLeave);

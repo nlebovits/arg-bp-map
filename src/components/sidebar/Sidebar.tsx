@@ -60,7 +60,7 @@ export default function Sidebar() {
       <aside
         className={`
           fixed md:relative z-40
-          w-[340px] h-full
+          w-[380px] h-full
           bg-neutral-950
           border-r border-neutral-800
           transform transition-transform duration-300 ease-out
@@ -90,65 +90,51 @@ export default function Sidebar() {
             {t("layers.header")}
           </h2>
 
-          <div className="space-y-4">
-            <label className="flex items-center gap-4 cursor-pointer group">
-              <div className="relative flex items-center justify-center">
-                <input
-                  type="checkbox"
-                  checked={showSatellite}
-                  onChange={(e) => setShowSatellite(e.target.checked)}
-                  className="peer sr-only"
-                />
-                <div className="w-4 h-4 rounded-sm border border-neutral-600 bg-transparent peer-checked:bg-amber-500 peer-checked:border-amber-500 transition-all flex items-center justify-center">
-                  {showSatellite && (
-                    <svg
-                      className="w-2.5 h-2.5 text-neutral-950"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      strokeWidth={3}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                </div>
-              </div>
-              <span className="font-mono text-sm text-neutral-400 group-hover:text-neutral-200 transition-colors">
+          <div className="space-y-3">
+            {/* Satellite toggle */}
+            <button
+              onClick={() => setShowSatellite(!showSatellite)}
+              className="flex items-center gap-3 w-full group"
+            >
+              <span
+                className={`w-4 h-4 rounded-full border-2 transition-all flex items-center justify-center ${
+                  showSatellite
+                    ? "border-amber-500 bg-amber-500"
+                    : "border-neutral-500 bg-transparent group-hover:border-neutral-400"
+                }`}
+              >
+                {showSatellite && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-950" />
+                )}
+              </span>
+              <span className="font-mono text-sm text-neutral-400 group-hover:text-neutral-200 transition-colors uppercase tracking-wide">
                 {t("layers.satellite")}
               </span>
-            </label>
+            </button>
 
-            <label className="flex items-center gap-4 cursor-pointer group">
-              <div className="relative flex items-center justify-center">
-                <input
-                  type="checkbox"
-                  checked={showBuildings}
-                  onChange={(e) => setShowBuildings(e.target.checked)}
-                  className="peer sr-only"
-                />
-                <div className="w-4 h-4 rounded-sm border border-neutral-600 bg-transparent peer-checked:bg-amber-500 peer-checked:border-amber-500 transition-all flex items-center justify-center">
-                  {showBuildings && (
-                    <svg
-                      className="w-2.5 h-2.5 text-neutral-950"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      strokeWidth={3}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="font-mono text-sm text-neutral-400 group-hover:text-neutral-200 transition-colors">
-                  {t("layers.buildings")}
-                </span>
-                <span className="font-mono px-2 py-0.5 text-[10px] font-medium bg-amber-500/15 text-amber-400 rounded tracking-wide">
-                  33.8M
-                </span>
-              </div>
-            </label>
+            {/* Buildings toggle */}
+            <button
+              onClick={() => setShowBuildings(!showBuildings)}
+              className="flex items-center gap-3 w-full group"
+            >
+              <span
+                className={`w-4 h-4 rounded-full border-2 transition-all flex items-center justify-center ${
+                  showBuildings
+                    ? "border-amber-500 bg-amber-500"
+                    : "border-neutral-500 bg-transparent group-hover:border-neutral-400"
+                }`}
+              >
+                {showBuildings && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-950" />
+                )}
+              </span>
+              <span className="font-mono text-sm text-neutral-400 group-hover:text-neutral-200 transition-colors uppercase tracking-wide">
+                {t("layers.buildings")}
+              </span>
+              <span className="font-mono ml-auto px-2 py-0.5 text-[10px] font-medium bg-amber-500/15 text-amber-400 rounded tracking-wide">
+                33.8M
+              </span>
+            </button>
           </div>
         </div>
 

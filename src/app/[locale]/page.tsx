@@ -1,10 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import Sidebar from "@/components/sidebar/Sidebar";
 import { TutorialModal } from "@/components/tutorial/TutorialModal";
-import { useMapStore } from "@/lib/store";
+import { useMapStore, useHydrateStore } from "@/lib/store";
 
 // Dynamic import for Map to avoid SSR issues with MapLibre
 const Map = dynamic(() => import("@/components/map/Map"), {
@@ -22,6 +23,11 @@ const Map = dynamic(() => import("@/components/map/Map"), {
 });
 
 export default function Home() {
+  // Hydrate store from localStorage after mount (avoids hydration mismatch)
+  useEffect(() => {
+    useHydrateStore();
+  }, []);
+
   const mapLoading = useMapStore((s) => s.mapLoading);
   const showTutorial = useMapStore((s) => s.showTutorial);
   const t = useTranslations("common");

@@ -26,6 +26,11 @@
     "loading": "Cargando...",
     "loadingTiles": "Cargando tiles..."
   },
+  "map": {
+    "layers": "Capas del Mapa",
+    "satellite": "Satélite",
+    "buildings": "Edificios"
+  },
   "tutorial": {
     "welcome": {
       "title": "Bienvenido",

@@ -12,6 +12,9 @@ const INITIAL_VIEW = {
   zoom: 5,
 };
 
+// Track if store has been hydrated from localStorage
+let isHydrated = false;
+
 export const useMapStore = create<MapStore>((set, get) => ({
   // Map instance
   map: null,
@@ -40,10 +43,8 @@ export const useMapStore = create<MapStore>((set, get) => ({
   // UI
   sidebarOpen: true,
   setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
-  tutorialSeen:
-    typeof window !== "undefined"
-      ? localStorage.getItem("tutorialSeen") === "true"
-      : false,
+  // Initialize with server-safe defaults (hydrated in useHydrateStore)
+  tutorialSeen: false,
   setTutorialSeen: (tutorialSeen) => {
     if (typeof window !== "undefined") {
       localStorage.setItem("tutorialSeen", String(tutorialSeen));
@@ -55,11 +56,8 @@ export const useMapStore = create<MapStore>((set, get) => ({
   locale: "es",
   setLocale: (locale) => set({ locale }),
 
-  // Tutorial modal
-  showTutorial:
-    typeof window !== "undefined"
-      ? localStorage.getItem("tutorialSeen") !== "true"
-      : true,
+  // Tutorial modal - start hidden to match server, hydrate on client
+  showTutorial: false,
   setShowTutorial: (showTutorial) => set({ showTutorial }),
 
   // Navigation
@@ -73,6 +71,18 @@ export const useMapStore = create<MapStore>((set, get) => ({
     });
   },
 }));
+
+// Hook to hydrate store from localStorage after mount (avoids hydration mismatch)
+export function useHydrateStore() {
+  if (typeof window === "undefined" || isHydrated) return;
+
+  isHydrated = true;
+  const tutorialSeen = localStorage.getItem("tutorialSeen") === "true";
+  useMapStore.setState({
+    tutorialSeen,
+    showTutorial: !tutorialSeen,
+  });
+}
 
 // Alias for backward compatibility
 export const useStore = useMapStore;

@@ -5,7 +5,6 @@ import {
   Map as MapLibreMap,
   addProtocol,
   removeProtocol,
-  AttributionControl,
   NavigationControl,
 } from "maplibre-gl";
 import { Protocol } from "pmtiles";
@@ -20,6 +19,8 @@ import {
   COLORS,
 } from "@/lib/config";
 import BuildingsLayer from "./layers/BuildingsLayer";
+import ArgentinaMask from "./layers/ArgentinaMask";
+import MapControls from "./MapControls";
 
 export default function Map() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,13 +51,15 @@ export default function Map() {
           buildings: SOURCES.buildings,
         },
         layers: [
-          // Satellite base layer
+          // Satellite base layer (grayscale for muted aesthetic)
           {
             id: LAYERS.satellite,
             type: "raster",
             source: "satellite",
             paint: {
-              "raster-opacity": 1,
+              "raster-saturation": -1,
+              "raster-contrast": -0.5,
+              "raster-opacity": 0.5,
             },
           },
 
@@ -285,14 +288,10 @@ export default function Map() {
     // Disable rotation
     mapInstance.touchZoomRotate.disableRotation();
 
-    // Add controls
+    // Add navigation controls (no attribution - we use custom)
     mapInstance.addControl(
       new NavigationControl({ showCompass: false }),
-      "bottom-right"
-    );
-    mapInstance.addControl(
-      new AttributionControl({ compact: true }),
-      "bottom-right"
+      "top-right"
     );
 
     // Loading events
@@ -315,7 +314,7 @@ export default function Map() {
 
   // Toggle satellite visibility
   useEffect(() => {
-    if (!map) return;
+    if (!map || !map.getStyle()) return;
     if (map.getLayer(LAYERS.satellite)) {
       map.setLayoutProperty(
         LAYERS.satellite,
@@ -329,7 +328,10 @@ export default function Map() {
     <div className="absolute inset-0">
       <div ref={containerRef} className="w-full h-full" />
       {/* Layer management components */}
+      <ArgentinaMask />
       <BuildingsLayer />
+      {/* Map controls overlay */}
+      <MapControls />
     </div>
   );
 }

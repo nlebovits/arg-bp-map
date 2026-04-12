@@ -54,10 +54,10 @@ export const MAP_BOUNDS = {
   maxZoom: 19,
 };
 
-// Initial view centered on Argentina
+// Initial view - frame all of Argentina with mask effect visible
 export const INITIAL_VIEW = {
-  center: [-64.0, -34.0] as [number, number],
-  zoom: 5,
+  center: [-65.0, -40.0] as [number, number],
+  zoom: 4,
 };
 
 // Styling

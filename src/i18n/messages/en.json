@@ -26,6 +26,11 @@
     "loading": "Loading...",
     "loadingTiles": "Loading tiles..."
   },
+  "map": {
+    "layers": "Map Layers",
+    "satellite": "Satellite",
+    "buildings": "Buildings"
+  },
   "tutorial": {
     "welcome": {
       "title": "Welcome",

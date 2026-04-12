@@ -47,4 +47,7 @@ export interface MapStore {
   // Locale
   locale: "es" | "en";
   setLocale: (locale: "es" | "en") => void;
+
+  // Navigation
+  flyTo: (lng: number, lat: number, zoom?: number) => void;
 }

@@ -10,7 +10,7 @@ const INITIAL_VIEW = {
   zoom: 5,
 };
 
-export const useMapStore = create<MapStore>((set) => ({
+export const useMapStore = create<MapStore>((set, get) => ({
   // Map instance
   map: null,
   setMap: (map) => set({ map }),
@@ -49,7 +49,18 @@ export const useMapStore = create<MapStore>((set) => ({
     set({ tutorialSeen });
   },
 
-  // Locale
+  // Locale (kept for backward compat, URL is source of truth now)
   locale: "es",
   setLocale: (locale) => set({ locale }),
+
+  // Navigation
+  flyTo: (lng: number, lat: number, zoom: number = 14) => {
+    const { map } = get();
+    if (!map) return;
+    map.flyTo({
+      center: [lng, lat],
+      zoom,
+      duration: 1500,
+    });
+  },
 }));

@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "title": "Informal Settlements | Argentina",
+    "title": "Barrios Visibles | Argentina",
     "description": "Explore informal settlements in Argentina and compare official RENABAP data with satellite-derived building footprints."
   },
   "sidebar": {
-    "title": "Informal Settlements",
-    "subtitle": "Argentina",
+    "title": "Barrios Visibles",
+    "tagline": "Making Argentina's informal settlements count",
     "search": {
       "placeholder": "Search location..."
     },
@@ -32,7 +32,13 @@
     "layers": "Map Layers",
     "satellite": "Satellite",
     "buildings": "Buildings",
-    "settlements": "Settlements"
+    "settlements": "Settlements",
+    "resetView": "Reset to Argentina",
+    "findMyLocation": "Find my location",
+    "locating": "Locating...",
+    "locationError": "Could not get your location",
+    "showAttribution": "Show attribution",
+    "hideAttribution": "Hide attribution"
   },
   "tutorial": {
     "step1": {
@@ -78,5 +84,13 @@
     "skip": "Skip tutorial",
     "start": "Start Exploring",
     "dontShowAgain": "Don't show again"
+  },
+  "legend": {
+    "header": "Discrepancy",
+    "undercount": "Undercount",
+    "match": "Match",
+    "showInfo": "Show info",
+    "hideInfo": "Hide info",
+    "info": "This gradient shows the discrepancy between official RENABAP data and satellite-detected building footprints. Amber indicates areas where buildings significantly outnumber official records."
   }
 }

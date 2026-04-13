@@ -4,6 +4,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { useMapStore } from "@/lib/store";
 import type { Locale } from "@/i18n/routing";
+import DiscrepancyLegend from "./DiscrepancyLegend";
 
 // Replay icon
 function ReplayIcon({ className }: { className?: string }) {
@@ -82,7 +83,7 @@ export default function Sidebar() {
       <aside
         className={`
           fixed md:relative z-40
-          w-[380px] h-full
+          w-[85vw] md:w-1/3 md:min-w-[320px] md:max-w-[480px] h-full
           bg-neutral-950
           border-r border-neutral-800
           shadow-[4px_0_24px_-2px_rgba(0,0,0,0.5)]
@@ -92,69 +93,70 @@ export default function Sidebar() {
           overflow-hidden
         `}
       >
+        {/* Utility bar */}
+        <div className="px-4 py-2 border-b border-neutral-800/50 flex items-center justify-between">
+          {/* Language toggle */}
+          <div className="flex font-mono text-[10px]">
+            <button
+              onClick={() => router.replace(pathname, { locale: "es" })}
+              className={`px-2 py-1 rounded-l border transition-all ${
+                locale === "es"
+                  ? "bg-amber-500 text-neutral-950 border-amber-500 font-medium"
+                  : "bg-transparent text-neutral-500 border-neutral-700 hover:text-neutral-300 hover:border-neutral-600"
+              }`}
+            >
+              ES
+            </button>
+            <button
+              onClick={() => router.replace(pathname, { locale: "en" })}
+              className={`px-2 py-1 rounded-r border-t border-r border-b transition-all ${
+                locale === "en"
+                  ? "bg-amber-500 text-neutral-950 border-amber-500 font-medium"
+                  : "bg-transparent text-neutral-500 border-neutral-700 hover:text-neutral-300 hover:border-neutral-600"
+              }`}
+            >
+              EN
+            </button>
+          </div>
+
+          {/* Replay tutorial icon */}
+          <button
+            onClick={handleReplayTutorial}
+            className="w-7 h-7 flex items-center justify-center text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800 rounded transition-colors"
+            title={t("replayTutorial")}
+            aria-label={t("replayTutorial")}
+          >
+            <ReplayIcon className="w-4 h-4" />
+          </button>
+        </div>
+
         {/* Header */}
-        <header className="px-6 py-6 border-b border-neutral-800">
-          <h1 className="font-mono text-lg font-medium text-neutral-100 tracking-wide uppercase">
-            {t("title")}
+        <header className="px-6 py-5 border-b border-neutral-800">
+          <h1 className="font-mono text-lg font-medium text-neutral-100 tracking-wide">
+            Barrios Visibles
           </h1>
-          <p className="font-mono text-xs text-neutral-500 mt-2 tracking-wider uppercase">
-            {t("subtitle")}
+          <p className="font-mono text-[11px] text-neutral-500 mt-1.5 leading-relaxed">
+            {t("tagline")}
           </p>
         </header>
 
-        {/* Stats section */}
-        <div className="flex-1 px-6 py-5 overflow-y-auto">
-          <h2 className="font-mono text-[10px] font-medium text-neutral-500 uppercase tracking-[0.2em] mb-5">
-            {t("stats.header")}
-          </h2>
+        {/* Main content */}
+        <div className="flex-1 px-6 py-5 overflow-y-auto space-y-6">
+          {/* Discrepancy Legend */}
+          <DiscrepancyLegend />
 
-          <div className="rounded-md bg-neutral-900/50 border border-neutral-800 p-5">
-            <p className="font-mono text-xs text-neutral-500 leading-relaxed">
-              {t("stats.placeholder")}
-            </p>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <footer className="px-6 py-4 border-t border-neutral-800 space-y-4">
-          {/* Replay tutorial button - compact */}
-          <button
-            onClick={handleReplayTutorial}
-            className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-neutral-500 hover:text-neutral-300 transition-colors"
-          >
-            <ReplayIcon className="w-3 h-3" />
-            {t("replayTutorial")}
-          </button>
-
-          {/* Language toggle */}
-          <div className="flex items-center justify-between">
-            <span className="font-mono text-[10px] text-neutral-500 uppercase tracking-[0.15em]">
-              {t("language.label")}
-            </span>
-            <div className="flex font-mono text-xs">
-              <button
-                onClick={() => router.replace(pathname, { locale: "es" })}
-                className={`px-3 py-1.5 rounded-l-md border transition-all ${
-                  locale === "es"
-                    ? "bg-amber-500 text-neutral-950 border-amber-500 font-medium"
-                    : "bg-transparent text-neutral-500 border-neutral-700 hover:text-neutral-300 hover:border-neutral-600"
-                }`}
-              >
-                ES
-              </button>
-              <button
-                onClick={() => router.replace(pathname, { locale: "en" })}
-                className={`px-3 py-1.5 rounded-r-md border-t border-r border-b transition-all ${
-                  locale === "en"
-                    ? "bg-amber-500 text-neutral-950 border-amber-500 font-medium"
-                    : "bg-transparent text-neutral-500 border-neutral-700 hover:text-neutral-300 hover:border-neutral-600"
-                }`}
-              >
-                EN
-              </button>
+          {/* Stats section */}
+          <div>
+            <h2 className="font-mono text-[10px] font-medium text-neutral-500 uppercase tracking-[0.2em] mb-4">
+              {t("stats.header")}
+            </h2>
+            <div className="rounded-md bg-neutral-900/50 border border-neutral-800 p-4">
+              <p className="font-mono text-xs text-neutral-500 leading-relaxed">
+                {t("stats.placeholder")}
+              </p>
             </div>
           </div>
-        </footer>
+        </div>
       </aside>
 
       {/* Mobile overlay */}

@@ -333,15 +333,16 @@ export function TutorialModal() {
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
         className="relative w-full max-w-md mx-4 bg-neutral-900/95 backdrop-blur-md border border-neutral-700 rounded-xl shadow-2xl overflow-hidden pointer-events-auto"
       >
-        {/* Skip button (top right) */}
-        {!isLastStep && (
-          <button
-            onClick={handleSkip}
-            className="absolute top-3 right-3 text-xs font-mono text-neutral-500 hover:text-neutral-300 transition-colors z-10"
-          >
-            {t("skip")}
-          </button>
-        )}
+        {/* Close button (top right) */}
+        <button
+          onClick={handleSkip}
+          className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800 rounded-md transition-colors z-10"
+          aria-label={t("skip")}
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
 
         {/* Step content */}
         <div className="px-6 pt-8 pb-4 min-h-[320px]">
@@ -368,25 +369,36 @@ export function TutorialModal() {
           />
 
           {/* Navigation buttons */}
-          <div className="flex gap-3">
+          <div className="flex items-center justify-center gap-4">
             {!isFirstStep && (
               <button
                 onClick={handleBack}
-                className="flex-1 px-4 py-2.5 text-sm font-mono font-medium text-neutral-400 hover:text-neutral-200 border border-neutral-700 hover:border-neutral-500 rounded-lg transition-colors"
+                className="w-9 h-9 flex items-center justify-center text-neutral-400 hover:text-neutral-200 border border-neutral-700 hover:border-neutral-500 rounded-lg transition-colors"
+                aria-label={t("back")}
               >
-                {t("back")}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
               </button>
             )}
-            <button
-              onClick={handleNext}
-              className={`flex-1 px-4 py-2.5 text-sm font-mono font-medium rounded-lg transition-colors ${
-                isLastStep
-                  ? "bg-amber-500 hover:bg-amber-400 text-neutral-900"
-                  : "bg-neutral-700 hover:bg-neutral-600 text-neutral-100"
-              }`}
-            >
-              {isLastStep ? t("start") : t("next")}
-            </button>
+            {isLastStep ? (
+              <button
+                onClick={handleNext}
+                className="px-6 py-2 text-sm font-mono font-medium rounded-lg bg-amber-500 hover:bg-amber-400 text-neutral-900 transition-colors"
+              >
+                {t("start")}
+              </button>
+            ) : (
+              <button
+                onClick={handleNext}
+                className="w-9 h-9 flex items-center justify-center bg-neutral-700 hover:bg-neutral-600 text-neutral-100 rounded-lg transition-colors"
+                aria-label={t("next")}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            )}
           </div>
 
           {/* Don't show again checkbox - only on last step */}

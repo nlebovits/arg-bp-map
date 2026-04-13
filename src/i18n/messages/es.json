@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "title": "Asentamientos Informales | Argentina",
+    "title": "Barrios Visibles | Argentina",
     "description": "Explora los asentamientos informales de Argentina y compara datos oficiales de RENABAP con huellas de edificios derivadas de satélite."
   },
   "sidebar": {
-    "title": "Asentamientos Informales",
-    "subtitle": "Argentina",
+    "title": "Barrios Visibles",
+    "tagline": "Haciendo visibles los asentamientos informales de Argentina",
     "search": {
       "placeholder": "Buscar ubicación..."
     },
@@ -32,7 +32,13 @@
     "layers": "Capas del Mapa",
     "satellite": "Satélite",
     "buildings": "Edificios",
-    "settlements": "Asentamientos"
+    "settlements": "Asentamientos",
+    "resetView": "Volver a Argentina",
+    "findMyLocation": "Encontrar mi ubicación",
+    "locating": "Localizando...",
+    "locationError": "No se pudo obtener tu ubicación",
+    "showAttribution": "Mostrar atribución",
+    "hideAttribution": "Ocultar atribución"
   },
   "tutorial": {
     "step1": {
@@ -78,5 +84,13 @@
     "skip": "Omitir tutorial",
     "start": "Comenzar a Explorar",
     "dontShowAgain": "No mostrar de nuevo"
+  },
+  "legend": {
+    "header": "Discrepancia",
+    "undercount": "Subconteo",
+    "match": "Coincidencia",
+    "showInfo": "Mostrar info",
+    "hideInfo": "Ocultar info",
+    "info": "Este gradiente muestra la discrepancia entre los datos oficiales de RENABAP y las huellas de edificios detectadas por satélite. El ámbar indica áreas donde los edificios superan significativamente los registros oficiales."
   }
 }

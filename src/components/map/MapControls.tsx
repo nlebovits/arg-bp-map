@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useMapStore, TUTORIAL_LOCATIONS } from "@/lib/store";
 import { SearchInput } from "@/components/sidebar/SearchInput";
@@ -29,8 +29,8 @@ function GlobeIcon({ className }: { className?: string }) {
   );
 }
 
-// Fullscreen icons
-function ExpandIcon({ className }: { className?: string }) {
+// Location crosshair icon for "find my location"
+function LocationIcon({ className }: { className?: string }) {
   return (
     <svg
       className={className}
@@ -42,13 +42,19 @@ function ExpandIcon({ className }: { className?: string }) {
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"
+        d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"
+      />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 2v4m0 12v4M2 12h4m12 0h4"
       />
     </svg>
   );
 }
 
-function ShrinkIcon({ className }: { className?: string }) {
+// Info icon for attribution toggle
+function InfoIcon({ className }: { className?: string }) {
   return (
     <svg
       className={className}
@@ -60,7 +66,7 @@ function ShrinkIcon({ className }: { className?: string }) {
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M9 9L4 4m0 0v4m0-4h4m6 6l5 5m0 0v-4m0 4h-4M9 15l-5 5m0 0v-4m0 4h4m6-6l5-5m0 0v4m0-4h-4"
+        d="M12 16v-4m0-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
       />
     </svg>
   );
@@ -111,7 +117,8 @@ function EyeOffIcon({ className }: { className?: string }) {
 
 export default function MapControls() {
   const [layersExpanded, setLayersExpanded] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [attributionExpanded, setAttributionExpanded] = useState(true);
+  const [locating, setLocating] = useState(false);
   const t = useTranslations("map");
   const tSidebar = useTranslations("sidebar");
 
@@ -129,24 +136,23 @@ export default function MapControls() {
     flyTo(lng, lat, zoom);
   };
 
-  const handleToggleFullscreen = async () => {
-    if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen();
-      setIsFullscreen(true);
-    } else {
-      await document.exitFullscreen();
-      setIsFullscreen(false);
+  const handleFindMyLocation = () => {
+    if (!navigator.geolocation) {
+      return;
     }
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        flyTo(position.coords.longitude, position.coords.latitude, 14);
+        setLocating(false);
+      },
+      () => {
+        setLocating(false);
+        // Silently fail - the button will just stop spinning
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
   };
-
-  // Sync fullscreen state when user presses Escape
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
-    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
-  }, []);
 
   return (
     <>
@@ -157,29 +163,26 @@ export default function MapControls() {
         </div>
       )}
 
-      {/* Bottom left: MAP LAYERS button + Reset + Fullscreen - hidden during tutorial */}
+      {/* Bottom left: MAP LAYERS button + Reset + Location - hidden during tutorial */}
       {!tutorialActive && (
-        <div className="absolute bottom-6 left-6 z-20 flex items-center gap-2">
+        <div className="absolute bottom-4 left-4 z-20 flex items-center gap-2">
           {/* Reset view button */}
           <button
             onClick={handleResetView}
             className="p-2 bg-neutral-900/90 backdrop-blur-sm border border-neutral-700 hover:border-neutral-500 text-neutral-400 hover:text-neutral-100 transition-all rounded-sm"
-            title="Reset to Argentina"
+            title={t("resetView")}
           >
             <GlobeIcon className="w-4 h-4" />
           </button>
 
-          {/* Fullscreen toggle */}
+          {/* Find my location button */}
           <button
-            onClick={handleToggleFullscreen}
-            className="p-2 bg-neutral-900/90 backdrop-blur-sm border border-neutral-700 hover:border-neutral-500 text-neutral-400 hover:text-neutral-100 transition-all rounded-sm"
-            title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+            onClick={handleFindMyLocation}
+            disabled={locating}
+            className="p-2 bg-neutral-900/90 backdrop-blur-sm border border-neutral-700 hover:border-neutral-500 text-neutral-400 hover:text-neutral-100 transition-all rounded-sm disabled:opacity-50"
+            title={locating ? t("locating") : t("findMyLocation")}
           >
-            {isFullscreen ? (
-              <ShrinkIcon className="w-4 h-4" />
-            ) : (
-              <ExpandIcon className="w-4 h-4" />
-            )}
+            <LocationIcon className={`w-4 h-4 ${locating ? "animate-pulse" : ""}`} />
           </button>
 
           <div className="relative">
@@ -250,51 +253,60 @@ export default function MapControls() {
         </div>
       )}
 
-      {/* Bottom right: Attribution */}
-      <div className="absolute bottom-2 right-2 z-10">
-        <div className="font-mono text-[9px] text-neutral-500 tracking-wide">
-          <a
-            href="https://source.coop/vida/google-microsoft-osm-open-buildings"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-amber-400 transition-colors"
-          >
-            SOURCE.COOP
-          </a>
-          {" "}
-          <span className="text-neutral-600">|</span>
-          {" "}
-          <a
-            href="https://www.argentina.gob.ar/habitat/renabap"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-neutral-300 transition-colors"
-          >
-            RENABAP
-          </a>
-          {" "}
-          <span className="text-neutral-600">|</span>
-          {" "}
-          <a
-            href="https://protomaps.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-neutral-300 transition-colors"
-          >
-            PROTOMAPS
-          </a>
-          {" "}
-          <span className="text-neutral-600">&copy;</span>
-          {" "}
-          <a
-            href="https://openstreetmap.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-neutral-300 transition-colors"
-          >
-            OSM
-          </a>
-        </div>
+      {/* Bottom right: Attribution with toggle */}
+      <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
+        {attributionExpanded && (
+          <div className="font-mono text-[9px] text-neutral-500 tracking-wide bg-neutral-900/70 px-2 py-1 rounded-sm">
+            <a
+              href="https://source.coop/vida/google-microsoft-osm-open-buildings"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-amber-400 transition-colors"
+            >
+              SOURCE.COOP
+            </a>
+            {" "}
+            <span className="text-neutral-600">|</span>
+            {" "}
+            <a
+              href="https://www.argentina.gob.ar/habitat/renabap"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-neutral-300 transition-colors"
+            >
+              RENABAP
+            </a>
+            {" "}
+            <span className="text-neutral-600">|</span>
+            {" "}
+            <a
+              href="https://protomaps.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-neutral-300 transition-colors"
+            >
+              PROTOMAPS
+            </a>
+            {" "}
+            <span className="text-neutral-600">&copy;</span>
+            {" "}
+            <a
+              href="https://openstreetmap.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-neutral-300 transition-colors"
+            >
+              OSM
+            </a>
+          </div>
+        )}
+        <button
+          onClick={() => setAttributionExpanded(!attributionExpanded)}
+          className="p-2 bg-neutral-900/90 backdrop-blur-sm border border-neutral-700 hover:border-neutral-500 text-neutral-400 hover:text-neutral-100 transition-all rounded-sm"
+          title={attributionExpanded ? t("hideAttribution") : t("showAttribution")}
+        >
+          <InfoIcon className="w-4 h-4" />
+        </button>
       </div>
     </>
   );

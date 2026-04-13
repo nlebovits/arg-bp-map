@@ -61,9 +61,10 @@ export const MAP_BOUNDS = {
 };
 
 // Initial view - frame all of Argentina with mask effect visible
+// Zoom 3.5 gives padding around the country boundary
 export const INITIAL_VIEW = {
   center: [-65.0, -40.0] as [number, number],
-  zoom: 4,
+  zoom: 3.5,
 };
 
 // Styling - CarbonPlan-inspired palette

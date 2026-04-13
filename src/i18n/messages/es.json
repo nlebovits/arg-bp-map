@@ -33,7 +33,8 @@
     "language": {
       "label": "Idioma"
     },
-    "replayTutorial": "Repetir Tutorial"
+    "replayTutorial": "Repetir Tutorial",
+    "help": "Ayuda"
   },
   "common": {
     "loading": "Cargando...",

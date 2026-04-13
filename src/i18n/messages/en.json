@@ -33,7 +33,8 @@
     "language": {
       "label": "Language"
     },
-    "replayTutorial": "Replay Tutorial"
+    "replayTutorial": "Replay Tutorial",
+    "help": "Help"
   },
   "common": {
     "loading": "Loading...",

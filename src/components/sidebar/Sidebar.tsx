@@ -1,10 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { useMapStore } from "@/lib/store";
 import type { Locale } from "@/i18n/routing";
 import DiscrepancyLegend from "./DiscrepancyLegend";
+import InfoModal from "./InfoModal";
+
+type ModalType = "explainer" | "data" | null;
 
 // Replay icon
 function ReplayIcon({ className }: { className?: string }) {
@@ -31,6 +35,8 @@ export default function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
 
+  const [activeModal, setActiveModal] = useState<ModalType>(null);
+
   const sidebarOpen = useMapStore((s) => s.sidebarOpen);
   const setSidebarOpen = useMapStore((s) => s.setSidebarOpen);
   const setShowTutorial = useMapStore((s) => s.setShowTutorial);
@@ -41,7 +47,6 @@ export default function Sidebar() {
     setTutorialStep(0);
     setTutorialActive(true);
     setShowTutorial(true);
-    // Close sidebar on mobile when starting tutorial
     if (window.innerWidth < 768) {
       setSidebarOpen(false);
     }
@@ -94,25 +99,25 @@ export default function Sidebar() {
         `}
       >
         {/* Utility bar */}
-        <div className="px-4 py-2 border-b border-neutral-800/50 flex items-center justify-between">
+        <div className="px-5 py-3 border-b border-neutral-800/50 flex items-center justify-between">
           {/* Language toggle */}
-          <div className="flex font-mono text-[10px]">
+          <div className="flex text-sm font-medium">
             <button
               onClick={() => router.replace(pathname, { locale: "es" })}
-              className={`px-2 py-1 rounded-l border transition-all ${
+              className={`px-3 py-1.5 rounded-l border transition-all ${
                 locale === "es"
-                  ? "bg-amber-500 text-neutral-950 border-amber-500 font-medium"
-                  : "bg-transparent text-neutral-500 border-neutral-700 hover:text-neutral-300 hover:border-neutral-600"
+                  ? "bg-amber-500 text-neutral-950 border-amber-500"
+                  : "bg-transparent text-neutral-400 border-neutral-700 hover:text-neutral-200 hover:border-neutral-600"
               }`}
             >
               ES
             </button>
             <button
               onClick={() => router.replace(pathname, { locale: "en" })}
-              className={`px-2 py-1 rounded-r border-t border-r border-b transition-all ${
+              className={`px-3 py-1.5 rounded-r border-t border-r border-b transition-all ${
                 locale === "en"
-                  ? "bg-amber-500 text-neutral-950 border-amber-500 font-medium"
-                  : "bg-transparent text-neutral-500 border-neutral-700 hover:text-neutral-300 hover:border-neutral-600"
+                  ? "bg-amber-500 text-neutral-950 border-amber-500"
+                  : "bg-transparent text-neutral-400 border-neutral-700 hover:text-neutral-200 hover:border-neutral-600"
               }`}
             >
               EN
@@ -122,37 +127,68 @@ export default function Sidebar() {
           {/* Replay tutorial icon */}
           <button
             onClick={handleReplayTutorial}
-            className="w-7 h-7 flex items-center justify-center text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800 rounded transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-neutral-400 hover:text-neutral-200 hover:bg-neutral-800 rounded transition-colors"
             title={t("replayTutorial")}
             aria-label={t("replayTutorial")}
           >
-            <ReplayIcon className="w-4 h-4" />
+            <ReplayIcon className="w-5 h-5" />
           </button>
         </div>
 
         {/* Header */}
-        <header className="px-6 py-5 border-b border-neutral-800">
-          <h1 className="font-mono text-lg font-medium text-neutral-100 tracking-wide">
+        <header className="px-6 py-6 border-b border-neutral-800">
+          <h1 className="text-2xl font-semibold text-neutral-100 uppercase tracking-wide">
             Barrios Visibles
           </h1>
-          <p className="font-mono text-[11px] text-neutral-500 mt-1.5 leading-relaxed">
+          <p className="text-base text-neutral-400 mt-2 leading-relaxed">
             {t("tagline")}
+          </p>
+          {/* Subheader links */}
+          <p className="text-base text-neutral-500 mt-3">
+            {t("subheader.prefix")}{" "}
+            <button
+              onClick={() => setActiveModal("explainer")}
+              className="text-amber-500 hover:text-amber-400 underline underline-offset-2"
+            >
+              {t("subheader.explainer")}
+            </button>
+            {" "}{t("subheader.or")}{" "}
+            <button
+              onClick={() => setActiveModal("data")}
+              className="text-amber-500 hover:text-amber-400 underline underline-offset-2"
+            >
+              {t("subheader.data")}
+            </button>
+            .
           </p>
         </header>
 
         {/* Main content */}
-        <div className="flex-1 px-6 py-5 overflow-y-auto space-y-6">
+        <div className="flex-1 px-6 py-6 overflow-y-auto space-y-8">
           {/* Discrepancy Legend */}
           <DiscrepancyLegend />
 
           {/* Stats section */}
           <div>
-            <h2 className="font-mono text-[10px] font-medium text-neutral-500 uppercase tracking-[0.2em] mb-4">
+            <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-widest mb-4">
               {t("stats.header")}
             </h2>
-            <div className="rounded-md bg-neutral-900/50 border border-neutral-800 p-4">
-              <p className="font-mono text-xs text-neutral-500 leading-relaxed">
+            <div className="rounded-lg bg-neutral-900/50 border border-neutral-800 p-5">
+              <p className="text-base text-neutral-400 leading-relaxed">
                 {t("stats.placeholder")}
+              </p>
+            </div>
+          </div>
+
+          {/* About section */}
+          <div>
+            <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-widest mb-4">
+              {t("about.header")}
+            </h2>
+            <div className="text-base text-neutral-400 leading-relaxed space-y-3">
+              <p>{t("about.description")}</p>
+              <p className="text-sm text-neutral-500">
+                {t("about.credits")}
               </p>
             </div>
           </div>
@@ -166,6 +202,9 @@ export default function Sidebar() {
           onClick={() => setSidebarOpen(false)}
         />
       )}
+
+      {/* Info modals */}
+      <InfoModal type={activeModal} onClose={() => setActiveModal(null)} />
     </>
   );
 }

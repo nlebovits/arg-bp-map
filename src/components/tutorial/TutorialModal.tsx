@@ -58,32 +58,32 @@ function StatComparison({
       <div className="grid grid-cols-2 gap-4">
         {/* Official data */}
         <div className="bg-neutral-800/50 rounded-lg p-4 border border-neutral-700">
-          <p className="text-[10px] font-mono uppercase tracking-wider text-neutral-500 mb-1">
+          <p className="text-sm font-sans uppercase tracking-wider text-neutral-500 mb-1">
             {label1}
           </p>
-          <p className="text-2xl font-mono font-bold text-neutral-300">
+          <p className="text-2xl font-sans font-bold text-neutral-300">
             {value1}
           </p>
           {sub1 && (
-            <p className="text-xs text-neutral-500 mt-1">{sub1}</p>
+            <p className="text-sm text-neutral-500 mt-1">{sub1}</p>
           )}
         </div>
 
         {/* Satellite data */}
         <div className="bg-amber-500/10 rounded-lg p-4 border border-amber-500/30">
-          <p className="text-[10px] font-mono uppercase tracking-wider text-amber-500/70 mb-1">
+          <p className="text-sm font-sans uppercase tracking-wider text-amber-500/70 mb-1">
             {label2}
           </p>
-          <p className="text-2xl font-mono font-bold text-amber-500">
+          <p className="text-2xl font-sans font-bold text-amber-500">
             {value2}
           </p>
           {sub2 && (
-            <p className="text-xs text-amber-500/70 mt-1">{sub2}</p>
+            <p className="text-sm text-amber-500/70 mt-1">{sub2}</p>
           )}
         </div>
       </div>
 
-      <p className="text-sm text-neutral-300 leading-relaxed bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+      <p className="text-base text-neutral-300 leading-relaxed bg-red-500/10 border border-red-500/20 rounded-lg p-3">
         {conclusion}
       </p>
     </div>
@@ -112,7 +112,7 @@ function Step1Content() {
         </svg>
       </div>
 
-      <h2 className="text-2xl font-mono font-semibold text-neutral-100">
+      <h2 className="text-2xl font-sans font-semibold text-neutral-100">
         {t("title")}
       </h2>
 
@@ -129,7 +129,7 @@ function Step2Content() {
 
   return (
     <div className="space-y-5">
-      <h2 className="text-xl font-mono font-semibold text-neutral-100 text-center">
+      <h2 className="text-xl font-sans font-semibold text-neutral-100 text-center">
         {t("title")}
       </h2>
 
@@ -153,10 +153,10 @@ function Step3Content() {
   return (
     <div className="space-y-5">
       <div className="text-center">
-        <h2 className="text-xl font-mono font-semibold text-neutral-100">
+        <h2 className="text-xl font-sans font-semibold text-neutral-100">
           {t("title")}
         </h2>
-        <p className="text-xs text-neutral-500 mt-1 font-mono">
+        <p className="text-sm text-neutral-500 mt-1 font-sans">
           Los Hornos, La Plata
         </p>
       </div>
@@ -178,7 +178,7 @@ function Step4Content() {
 
   return (
     <div className="space-y-5">
-      <h2 className="text-xl font-mono font-semibold text-neutral-100 text-center">
+      <h2 className="text-xl font-sans font-semibold text-neutral-100 text-center">
         {t("title")}
       </h2>
 
@@ -199,28 +199,28 @@ function Step5Content() {
 
   return (
     <div className="space-y-5">
-      <h2 className="text-xl font-mono font-semibold text-neutral-100 text-center">
+      <h2 className="text-xl font-sans font-semibold text-neutral-100 text-center">
         {t("title")}
       </h2>
 
       <div className="space-y-3">
         <div className="flex items-center gap-3 bg-neutral-800/50 rounded-lg p-3 border border-neutral-700">
           <span className="text-lg">🔍</span>
-          <span className="text-sm text-neutral-300">{t("feature1")}</span>
+          <span className="text-base text-neutral-300">{t("feature1")}</span>
         </div>
         <div className="flex items-center gap-3 bg-neutral-800/50 rounded-lg p-3 border border-neutral-700">
           <span className="text-lg">📊</span>
-          <span className="text-sm text-neutral-300">{t("feature2")}</span>
+          <span className="text-base text-neutral-300">{t("feature2")}</span>
         </div>
         <div className="flex items-center gap-3 bg-neutral-800/50 rounded-lg p-3 border border-neutral-700">
           <span className="text-lg">🗺️</span>
-          <span className="text-sm text-neutral-300">{t("feature3")}</span>
+          <span className="text-base text-neutral-300">{t("feature3")}</span>
         </div>
       </div>
 
       {/* Source.Cooperative attribution */}
       <div className="bg-gradient-to-r from-amber-500/10 to-red-500/10 rounded-lg p-4 border border-amber-500/20">
-        <p className="text-xs text-neutral-400 text-center">
+        <p className="text-base text-neutral-400 text-center">
           {t("dataSource")}{" "}
           <a
             href="https://source.coop/vida/google-microsoft-osm-open-buildings"
@@ -384,7 +384,7 @@ export function TutorialModal() {
             {isLastStep ? (
               <button
                 onClick={handleNext}
-                className="px-6 py-2 text-sm font-mono font-medium rounded-lg bg-amber-500 hover:bg-amber-400 text-neutral-900 transition-colors"
+                className="px-6 py-2 text-sm font-sans font-medium rounded-lg bg-amber-500 hover:bg-amber-400 text-neutral-900 transition-colors"
               >
                 {t("start")}
               </button>
@@ -403,7 +403,7 @@ export function TutorialModal() {
 
           {/* Don't show again checkbox - only on last step */}
           {isLastStep && (
-            <label className="flex items-center justify-center gap-2 text-xs text-neutral-500 cursor-pointer">
+            <label className="flex items-center justify-center gap-2 text-sm text-neutral-500 cursor-pointer">
               <input
                 type="checkbox"
                 defaultChecked={true}

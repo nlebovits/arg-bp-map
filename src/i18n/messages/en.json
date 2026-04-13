@@ -6,6 +6,12 @@
   "sidebar": {
     "title": "Barrios Visibles",
     "tagline": "Making Argentina's informal settlements count",
+    "subheader": {
+      "prefix": "Read our",
+      "explainer": "explainer",
+      "or": "or explore the",
+      "data": "data sources"
+    },
     "search": {
       "placeholder": "Search location..."
     },
@@ -18,6 +24,11 @@
     "stats": {
       "header": "Statistics",
       "placeholder": "Zoom to a settlement to view detailed statistics."
+    },
+    "about": {
+      "header": "About",
+      "description": "Barrios Visibles compares official census data from RENABAP with satellite-derived building footprints to reveal gaps in how Argentina counts its informal settlements.",
+      "credits": "Built with data from Google-Microsoft-OSM Open Buildings and RENABAP."
     },
     "language": {
       "label": "Language"
@@ -92,5 +103,17 @@
     "showInfo": "Show info",
     "hideInfo": "Hide info",
     "info": "This gradient shows the discrepancy between official RENABAP data and satellite-detected building footprints. Amber indicates areas where buildings significantly outnumber official records."
+  },
+  "modals": {
+    "explainer": {
+      "title": "How This Works",
+      "content": "Barrios Visibles combines two datasets: official census records from Argentina's RENABAP (Registro Nacional de Barrios Populares) and satellite-derived building footprints from the Google-Microsoft-OSM Open Buildings dataset. By comparing these sources, we can identify areas where the official count may significantly underestimate the actual number of structures—and by extension, the people living in informal settlements."
+    },
+    "data": {
+      "title": "Data Sources",
+      "content": "This project uses two primary data sources to compare official records with ground truth from satellite imagery.",
+      "buildingsLink": "Google-Microsoft-OSM Open Buildings (Source.Cooperative)",
+      "renabapLink": "RENABAP - Registro Nacional de Barrios Populares"
+    }
   }
 }

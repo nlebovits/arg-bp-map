@@ -6,52 +6,63 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function DiscrepancyLegend() {
   const t = useTranslations("legend");
-  const [infoOpen, setInfoOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="space-y-3">
-      {/* Header */}
+    <div className="space-y-4">
+      {/* Section header with expand button */}
       <div className="flex items-center justify-between">
-        <h2 className="font-mono text-[10px] font-medium text-neutral-500 uppercase tracking-[0.2em]">
+        <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-widest">
           {t("header")}
         </h2>
         <button
-          onClick={() => setInfoOpen(!infoOpen)}
-          className="w-5 h-5 flex items-center justify-center font-mono text-xs text-neutral-500 hover:text-neutral-300 transition-colors"
-          aria-label={infoOpen ? t("hideInfo") : t("showInfo")}
-          aria-expanded={infoOpen}
+          onClick={() => setExpanded(!expanded)}
+          className="w-7 h-7 flex items-center justify-center text-neutral-400 hover:text-neutral-200 transition-colors rounded hover:bg-neutral-800"
+          aria-label={expanded ? t("hideInfo") : t("showInfo")}
+          aria-expanded={expanded}
         >
-          <motion.span
-            animate={{ rotate: infoOpen ? 45 : 0 }}
-            transition={{ duration: 0.2 }}
+          <svg
+            className="w-4 h-4 transition-transform duration-200"
+            style={{ transform: expanded ? 'rotate(45deg)' : 'rotate(0deg)' }}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
           >
-            +
-          </motion.span>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
         </button>
       </div>
 
-      {/* Gradient bar */}
-      <div className="h-2 w-full rounded-sm bg-gradient-to-r from-amber-500 to-neutral-600" />
+      {/* Gradient bar with border */}
+      <div
+        className="h-4 w-full rounded border border-neutral-700"
+        style={{
+          background: 'linear-gradient(to right, #525252, #f59e0b)'
+        }}
+      />
 
       {/* Labels */}
-      <div className="flex justify-between font-mono text-[10px] text-neutral-500">
-        <span>{t("undercount")}</span>
+      <div className="flex justify-between text-base text-neutral-400">
         <span>{t("match")}</span>
+        <span>{t("undercount")}</span>
       </div>
 
-      {/* Expandable info */}
+      {/* Expandable info panel */}
       <AnimatePresence>
-        {infoOpen && (
+        {expanded && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
             className="overflow-hidden"
           >
-            <p className="font-mono text-xs text-neutral-500 leading-relaxed pt-2 border-t border-neutral-800">
-              {t("info")}
-            </p>
+            <div className="pt-4 border-t border-neutral-800">
+              <p className="text-base text-neutral-400 leading-relaxed">
+                {t("info")}
+              </p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -6,6 +6,12 @@
   "sidebar": {
     "title": "Barrios Visibles",
     "tagline": "Haciendo visibles los asentamientos informales de Argentina",
+    "subheader": {
+      "prefix": "Lee nuestro",
+      "explainer": "explicador",
+      "or": "o explora las",
+      "data": "fuentes de datos"
+    },
     "search": {
       "placeholder": "Buscar ubicación..."
     },
@@ -18,6 +24,11 @@
     "stats": {
       "header": "Estadísticas",
       "placeholder": "Zoom a un asentamiento para ver estadísticas detalladas."
+    },
+    "about": {
+      "header": "Acerca de",
+      "description": "Barrios Visibles compara datos censales oficiales de RENABAP con huellas de edificios derivadas de satélite para revelar brechas en cómo Argentina cuenta sus asentamientos informales.",
+      "credits": "Construido con datos de Google-Microsoft-OSM Open Buildings y RENABAP."
     },
     "language": {
       "label": "Idioma"
@@ -92,5 +103,17 @@
     "showInfo": "Mostrar info",
     "hideInfo": "Ocultar info",
     "info": "Este gradiente muestra la discrepancia entre los datos oficiales de RENABAP y las huellas de edificios detectadas por satélite. El ámbar indica áreas donde los edificios superan significativamente los registros oficiales."
+  },
+  "modals": {
+    "explainer": {
+      "title": "Cómo Funciona",
+      "content": "Barrios Visibles combina dos conjuntos de datos: registros censales oficiales del RENABAP (Registro Nacional de Barrios Populares) de Argentina y huellas de edificios derivadas de satélite del conjunto de datos Google-Microsoft-OSM Open Buildings. Al comparar estas fuentes, podemos identificar áreas donde el conteo oficial puede subestimar significativamente el número real de estructuras—y por extensión, las personas que viven en asentamientos informales."
+    },
+    "data": {
+      "title": "Fuentes de Datos",
+      "content": "Este proyecto utiliza dos fuentes de datos principales para comparar registros oficiales con la realidad del terreno desde imágenes satelitales.",
+      "buildingsLink": "Google-Microsoft-OSM Open Buildings (Source.Cooperative)",
+      "renabapLink": "RENABAP - Registro Nacional de Barrios Populares"
+    }
   }
 }

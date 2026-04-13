@@ -20,6 +20,7 @@ import {
   BARRIO_SIN_NOMBRE_ID,
 } from "@/lib/config";
 import BuildingsLayer from "./layers/BuildingsLayer";
+import SettlementsLayer from "./layers/SettlementsLayer";
 import ArgentinaMask from "./layers/ArgentinaMask";
 import MapControls from "./MapControls";
 
@@ -53,6 +54,7 @@ export default function Map() {
           satellite: SOURCES.satellite,
           basemap: SOURCES.basemap,
           buildings: SOURCES.buildings,
+          settlements: SOURCES.settlements,
         },
         layers: [
           // Satellite base layer (grayscale for muted aesthetic)
@@ -298,53 +300,137 @@ export default function Map() {
       "top-right"
     );
 
-    // Load RENABAP GeoJSON after map loads
+    // Add settlement layers after map loads
     mapInstance.on("load", () => {
-      // Add RENABAP source
-      mapInstance.addSource("renabap", {
-        type: "geojson",
-        data: SOURCES.renabap.data,
-      });
+      // Color expression: grey (match) -> orange (undercount)
+      // Based on log of discrepancy ratio: ln(1 + (est - renabap) / renabap)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const discrepancyColor: any = [
+        "interpolate",
+        ["linear"],
+        // Log of (1 + discrepancy ratio), clamped to avoid division by zero
+        ["ln", ["max", 1, ["+", 1, ["/",
+          ["max", 0, ["-", ["get", "estimated_min_families"], ["get", "renabap_families"]]],
+          ["max", 1, ["get", "renabap_families"]]
+        ]]]],
+        0, COLORS.settlements.match,      // ln(1) = 0 -> grey (perfect match)
+        0.4, "#909090",                   // slight undercount
+        0.7, "#a08060",                   // moderate
+        1.0, "#c08050",                   // significant
+        1.5, COLORS.settlements.undercount // ln(~4.5) -> orange (severe undercount)
+      ];
 
-      // Add RENABAP outline layer (solid, thicker at low zoom)
+      // Population-based radius with min/max bounds
+      // min: 3px (always visible), max: 25px (doesn't overwhelm)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const populationRadius: any = [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        // z0-4: tight range, all visible
+        0, ["max", 3, ["min", 12,
+          ["interpolate", ["linear"],
+            ["ln", ["max", 1, ["get", "estimated_min_population"]]],
+            5, 3,     // ln(~150) -> min
+            8, 6,     // ln(~3000) -> small
+            10, 9,    // ln(~22000) -> medium
+            12, 12    // ln(~160000) -> max at this zoom
+          ]
+        ]],
+        // z5-8: expand range
+        6, ["max", 4, ["min", 18,
+          ["interpolate", ["linear"],
+            ["ln", ["max", 1, ["get", "estimated_min_population"]]],
+            5, 4,
+            8, 8,
+            10, 12,
+            12, 18
+          ]
+        ]],
+        // z9-12: full range before switching to polygons
+        10, ["max", 5, ["min", 25,
+          ["interpolate", ["linear"],
+            ["ln", ["max", 1, ["get", "estimated_min_population"]]],
+            5, 5,
+            8, 10,
+            10, 16,
+            12, 25
+          ]
+        ]]
+      ];
+
+      // Circle layer for points (z0-9) - sized by population, colored by discrepancy
       mapInstance.addLayer(
         {
-          id: LAYERS.renabap.outline,
-          type: "line",
-          source: "renabap",
+          id: LAYERS.settlements.fill,
+          type: "circle",
+          source: "settlements",
+          "source-layer": LAYERS.settlements.sourceLayer,
+          maxzoom: 10,
           paint: {
-            "line-color": COLORS.renabap.outline,
-            "line-width": [
+            "circle-color": discrepancyColor,
+            "circle-radius": populationRadius,
+            "circle-opacity": 0.85,
+            "circle-stroke-color": COLORS.settlements.outline,
+            "circle-stroke-width": [
               "interpolate",
               ["linear"],
               ["zoom"],
-              4,
-              2.5,
-              10,
-              3,
-              14,
-              2,
+              0, 0.5,
+              8, 1,
+              12, 1.5
             ],
-            "line-opacity": 0.95,
           },
         },
-        LAYERS.buildings.fill // Insert below buildings
+        LAYERS.buildings.fill
+      );
+
+      // Fill layer for polygons (z10+) - colored by discrepancy
+      mapInstance.addLayer(
+        {
+          id: LAYERS.settlements.outline,
+          type: "fill",
+          source: "settlements",
+          "source-layer": LAYERS.settlements.sourceLayer,
+          minzoom: 10,
+          paint: {
+            "fill-color": discrepancyColor,
+            "fill-opacity": 0.6,
+          },
+        },
+        LAYERS.buildings.fill
+      );
+
+      // Polygon outline (z10+)
+      mapInstance.addLayer(
+        {
+          id: "settlements-polygon-outline",
+          type: "line",
+          source: "settlements",
+          "source-layer": LAYERS.settlements.sourceLayer,
+          minzoom: 10,
+          paint: {
+            "line-color": COLORS.settlements.outline,
+            "line-width": 2,
+            "line-opacity": 0.9,
+          },
+        },
+        LAYERS.buildings.fill
       );
 
       // Add highlight layer for tutorial (Barrio Sin Nombre)
-      mapInstance.addLayer(
-        {
-          id: LAYERS.renabap.highlight,
-          type: "line",
-          source: "renabap",
-          filter: ["==", ["get", "id_renabap"], BARRIO_SIN_NOMBRE_ID],
-          paint: {
-            "line-color": "#fbbf24", // amber-400
-            "line-width": 4,
-            "line-opacity": 0,
-          },
-        }
-      );
+      mapInstance.addLayer({
+        id: LAYERS.settlements.highlight,
+        type: "line",
+        source: "settlements",
+        "source-layer": LAYERS.settlements.sourceLayer,
+        filter: ["==", ["get", "id_renabap"], BARRIO_SIN_NOMBRE_ID],
+        paint: {
+          "line-color": COLORS.settlements.highlight,
+          "line-width": 4,
+          "line-opacity": 0,
+        },
+      });
 
       setMapLoading(false);
     });
@@ -374,27 +460,31 @@ export default function Map() {
     }
   }, [map, showSatellite]);
 
-  // Toggle RENABAP settlements visibility
+  // Toggle settlements visibility
   useEffect(() => {
     if (!map || !map.getStyle()) return;
-    if (map.getLayer(LAYERS.renabap.outline)) {
-      map.setLayoutProperty(
-        LAYERS.renabap.outline,
-        "visibility",
-        showSettlements ? "visible" : "none"
-      );
+    const visibility = showSettlements ? "visible" : "none";
+
+    if (map.getLayer(LAYERS.settlements.fill)) {
+      map.setLayoutProperty(LAYERS.settlements.fill, "visibility", visibility);
+    }
+    if (map.getLayer(LAYERS.settlements.outline)) {
+      map.setLayoutProperty(LAYERS.settlements.outline, "visibility", visibility);
+    }
+    if (map.getLayer("settlements-polygon-outline")) {
+      map.setLayoutProperty("settlements-polygon-outline", "visibility", visibility);
     }
   }, [map, showSettlements]);
 
   // Tutorial step 3: Highlight Barrio Sin Nombre
   useEffect(() => {
     if (!map || !map.getStyle()) return;
-    if (!map.getLayer(LAYERS.renabap.highlight)) return;
+    if (!map.getLayer(LAYERS.settlements.highlight)) return;
 
     // Show highlight on step 3 (Barrio Sin Nombre)
     const highlightOpacity = tutorialActive && tutorialStep === 2 ? 1 : 0;
     map.setPaintProperty(
-      LAYERS.renabap.highlight,
+      LAYERS.settlements.highlight,
       "line-opacity",
       highlightOpacity
     );
@@ -415,6 +505,7 @@ export default function Map() {
       {/* Layer management components */}
       <ArgentinaMask />
       <BuildingsLayer />
+      <SettlementsLayer />
       {/* Map controls overlay */}
       <MapControls />
     </div>

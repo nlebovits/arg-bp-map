@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { useMapStore, TUTORIAL_LOCATIONS } from "@/lib/store";
+import { useMapStore } from "@/lib/store";
+import { INITIAL_VIEW } from "@/lib/config";
 import { SearchInput } from "@/components/sidebar/SearchInput";
 
 // Globe icon for "reset to full view"
@@ -132,8 +133,8 @@ export default function MapControls() {
   const flyTo = useMapStore((s) => s.flyTo);
 
   const handleResetView = () => {
-    const { lng, lat, zoom } = TUTORIAL_LOCATIONS.argentina;
-    flyTo(lng, lat, zoom);
+    const [lng, lat] = INITIAL_VIEW.center;
+    flyTo(lng, lat, INITIAL_VIEW.zoom);
   };
 
   const handleFindMyLocation = () => {

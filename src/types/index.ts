@@ -1,10 +1,16 @@
 import type { Map as MapLibreMap } from "maplibre-gl";
 
 export interface Settlement {
-  id: string;
-  name: string;
-  officialBuildingCount?: number;
-  detectedBuildingCount?: number;
+  id_renabap: number;
+  nombre_barrio: string;
+  provincia: string;
+  departamento: string;
+  density_tier: "CABA" | "Urban" | "Other";
+  renabap_families: number;
+  building_count: number;
+  difference: number;
+  estimated_min_families: number;
+  estimated_min_population: number;
 }
 
 export interface MapViewState {

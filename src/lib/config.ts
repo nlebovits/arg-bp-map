@@ -28,12 +28,12 @@ export const SOURCES = {
       '<a href="https://source.coop/vida/google-microsoft-osm-open-buildings">Google-Microsoft-OSM Open Buildings</a>',
   },
 
-  // RENABAP informal settlements (GeoJSON - will be converted to PMTiles later)
-  renabap: {
-    type: "geojson" as const,
-    data: "/data/renabap.geojson",
+  // Settlements with building analysis (PMTiles - points at low zoom, polygons at high zoom)
+  settlements: {
+    type: "vector" as const,
+    url: "pmtiles:///data/bp-w-buildings.pmtiles",
     attribution:
-      '<a href="https://www.argentina.gob.ar/habitat/renabap">RENABAP</a> &copy; Gobierno de Argentina',
+      '<a href="https://www.argentina.gob.ar/habitat/renabap">RENABAP</a> + Building Analysis',
   },
 };
 
@@ -45,9 +45,11 @@ export const LAYERS = {
     fill: "buildings-fill",
     outline: "buildings-outline",
   },
-  renabap: {
-    outline: "renabap-outline",
-    highlight: "renabap-highlight",
+  settlements: {
+    sourceLayer: "settlements", // From tippecanoe --layer=settlements
+    fill: "settlements-fill",
+    outline: "settlements-outline",
+    highlight: "settlements-highlight",
   },
 };
 
@@ -73,10 +75,12 @@ export const COLORS = {
     fill: "rgba(255, 255, 255, 0.25)", // White, subtle
     outline: "rgba(255, 255, 255, 0.4)",
   },
-  renabap: {
-    fill: "rgba(234, 151, 85, 0.2)", // CarbonPlan orange #ea9755
-    outline: "rgba(234, 151, 85, 0.9)",
-    highlight: "rgba(234, 151, 85, 0.6)",
+  settlements: {
+    // Grey (match) -> Orange (undercount) per legend
+    match: "#808080",      // Grey - low discrepancy
+    undercount: "#ea9755", // CarbonPlan orange - high discrepancy
+    outline: "rgba(234, 151, 85, 0.9)", // Orange outline
+    highlight: "#fbbf24",  // amber-400 for tutorial highlight
   },
 };
 

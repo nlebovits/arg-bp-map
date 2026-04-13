@@ -66,16 +66,16 @@ export const INITIAL_VIEW = {
   zoom: 4,
 };
 
-// Styling
+// Styling - CarbonPlan-inspired palette
 export const COLORS = {
   buildings: {
-    fill: "rgba(255, 200, 100, 0.6)",
-    outline: "rgba(200, 150, 50, 0.9)",
+    fill: "rgba(255, 255, 255, 0.25)", // White, subtle
+    outline: "rgba(255, 255, 255, 0.4)",
   },
   renabap: {
-    fill: "rgba(239, 68, 68, 0.25)", // Red with transparency
-    outline: "rgba(239, 68, 68, 0.8)", // Solid red outline
-    highlight: "rgba(239, 68, 68, 0.5)", // Highlighted state
+    fill: "rgba(234, 151, 85, 0.2)", // CarbonPlan orange #ea9755
+    outline: "rgba(234, 151, 85, 0.9)",
+    highlight: "rgba(234, 151, 85, 0.6)",
   },
 };
 

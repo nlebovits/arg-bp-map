@@ -306,7 +306,7 @@ export default function Map() {
         data: SOURCES.renabap.data,
       });
 
-      // Add RENABAP outline layer (dashed, no fill)
+      // Add RENABAP outline layer (solid, thicker at low zoom)
       mapInstance.addLayer(
         {
           id: LAYERS.renabap.outline,
@@ -319,14 +319,13 @@ export default function Map() {
               ["linear"],
               ["zoom"],
               4,
-              1,
-              10,
-              2,
-              14,
               2.5,
+              10,
+              3,
+              14,
+              2,
             ],
-            "line-opacity": 0.9,
-            "line-dasharray": [3, 2],
+            "line-opacity": 0.95,
           },
         },
         LAYERS.buildings.fill // Insert below buildings

@@ -12,9 +12,9 @@ const Map = dynamic(() => import("@/components/map/Map"), {
   ssr: false,
   loading: () => {
     return (
-      <div className="absolute inset-0 flex items-center justify-center bg-neutral-900">
-        <div className="flex items-center gap-3 text-neutral-400">
-          <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+      <div className="absolute inset-0 flex items-center justify-center bg-surface-raised">
+        <div className="flex items-center gap-3 text-secondary">
+          <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin" />
           <span className="text-sm font-mono">Loading map...</span>
         </div>
       </div>
@@ -33,7 +33,7 @@ export default function Home() {
   const t = useTranslations("common");
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-neutral-950">
+    <div className="flex h-screen w-screen overflow-hidden bg-background">
       {showTutorial && <TutorialModal />}
       <Sidebar />
 
@@ -42,10 +42,10 @@ export default function Home() {
 
         {/* Loading indicator */}
         {mapLoading && (
-          <div className="absolute top-4 right-4 z-10 bg-neutral-900/90 backdrop-blur-sm px-4 py-2 rounded-lg border border-neutral-800">
+          <div className="absolute top-4 right-4 z-10 bg-surface-raised/90 backdrop-blur-sm px-4 py-2 rounded-lg border border-border">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
-              <span className="text-xs text-neutral-300 font-mono">{t("loading")}</span>
+              <div className="w-3 h-3 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+              <span className="text-xs text-foreground/80 font-mono">{t("loading")}</span>
             </div>
           </div>
         )}

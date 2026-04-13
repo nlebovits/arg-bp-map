@@ -12,12 +12,12 @@ export default function DiscrepancyLegend() {
     <div className="space-y-4">
       {/* Section header with expand button */}
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-widest">
+        <h2 className="text-sm font-medium text-secondary uppercase tracking-widest">
           {t("header")}
         </h2>
         <button
           onClick={() => setExpanded(!expanded)}
-          className="w-7 h-7 flex items-center justify-center text-neutral-400 hover:text-neutral-200 transition-colors rounded hover:bg-neutral-800"
+          className="w-7 h-7 flex items-center justify-center text-secondary hover:text-foreground transition-colors rounded hover:bg-muted"
           aria-label={expanded ? t("hideInfo") : t("showInfo")}
           aria-expanded={expanded}
         >
@@ -36,14 +36,14 @@ export default function DiscrepancyLegend() {
 
       {/* Gradient bar with border */}
       <div
-        className="h-4 w-full rounded border border-neutral-700"
+        className="h-4 w-full rounded border border-muted"
         style={{
-          background: 'linear-gradient(to right, #525252, #f59e0b)'
+          background: 'linear-gradient(to right, #808080, #ea9755)'
         }}
       />
 
       {/* Labels */}
-      <div className="flex justify-between text-base text-neutral-400">
+      <div className="flex justify-between text-base text-secondary">
         <span>{t("match")}</span>
         <span>{t("undercount")}</span>
       </div>
@@ -58,8 +58,8 @@ export default function DiscrepancyLegend() {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="overflow-hidden"
           >
-            <div className="pt-4 border-t border-neutral-800">
-              <p className="text-base text-neutral-400 leading-relaxed">
+            <div className="pt-4 border-t border-border">
+              <p className="text-base text-secondary leading-relaxed">
                 {t("info")}
               </p>
             </div>

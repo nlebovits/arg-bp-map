@@ -38,11 +38,11 @@ export default function Sidebar() {
       {/* Mobile toggle button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="md:hidden fixed top-4 left-4 z-50 bg-neutral-900/95 backdrop-blur-sm p-2.5 rounded-lg border border-neutral-800 shadow-xl"
+        className="md:hidden fixed top-4 left-4 z-50 bg-surface-raised/95 backdrop-blur-sm p-2.5 rounded-lg border border-border shadow-xl"
         aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
       >
         <svg
-          className="w-5 h-5 text-neutral-200"
+          className="w-5 h-5 text-foreground"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -70,8 +70,8 @@ export default function Sidebar() {
         className={`
           fixed md:relative z-40
           w-[85vw] md:w-1/3 md:min-w-[320px] md:max-w-[480px] h-full
-          bg-neutral-950
-          border-r border-neutral-800
+          bg-background
+          border-r border-border
           shadow-[4px_0_24px_-2px_rgba(0,0,0,0.5)]
           transform transition-transform duration-300 ease-out
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
@@ -80,27 +80,27 @@ export default function Sidebar() {
         `}
       >
         {/* Header */}
-        <header className="px-6 py-6 border-b border-neutral-800">
-          <h1 className="text-5xl md:text-6xl font-semibold text-neutral-100 uppercase tracking-wide leading-none">
+        <header className="px-6 py-6 border-b border-border">
+          <h1 className="text-5xl md:text-6xl font-semibold text-foreground uppercase tracking-wide leading-none">
             <span className="block">Barrios</span>
             <span className="block ml-8">Visibles</span>
           </h1>
-          <p className="text-lg text-neutral-400 mt-8 leading-relaxed">
+          <p className="text-lg text-secondary mt-8 leading-relaxed">
             {t("tagline")}
           </p>
           {/* Subheader links */}
-          <p className="text-base text-neutral-500 mt-3">
+          <p className="text-base text-secondary/80 mt-3">
             {t("subheader.prefix")}{" "}
             <button
               onClick={() => setActiveModal("explainer")}
-              className="text-amber-500 hover:text-amber-400 underline underline-offset-2"
+              className="text-accent hover:text-accent-hover underline underline-offset-2"
             >
               {t("subheader.explainer")}
             </button>
             {" "}{t("subheader.or")}{" "}
             <button
               onClick={() => setActiveModal("data")}
-              className="text-amber-500 hover:text-amber-400 underline underline-offset-2"
+              className="text-accent hover:text-accent-hover underline underline-offset-2"
             >
               {t("subheader.data")}
             </button>
@@ -115,11 +115,11 @@ export default function Sidebar() {
 
           {/* Stats section */}
           <div>
-            <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-widest mb-4">
+            <h2 className="text-sm font-medium text-secondary uppercase tracking-widest mb-4">
               {t("stats.header")}
             </h2>
-            <div className="rounded-lg bg-neutral-900/50 border border-neutral-800 p-5">
-              <p className="text-base text-neutral-400 leading-relaxed">
+            <div className="rounded-lg bg-hinted/50 border border-border p-5">
+              <p className="text-base text-secondary leading-relaxed">
                 {t("stats.placeholder")}
               </p>
             </div>
@@ -127,12 +127,12 @@ export default function Sidebar() {
 
           {/* About section */}
           <div>
-            <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-widest mb-4">
+            <h2 className="text-sm font-medium text-secondary uppercase tracking-widest mb-4">
               {t("about.header")}
             </h2>
-            <div className="text-base text-neutral-400 leading-relaxed space-y-3">
+            <div className="text-base text-secondary leading-relaxed space-y-3">
               <p>{t("about.description")}</p>
-              <p className="text-sm text-neutral-500">
+              <p className="text-sm text-secondary/70">
                 {t("about.credits")}
               </p>
             </div>
@@ -140,25 +140,25 @@ export default function Sidebar() {
         </div>
 
         {/* Footer - Language toggle + Tutorial */}
-        <footer className="px-6 py-4 border-t border-neutral-800 flex items-center justify-between">
+        <footer className="px-6 py-4 border-t border-border flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm">
             <button
               onClick={() => router.replace(pathname, { locale: "es" })}
               className={`transition-colors ${
                 locale === "es"
-                  ? "text-neutral-100 font-medium"
-                  : "text-neutral-500 hover:text-neutral-300"
+                  ? "text-foreground font-medium"
+                  : "text-secondary hover:text-foreground/80"
               }`}
             >
               ES
             </button>
-            <span className="text-neutral-600">|</span>
+            <span className="text-secondary/50">|</span>
             <button
               onClick={() => router.replace(pathname, { locale: "en" })}
               className={`transition-colors ${
                 locale === "en"
-                  ? "text-neutral-100 font-medium"
-                  : "text-neutral-500 hover:text-neutral-300"
+                  ? "text-foreground font-medium"
+                  : "text-secondary hover:text-foreground/80"
               }`}
             >
               EN
@@ -166,7 +166,7 @@ export default function Sidebar() {
           </div>
           <button
             onClick={handleReplayTutorial}
-            className="w-7 h-7 flex items-center justify-center text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800 rounded-full transition-colors"
+            className="w-7 h-7 flex items-center justify-center text-secondary hover:text-foreground/80 hover:bg-muted rounded-full transition-colors"
             title={t("replayTutorial")}
             aria-label={t("replayTutorial")}
           >
@@ -178,7 +178,7 @@ export default function Sidebar() {
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30"
+          className="md:hidden fixed inset-0 bg-background/70 backdrop-blur-sm z-30"
           onClick={() => setSidebarOpen(false)}
         />
       )}

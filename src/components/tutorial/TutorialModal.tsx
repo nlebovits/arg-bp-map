@@ -23,10 +23,10 @@ function StepIndicator({
           onClick={() => onStepClick(index)}
           className={`w-2 h-2 rounded-full transition-all duration-300 ${
             index === currentStep
-              ? "bg-amber-500 w-6"
+              ? "bg-accent w-6"
               : index < currentStep
-                ? "bg-amber-500/50 hover:bg-amber-500/70"
-                : "bg-neutral-600 hover:bg-neutral-500"
+                ? "bg-accent/50 hover:bg-accent/70"
+                : "bg-muted hover:bg-secondary"
           }`}
           aria-label={`Go to step ${index + 1}`}
         />
@@ -57,33 +57,33 @@ function StatComparison({
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         {/* Official data */}
-        <div className="bg-neutral-800/50 rounded-lg p-4 border border-neutral-700">
-          <p className="text-sm font-sans uppercase tracking-wider text-neutral-500 mb-1">
+        <div className="bg-hinted/50 rounded-lg p-4 border border-muted">
+          <p className="text-sm font-sans uppercase tracking-wider text-secondary mb-1">
             {label1}
           </p>
-          <p className="text-2xl font-sans font-bold text-neutral-300">
+          <p className="text-2xl font-sans font-bold text-foreground/80">
             {value1}
           </p>
           {sub1 && (
-            <p className="text-sm text-neutral-500 mt-1">{sub1}</p>
+            <p className="text-sm text-secondary mt-1">{sub1}</p>
           )}
         </div>
 
         {/* Satellite data */}
-        <div className="bg-amber-500/10 rounded-lg p-4 border border-amber-500/30">
-          <p className="text-sm font-sans uppercase tracking-wider text-amber-500/70 mb-1">
+        <div className="bg-accent-muted rounded-lg p-4 border border-accent/30">
+          <p className="text-sm font-sans uppercase tracking-wider text-accent/70 mb-1">
             {label2}
           </p>
-          <p className="text-2xl font-sans font-bold text-amber-500">
+          <p className="text-2xl font-sans font-bold text-accent">
             {value2}
           </p>
           {sub2 && (
-            <p className="text-sm text-amber-500/70 mt-1">{sub2}</p>
+            <p className="text-sm text-accent/70 mt-1">{sub2}</p>
           )}
         </div>
       </div>
 
-      <p className="text-base text-neutral-300 leading-relaxed bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+      <p className="text-base text-foreground/80 leading-relaxed bg-cp-red/10 border border-cp-red/20 rounded-lg p-3">
         {conclusion}
       </p>
     </div>
@@ -96,9 +96,9 @@ function Step1Content() {
 
   return (
     <div className="text-center space-y-6">
-      <div className="w-16 h-16 mx-auto bg-amber-500/20 rounded-full flex items-center justify-center">
+      <div className="w-16 h-16 mx-auto bg-accent-muted rounded-full flex items-center justify-center">
         <svg
-          className="w-8 h-8 text-amber-500"
+          className="w-8 h-8 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -112,11 +112,11 @@ function Step1Content() {
         </svg>
       </div>
 
-      <h2 className="text-2xl font-sans font-semibold text-neutral-100">
+      <h2 className="text-2xl font-sans font-semibold text-foreground">
         {t("title")}
       </h2>
 
-      <p className="text-neutral-400 leading-relaxed whitespace-pre-line max-w-sm mx-auto">
+      <p className="text-secondary leading-relaxed whitespace-pre-line max-w-sm mx-auto">
         {t("description")}
       </p>
     </div>
@@ -129,7 +129,7 @@ function Step2Content() {
 
   return (
     <div className="space-y-5">
-      <h2 className="text-xl font-sans font-semibold text-neutral-100 text-center">
+      <h2 className="text-xl font-sans font-semibold text-foreground text-center">
         {t("title")}
       </h2>
 
@@ -153,10 +153,10 @@ function Step3Content() {
   return (
     <div className="space-y-5">
       <div className="text-center">
-        <h2 className="text-xl font-sans font-semibold text-neutral-100">
+        <h2 className="text-xl font-sans font-semibold text-foreground">
           {t("title")}
         </h2>
-        <p className="text-sm text-neutral-500 mt-1 font-sans">
+        <p className="text-sm text-secondary mt-1 font-sans">
           Los Hornos, La Plata
         </p>
       </div>
@@ -178,7 +178,7 @@ function Step4Content() {
 
   return (
     <div className="space-y-5">
-      <h2 className="text-xl font-sans font-semibold text-neutral-100 text-center">
+      <h2 className="text-xl font-sans font-semibold text-foreground text-center">
         {t("title")}
       </h2>
 
@@ -199,34 +199,34 @@ function Step5Content() {
 
   return (
     <div className="space-y-5">
-      <h2 className="text-xl font-sans font-semibold text-neutral-100 text-center">
+      <h2 className="text-xl font-sans font-semibold text-foreground text-center">
         {t("title")}
       </h2>
 
       <div className="space-y-3">
-        <div className="flex items-center gap-3 bg-neutral-800/50 rounded-lg p-3 border border-neutral-700">
+        <div className="flex items-center gap-3 bg-hinted/50 rounded-lg p-3 border border-muted">
           <span className="text-lg">🔍</span>
-          <span className="text-base text-neutral-300">{t("feature1")}</span>
+          <span className="text-base text-foreground/80">{t("feature1")}</span>
         </div>
-        <div className="flex items-center gap-3 bg-neutral-800/50 rounded-lg p-3 border border-neutral-700">
+        <div className="flex items-center gap-3 bg-hinted/50 rounded-lg p-3 border border-muted">
           <span className="text-lg">📊</span>
-          <span className="text-base text-neutral-300">{t("feature2")}</span>
+          <span className="text-base text-foreground/80">{t("feature2")}</span>
         </div>
-        <div className="flex items-center gap-3 bg-neutral-800/50 rounded-lg p-3 border border-neutral-700">
+        <div className="flex items-center gap-3 bg-hinted/50 rounded-lg p-3 border border-muted">
           <span className="text-lg">🗺️</span>
-          <span className="text-base text-neutral-300">{t("feature3")}</span>
+          <span className="text-base text-foreground/80">{t("feature3")}</span>
         </div>
       </div>
 
       {/* Source.Cooperative attribution */}
-      <div className="bg-gradient-to-r from-amber-500/10 to-red-500/10 rounded-lg p-4 border border-amber-500/20">
-        <p className="text-base text-neutral-400 text-center">
+      <div className="bg-gradient-to-r from-accent-muted to-cp-red/10 rounded-lg p-4 border border-accent/20">
+        <p className="text-base text-secondary text-center">
           {t("dataSource")}{" "}
           <a
             href="https://source.coop/vida/google-microsoft-osm-open-buildings"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-amber-500 hover:text-amber-400 font-medium underline underline-offset-2"
+            className="text-accent hover:text-accent-hover font-medium underline underline-offset-2"
           >
             {t("sourceCoopLink")}
           </a>
@@ -331,12 +331,12 @@ export function TutorialModal() {
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.9, opacity: 0, y: 20 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="relative w-full max-w-md mx-4 bg-neutral-900/95 backdrop-blur-md border border-neutral-700 rounded-xl shadow-2xl overflow-hidden pointer-events-auto"
+        className="relative w-full max-w-md mx-4 bg-surface-raised/95 backdrop-blur-md border border-muted rounded-xl shadow-2xl overflow-hidden pointer-events-auto"
       >
         {/* Close button (top right) */}
         <button
           onClick={handleSkip}
-          className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800 rounded-md transition-colors z-10"
+          className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center text-secondary hover:text-foreground/80 hover:bg-muted rounded-md transition-colors z-10"
           aria-label={t("skip")}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -373,7 +373,7 @@ export function TutorialModal() {
             {!isFirstStep && (
               <button
                 onClick={handleBack}
-                className="w-9 h-9 flex items-center justify-center text-neutral-400 hover:text-neutral-200 border border-neutral-700 hover:border-neutral-500 rounded-lg transition-colors"
+                className="w-9 h-9 flex items-center justify-center text-secondary hover:text-foreground border border-muted hover:border-secondary rounded-lg transition-colors"
                 aria-label={t("back")}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -384,14 +384,14 @@ export function TutorialModal() {
             {isLastStep ? (
               <button
                 onClick={handleNext}
-                className="px-6 py-2 text-sm font-sans font-medium rounded-lg bg-amber-500 hover:bg-amber-400 text-neutral-900 transition-colors"
+                className="px-6 py-2 text-sm font-sans font-medium rounded-lg bg-accent hover:bg-accent-hover text-background transition-colors"
               >
                 {t("start")}
               </button>
             ) : (
               <button
                 onClick={handleNext}
-                className="w-9 h-9 flex items-center justify-center bg-neutral-700 hover:bg-neutral-600 text-neutral-100 rounded-lg transition-colors"
+                className="w-9 h-9 flex items-center justify-center bg-muted hover:bg-secondary text-foreground rounded-lg transition-colors"
                 aria-label={t("next")}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -403,7 +403,7 @@ export function TutorialModal() {
 
           {/* Don't show again checkbox - only on last step */}
           {isLastStep && (
-            <label className="flex items-center justify-center gap-2 text-sm text-neutral-500 cursor-pointer">
+            <label className="flex items-center justify-center gap-2 text-sm text-secondary cursor-pointer">
               <input
                 type="checkbox"
                 defaultChecked={true}
@@ -413,7 +413,7 @@ export function TutorialModal() {
                     setTutorialSeen(false);
                   }
                 }}
-                className="w-3.5 h-3.5 rounded border-neutral-600 bg-neutral-800 text-amber-500 focus:ring-amber-500 focus:ring-offset-0"
+                className="w-3.5 h-3.5 rounded border-muted bg-hinted text-accent focus:ring-accent focus:ring-offset-0"
               />
               <span>{t("dontShowAgain")}</span>
             </label>

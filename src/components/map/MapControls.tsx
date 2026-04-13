@@ -169,7 +169,7 @@ export default function MapControls() {
           {/* Reset view button */}
           <button
             onClick={handleResetView}
-            className="p-2 bg-neutral-900/90 backdrop-blur-sm border border-neutral-700 hover:border-neutral-500 text-neutral-400 hover:text-neutral-100 transition-all rounded-sm"
+            className="p-2 bg-surface-raised/90 backdrop-blur-sm border border-muted hover:border-secondary text-secondary hover:text-foreground transition-all rounded-sm"
             title={t("resetView")}
           >
             <GlobeIcon className="w-4 h-4" />
@@ -179,7 +179,7 @@ export default function MapControls() {
           <button
             onClick={handleFindMyLocation}
             disabled={locating}
-            className="p-2 bg-neutral-900/90 backdrop-blur-sm border border-neutral-700 hover:border-neutral-500 text-neutral-400 hover:text-neutral-100 transition-all rounded-sm disabled:opacity-50"
+            className="p-2 bg-surface-raised/90 backdrop-blur-sm border border-muted hover:border-secondary text-secondary hover:text-foreground transition-all rounded-sm disabled:opacity-50"
             title={locating ? t("locating") : t("findMyLocation")}
           >
             <LocationIcon className={`w-4 h-4 ${locating ? "animate-pulse" : ""}`} />
@@ -188,7 +188,7 @@ export default function MapControls() {
           <div className="relative">
             <button
               onClick={() => setLayersExpanded(!layersExpanded)}
-              className="font-mono text-[11px] tracking-wider uppercase px-4 py-2 bg-neutral-900/90 backdrop-blur-sm border border-neutral-700 hover:border-neutral-500 text-neutral-300 hover:text-neutral-100 transition-all rounded-sm flex items-center gap-2"
+              className="font-mono text-[11px] tracking-wider uppercase px-4 py-2 bg-surface-raised/90 backdrop-blur-sm border border-muted hover:border-secondary text-foreground/80 hover:text-foreground transition-all rounded-sm flex items-center gap-2"
             >
               {t("layers")}
               <span
@@ -200,7 +200,7 @@ export default function MapControls() {
 
             {/* Expanded layers panel */}
             {layersExpanded && (
-              <div className="absolute bottom-full mb-2 left-0 bg-neutral-900/95 backdrop-blur-sm border border-neutral-700 rounded-sm p-3 min-w-[200px]">
+              <div className="absolute bottom-full mb-2 left-0 bg-surface-raised/95 backdrop-blur-sm border border-muted rounded-sm p-3 min-w-[200px]">
                 <div className="space-y-2">
                   {/* Satellite toggle */}
                   <button
@@ -208,11 +208,11 @@ export default function MapControls() {
                     className="flex items-center gap-3 w-full group"
                   >
                     {showSatellite ? (
-                      <EyeIcon className="w-4 h-4 text-amber-500" />
+                      <EyeIcon className="w-4 h-4 text-accent" />
                     ) : (
-                      <EyeOffIcon className="w-4 h-4 text-neutral-500 group-hover:text-neutral-400 transition-colors" />
+                      <EyeOffIcon className="w-4 h-4 text-secondary group-hover:text-foreground/80 transition-colors" />
                     )}
-                    <span className="font-mono text-[11px] text-neutral-400 group-hover:text-neutral-200 transition-colors uppercase tracking-wide">
+                    <span className="font-mono text-[11px] text-secondary group-hover:text-foreground transition-colors uppercase tracking-wide">
                       {t("satellite")}
                     </span>
                   </button>
@@ -223,11 +223,11 @@ export default function MapControls() {
                     className="flex items-center gap-3 w-full group"
                   >
                     {showBuildings ? (
-                      <EyeIcon className="w-4 h-4 text-amber-500" />
+                      <EyeIcon className="w-4 h-4 text-accent" />
                     ) : (
-                      <EyeOffIcon className="w-4 h-4 text-neutral-500 group-hover:text-neutral-400 transition-colors" />
+                      <EyeOffIcon className="w-4 h-4 text-secondary group-hover:text-foreground/80 transition-colors" />
                     )}
-                    <span className="font-mono text-[11px] text-neutral-400 group-hover:text-neutral-200 transition-colors uppercase tracking-wide">
+                    <span className="font-mono text-[11px] text-secondary group-hover:text-foreground transition-colors uppercase tracking-wide">
                       {t("buildings")}
                     </span>
                   </button>
@@ -238,11 +238,11 @@ export default function MapControls() {
                     className="flex items-center gap-3 w-full group"
                   >
                     {showSettlements ? (
-                      <EyeIcon className="w-4 h-4 text-red-500" />
+                      <EyeIcon className="w-4 h-4 text-cp-red" />
                     ) : (
-                      <EyeOffIcon className="w-4 h-4 text-neutral-500 group-hover:text-neutral-400 transition-colors" />
+                      <EyeOffIcon className="w-4 h-4 text-secondary group-hover:text-foreground/80 transition-colors" />
                     )}
-                    <span className="font-mono text-[11px] text-neutral-400 group-hover:text-neutral-200 transition-colors uppercase tracking-wide">
+                    <span className="font-mono text-[11px] text-secondary group-hover:text-foreground transition-colors uppercase tracking-wide">
                       {t("settlements")}
                     </span>
                   </button>
@@ -256,45 +256,45 @@ export default function MapControls() {
       {/* Bottom right: Attribution with toggle */}
       <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
         {attributionExpanded && (
-          <div className="font-mono text-[9px] text-neutral-500 tracking-wide bg-neutral-900/70 px-2 py-1 rounded-sm">
+          <div className="font-mono text-[9px] text-secondary tracking-wide bg-surface-raised/70 px-2 py-1 rounded-sm">
             <a
               href="https://source.coop/vida/google-microsoft-osm-open-buildings"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-amber-400 transition-colors"
+              className="hover:text-accent-hover transition-colors"
             >
               SOURCE.COOP
             </a>
             {" "}
-            <span className="text-neutral-600">|</span>
+            <span className="text-secondary/50">|</span>
             {" "}
             <a
               href="https://www.argentina.gob.ar/habitat/renabap"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-neutral-300 transition-colors"
+              className="hover:text-foreground/80 transition-colors"
             >
               RENABAP
             </a>
             {" "}
-            <span className="text-neutral-600">|</span>
+            <span className="text-secondary/50">|</span>
             {" "}
             <a
               href="https://protomaps.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-neutral-300 transition-colors"
+              className="hover:text-foreground/80 transition-colors"
             >
               PROTOMAPS
             </a>
             {" "}
-            <span className="text-neutral-600">&copy;</span>
+            <span className="text-secondary/50">&copy;</span>
             {" "}
             <a
               href="https://openstreetmap.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-neutral-300 transition-colors"
+              className="hover:text-foreground/80 transition-colors"
             >
               OSM
             </a>
@@ -302,7 +302,7 @@ export default function MapControls() {
         )}
         <button
           onClick={() => setAttributionExpanded(!attributionExpanded)}
-          className="p-2 bg-neutral-900/90 backdrop-blur-sm border border-neutral-700 hover:border-neutral-500 text-neutral-400 hover:text-neutral-100 transition-all rounded-sm"
+          className="p-2 bg-surface-raised/90 backdrop-blur-sm border border-muted hover:border-secondary text-secondary hover:text-foreground transition-all rounded-sm"
           title={attributionExpanded ? t("hideAttribution") : t("showAttribution")}
         >
           <InfoIcon className="w-4 h-4" />

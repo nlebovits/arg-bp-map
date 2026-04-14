@@ -32,6 +32,7 @@ export const SOURCES = {
   settlements: {
     type: "vector" as const,
     url: "pmtiles:///data/bp-w-buildings.pmtiles",
+    promoteId: "id_renabap", // unique ID for deduplication across tiles
     attribution:
       '<a href="https://www.argentina.gob.ar/habitat/renabap">RENABAP</a> + Building Analysis',
   },

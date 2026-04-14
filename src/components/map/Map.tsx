@@ -385,7 +385,7 @@ export default function Map() {
         LAYERS.buildings.fill
       );
 
-      // Fill layer for polygons (z10+) - colored by discrepancy
+      // Fill layer for polygons (z10+) - light wash, labels carry data now
       mapInstance.addLayer(
         {
           id: LAYERS.settlements.outline,
@@ -395,7 +395,7 @@ export default function Map() {
           minzoom: 10,
           paint: {
             "fill-color": discrepancyColor,
-            "fill-opacity": 0.6,
+            "fill-opacity": 0.25,
           },
         },
         LAYERS.buildings.fill
@@ -417,6 +417,82 @@ export default function Map() {
         },
         LAYERS.buildings.fill
       );
+
+      // Discrepancy labels at polygon zoom (z10+)
+      // Text size scales with discrepancy magnitude (log scale)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const discrepancyTextSize: any = [
+        "interpolate",
+        ["linear"],
+        // Log of absolute difference, clamped
+        ["ln", ["max", 1, ["get", "difference"]]],
+        0, 10,      // ln(1) = 0 -> minimum readable
+        4, 12,      // ln(~55) -> small
+        6, 16,      // ln(~400) -> medium
+        8, 22,      // ln(~3000) -> large
+        10, 28      // ln(~22000) -> maximum
+      ];
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const labelTextField: any = [
+        "case",
+        [">=", ["get", "difference"], 0],
+        ["concat", "+", ["number-format", ["get", "difference"], { "locale": "es-AR" }]],
+        ["number-format", ["get", "difference"], { "locale": "es-AR" }]
+      ];
+
+      // Drop shadow layer (rendered first, underneath main labels)
+      mapInstance.addLayer({
+        id: "settlements-labels-shadow",
+        type: "symbol",
+        source: "settlements",
+        "source-layer": LAYERS.settlements.sourceLayer,
+        minzoom: 10,
+        maxzoom: 16,
+        layout: {
+          "text-field": labelTextField,
+          "text-font": ["Helvetica Bold"],
+          "text-size": discrepancyTextSize,
+          "text-anchor": "center",
+          "text-allow-overlap": true,       // shadow follows main label
+          "text-ignore-placement": true,    // doesn't affect collision
+          "symbol-sort-key": ["-", ["get", "difference"]],
+          "symbol-avoid-edges": true,
+        },
+        paint: {
+          "text-color": "rgba(0, 0, 0, 0.5)",
+          "text-halo-color": "rgba(0, 0, 0, 0.3)",
+          "text-halo-width": 2,
+          "text-halo-blur": 3,
+          "text-translate": [2, 3],         // offset down-right
+        },
+      });
+
+      // Main labels (on top of shadow)
+      mapInstance.addLayer({
+        id: "settlements-labels",
+        type: "symbol",
+        source: "settlements",
+        "source-layer": LAYERS.settlements.sourceLayer,
+        minzoom: 10,
+        maxzoom: 16,
+        layout: {
+          "text-field": labelTextField,
+          "text-font": ["Helvetica Bold"],
+          "text-size": discrepancyTextSize,
+          "text-anchor": "center",
+          "text-allow-overlap": false,
+          "text-ignore-placement": false,
+          "symbol-sort-key": ["-", ["get", "difference"]], // larger discrepancies on top
+          "symbol-avoid-edges": true,
+        },
+        paint: {
+          "text-color": "#ffffff",
+          "text-halo-color": discrepancyColor,
+          "text-halo-width": 3,
+          "text-halo-blur": 0,
+        },
+      });
 
       // Add highlight layer for tutorial (Barrio Sin Nombre)
       mapInstance.addLayer({
@@ -473,6 +549,12 @@ export default function Map() {
     }
     if (map.getLayer("settlements-polygon-outline")) {
       map.setLayoutProperty("settlements-polygon-outline", "visibility", visibility);
+    }
+    if (map.getLayer("settlements-labels-shadow")) {
+      map.setLayoutProperty("settlements-labels-shadow", "visibility", visibility);
+    }
+    if (map.getLayer("settlements-labels")) {
+      map.setLayoutProperty("settlements-labels", "visibility", visibility);
     }
   }, [map, showSettlements]);
 

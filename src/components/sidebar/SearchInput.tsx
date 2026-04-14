@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, memo } from "react";
 import { useGeocode, type GeocodeSuggestion } from "@/hooks/useGeocode";
 import { useMapStore } from "@/lib/store";
 
@@ -8,43 +8,41 @@ interface SearchInputProps {
   placeholder?: string;
 }
 
-export function SearchInput({ placeholder = "Search address..." }: SearchInputProps) {
+function SearchInputComponent({ placeholder = "Search address..." }: SearchInputProps) {
   const [query, setQuery] = useState("");
-  const [dismissedForQuery, setDismissedForQuery] = useState<string | null>(null);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [dismissedQuery, setDismissedQuery] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
   const { suggestions, isLoading, clear } = useGeocode(query);
   const flyTo = useMapStore((s) => s.flyTo);
 
-  // Derive isOpen from state (no useEffect needed)
-  const isOpen = suggestions.length > 0 && query !== dismissedForQuery;
+  // Derive isOpen from state — dismissedQuery is now proper state, not a ref
+  const isOpen = suggestions.length > 0 && query !== dismissedQuery;
 
-  // Handle query change - reset highlight
+  // Handle query change — clears dismissal when user types new characters
   const handleQueryChange = useCallback((newQuery: string) => {
     setQuery(newQuery);
     setHighlightedIndex(-1);
-    // Clear dismissal when user types new characters
-    if (newQuery !== dismissedForQuery) {
-      setDismissedForQuery(null);
-    }
-  }, [dismissedForQuery]);
+    setDismissedQuery((prev) => (newQuery !== prev ? null : prev));
+  }, []);
 
   const handleSelect = useCallback(
     (suggestion: GeocodeSuggestion) => {
       flyTo(suggestion.lng, suggestion.lat);
       setQuery(suggestion.name);
-      setDismissedForQuery(suggestion.name);
+      setDismissedQuery(suggestion.name);
       clear();
       inputRef.current?.blur();
     },
     [flyTo, clear]
   );
 
+  // Keyboard navigation - uses refs where possible for stability
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (!isOpen || suggestions.length === 0) return;
+      if (suggestions.length === 0) return;
 
       switch (e.key) {
         case "ArrowDown":
@@ -61,18 +59,18 @@ export function SearchInput({ placeholder = "Search address..." }: SearchInputPr
           break;
         case "Enter":
           e.preventDefault();
-          if (highlightedIndex >= 0) {
+          if (highlightedIndex >= 0 && suggestions[highlightedIndex]) {
             handleSelect(suggestions[highlightedIndex]);
           }
           break;
         case "Escape":
-          setDismissedForQuery(query);
+          setDismissedQuery(query);
           setHighlightedIndex(-1);
           inputRef.current?.blur();
           break;
       }
     },
-    [isOpen, suggestions, highlightedIndex, handleSelect, query]
+    [suggestions, highlightedIndex, handleSelect, query]
   );
 
   // Scroll highlighted item into view
@@ -82,6 +80,7 @@ export function SearchInput({ placeholder = "Search address..." }: SearchInputPr
       item?.scrollIntoView({ block: "nearest" });
     }
   }, [highlightedIndex]);
+
 
   return (
     <div className="relative">
@@ -105,10 +104,10 @@ export function SearchInput({ placeholder = "Search address..." }: SearchInputPr
           value={query}
           onChange={(e) => handleQueryChange(e.target.value)}
           onKeyDown={handleKeyDown}
-          onFocus={() => setDismissedForQuery(null)}
+          onFocus={() => setDismissedQuery(null)}
           onBlur={() => {
             // Delay to allow click on suggestion
-            setTimeout(() => setDismissedForQuery(query), 150);
+            setTimeout(() => setDismissedQuery(query), 150);
           }}
           placeholder={placeholder}
           className="w-full pl-11 pr-4 py-3 bg-surface-raised border border-muted rounded-md
@@ -163,3 +162,5 @@ export function SearchInput({ placeholder = "Search address..." }: SearchInputPr
     </div>
   );
 }
+
+export const SearchInput = memo(SearchInputComponent);

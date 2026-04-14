@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import { useShallow } from "zustand/react/shallow";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { useMapStore } from "@/lib/store";
 import type { Locale } from "@/i18n/routing";
@@ -10,7 +11,7 @@ import InfoModal from "./InfoModal";
 
 type ModalType = "explainer" | "data" | null;
 
-export default function Sidebar() {
+function SidebarComponent() {
   const t = useTranslations("sidebar");
   const locale = useLocale() as Locale;
   const router = useRouter();
@@ -18,11 +19,22 @@ export default function Sidebar() {
 
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 
-  const sidebarOpen = useMapStore((s) => s.sidebarOpen);
-  const setSidebarOpen = useMapStore((s) => s.setSidebarOpen);
-  const setShowTutorial = useMapStore((s) => s.setShowTutorial);
-  const setTutorialActive = useMapStore((s) => s.setTutorialActive);
-  const setTutorialStep = useMapStore((s) => s.setTutorialStep);
+  // Optimized store selectors
+  const {
+    sidebarOpen,
+    setSidebarOpen,
+    setShowTutorial,
+    setTutorialActive,
+    setTutorialStep,
+  } = useMapStore(
+    useShallow((s) => ({
+      sidebarOpen: s.sidebarOpen,
+      setSidebarOpen: s.setSidebarOpen,
+      setShowTutorial: s.setShowTutorial,
+      setTutorialActive: s.setTutorialActive,
+      setTutorialStep: s.setTutorialStep,
+    }))
+  );
 
   const handleReplayTutorial = () => {
     setTutorialStep(0);
@@ -93,14 +105,14 @@ export default function Sidebar() {
             {t("subheader.prefix")}{" "}
             <button
               onClick={() => setActiveModal("explainer")}
-              className="text-accent hover:text-accent-hover underline underline-offset-2"
+              className="underline underline-offset-2 hover:text-foreground/80"
             >
               {t("subheader.explainer")}
             </button>
             {" "}{t("subheader.or")}{" "}
             <button
               onClick={() => setActiveModal("data")}
-              className="text-accent hover:text-accent-hover underline underline-offset-2"
+              className="underline underline-offset-2 hover:text-foreground/80"
             >
               {t("subheader.data")}
             </button>
@@ -139,6 +151,19 @@ export default function Sidebar() {
           </div>
         </div>
 
+        {/* Attribution */}
+        <div className="px-6 py-2 text-sm text-secondary">
+          Built by{" "}
+          <a
+            href="https://nlebovits.github.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-foreground/80"
+          >
+            Nissim Lebovits
+          </a>.
+        </div>
+
         {/* Footer - Language toggle + Tutorial */}
         <footer className="px-6 py-4 border-t border-border flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm">
@@ -175,16 +200,18 @@ export default function Sidebar() {
         </footer>
       </aside>
 
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <div
-          className="md:hidden fixed inset-0 bg-background/70 backdrop-blur-sm z-30"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+      {/* Mobile overlay - CSS opacity transition instead of mount/unmount */}
+      <div
+        className={`md:hidden fixed inset-0 bg-background/70 backdrop-blur-sm z-30 transition-opacity duration-300 ${
+          sidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setSidebarOpen(false)}
+      />
 
       {/* Info modals */}
       <InfoModal type={activeModal} onClose={() => setActiveModal(null)} />
     </>
   );
 }
+
+export default memo(SidebarComponent);

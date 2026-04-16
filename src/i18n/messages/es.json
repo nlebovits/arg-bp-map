@@ -107,59 +107,70 @@
   },
   "modals": {
     "explainer": {
-      "title": "Cómo Funciona",
-      "intro": "Barrios Visibles utiliza imágenes satelitales para estimar la brecha entre los registros censales oficiales y el número real de familias que viven en los asentamientos informales de Argentina. Los resultados sugieren un subconteo significativo a nivel nacional.",
+      "title": "Acerca de Este Proyecto",
+      "intro": "El registro oficial de asentamientos informales de Argentina subcontea aproximadamente 83%. Este mapa compara lo que el gobierno registra contra lo que los satélites pueden ver.",
+      "introLink": "Leer el documento de trabajo completo →",
       "problem": {
-        "title": "La Brecha Censal",
-        "p1": "Los censos nacionales ocurren aproximadamente cada 10 años, pero los asentamientos informales crecen más rápido de lo que las ciudades pueden contar.",
-        "p1cont": "Las poblaciones urbanas del Sur Global crecen 4% anualmente; las poblaciones de asentamientos informales frecuentemente superan esa tasa.",
-        "p2": "La enumeración en sí es difícil: los asentamientos informales frecuentemente carecen de direcciones, mapas y nombres de calles. Los residentes pueden desconfiar de los censistas por temor a desalojos."
+        "title": "El Problema",
+        "p1": "RENABAP, el registro oficial de barrios populares de Argentina, lista 1,24 millones de familias en 6.467 asentamientos. Pero las imágenes satelitales revelan 1,97 millones de edificios dentro de esos mismos límites—59% más estructuras que familias registradas.",
+        "p1cont": "",
+        "p2": "No se trata de que el registro esté desactualizado. El propio protocolo de control de calidad de RENABAP requiere que los conteos de familias coincidan con las viviendas visibles en imágenes satelitales. La brecha documentada aquí es una desviación de ese estándar. Cerrarla requiere cambio metodológico, no solo datos actualizados."
       },
       "findings": {
         "title": "Lo Que Muestran los Datos",
-        "stat1": "Más huellas de edificios que la estimación oficial de familias de RENABAP, basado en análisis espacial de 6.467 asentamientos a nivel nacional.",
-        "stat2": "Personas potencialmente ausentes de los registros oficiales, usando tamaños de hogar de estudios de barrios populares (3–4 personas/familia).",
-        "stat3": "De la población de Argentina podría vivir en asentamientos informales—6,0 a 8,1 millones de personas."
+        "stat1Label": "Hogares",
+        "stat1": "Oficial: 1,24M familias. Piso basado en edificios: 2,27M hogares. El registro subcontea 83%.",
+        "stat2Label": "Personas Faltantes",
+        "stat2": "2,9 a 3,4 millones de personas no contabilizadas—aproximadamente 6 a 7% de la población total de Argentina.",
+        "stat3Label": "Población Total",
+        "stat3": "Población estimada en asentamientos informales: 6,3 a 7,6 millones, vs. oficial 3,5 a 4,1 millones.",
+        "source": "Basado en análisis espacial de 6.467 asentamientos registrados. "
       },
       "methodology": {
-        "title": "Metodología",
-        "p1": "Comparamos dos conjuntos de datos: el conteo oficial de RENABAP de 1,24 millones de familias en 6.467 barrios populares, y huellas de edificios detectadas desde imágenes satelitales por Google, Microsoft y colaboradores de OpenStreetMap.",
-        "p2": "La detección de edificios en áreas informales tiene limitaciones conocidas—estudios de validación muestran 27–56% de superposición con la verdad de terreno,",
-        "p2cont": "significativamente menor que en contextos urbanos formales. Esto significa que nuestros conteos de edificios probablemente subestiman el número real de estructuras."
+        "title": "Cómo Se Midió Esto",
+        "p1": "Para cada asentamiento, establecemos un piso de hogares: el máximo entre (a) las familias registradas por RENABAP o (b) las huellas de edificios multiplicadas por el ratio de 1,1 familias por vivienda de RENABAP. Esto captura el subconteo independientemente de si proviene de muy pocos edificios contados o muy pocas familias por edificio.",
+        "p2": "El patrón es geográficamente bimodal. En la Ciudad de Buenos Aires (CABA), las villas consolidadas de varios pisos significan que RENABAP captura más familias de las que sugieren las huellas (mediana de 1,9 familias por edificio).",
+        "p2cont": "En el resto—90% de los asentamientos—el patrón se invierte: los conteos de edificios superan sustancialmente las estimaciones de familias. Esto coincide con patrones de subconteo sistemático documentados globalmente en asentamientos informales."
       },
       "caveats": {
-        "title": "Advertencias Importantes",
-        "item1": "Buenos Aires (CABA) es estructuralmente diferente: las villas de múltiples pisos significan múltiples familias por huella de edificio. Aplicamos un factor de corrección de 2,7× allí.",
-        "item2": "Las huellas de edificios son una estimación mínima, no máxima. En asentamientos consolidados con densificación vertical, los hogares reales superan los conteos de edificios.",
-        "item3": "La fecha de las imágenes satelitales puede diferir de la fecha del relevamiento RENABAP (proyecciones del censo 2010, publicadas en 2023)."
+        "title": "Limitaciones Importantes",
+        "item1": "Estas son estimaciones mínimas, no máximas. En asentamientos con densificación vertical, los hogares reales superan los conteos de edificios. La población real es probablemente mayor.",
+        "item2": "RENABAP solo registra asentamientos en localidades de más de 2.000 habitantes. Los asentamientos en localidades más pequeñas faltan tanto del registro como de este análisis.",
+        "item3": "Este análisis no ha sido verificado formalmente en terreno. Está destinado a motivar la enumeración de campo, no a sustituirla."
+      },
+      "why": {
+        "title": "Por Qué Esto Importa",
+        "p1": "RENABAP sirve como base poblacional de facto para inversión en infraestructura, planificación de riesgo de inundaciones y prestación de servicios en toda Argentina. Cuando subcontea 83%, las decisiones de planificación se basan en fundamentos falsos.",
+        "p2": "En La Plata, donde comenzó esta investigación, el municipio ha incorporado datos de huellas de edificios en su primer plan integral. La metodología es simple, reproducible y se ejecuta en segundos usando datos abiertos."
       },
       "footnotes": {
         "title": "Fuentes y Referencias",
-        "fn1": "Las operaciones censales consumen 10–15% de los presupuestos de oficinas estadísticas nacionales.",
-        "fn2": "Portal de datos de Vivienda, Barrios Marginales y Asentamientos Informales.",
-        "fn3": "Desafíos de datos espaciales en asentamientos informales.",
-        "fn4pre": "Multiplicadores de tamaño de hogar: ",
-        "fn5": "Índice Jaccard 0,27–0,56 para asentamientos informales; 0,68–0,84 para ciudades del Norte Global.",
-        "fn6": "Patrones de densificación vertical en asentamientos informales latinoamericanos."
+        "fn1": "Evaluación de estimaciones de población en asentamientos: ninguno de 9 productos capturó >39% de residentes enumerados en campo.",
+        "fn2": "Manual metodológico de RENABAP: conteos de familias derivan de declaraciones de referentes, conteos de campo e imágenes satelitales.",
+        "fn3": "¿Subestimamos a los habitantes de asentamientos? Patrones de subconteo sistemático en ciudades del Sur Global.",
+        "fn4": "Estimación de población de alta resolución usando datos de encuestas de hogares y huellas de edificios.",
+        "fn5": "Multiplicadores de tamaño de hogar: 2,8 (promedio nacional INDEC) y 3,35 (barrios populares RENABAP).",
+        "fn6": "Documento de trabajo completo con metodología, análisis de sensibilidad y desglose por provincia."
       }
     },
     "data": {
       "title": "Fuentes de Datos",
-      "intro": "Este proyecto combina registros gubernamentales oficiales con huellas de edificios derivadas de satélite para comparar lo que se cuenta versus lo que es visible desde el espacio.",
+      "intro": "Este análisis compara la enumeración oficial de RENABAP contra huellas de edificios derivadas de satélite dentro de los límites de asentamientos registrados.",
       "buildings": {
         "title": "Huellas de Edificios",
-        "description": "Modelos de aprendizaje automático entrenados con imágenes satelitales detectan contornos de edificios en todo el mundo. Este conjunto de datos combinado fusiona resultados de Google Open Buildings, Microsoft Building Footprints y colaboradores de OpenStreetMap, cubriendo 33,8 millones de estructuras en Argentina."
+        "description": "El conjunto de datos combinado VIDA fusiona huellas de edificios de Google Open Buildings, Microsoft GlobalMLFootprints y OpenStreetMap. Dentro de los polígonos de asentamientos RENABAP, se detectan 1,97 millones de huellas—59% más que las 1,24 millones de familias oficialmente registradas."
       },
       "renabap": {
         "title": "RENABAP",
-        "description": "El Registro Nacional de Barrios Populares es el registro oficial de asentamientos informales de Argentina, mantenido por el Ministerio de Desarrollo Territorial y Hábitat. Documenta 6.467 barrios populares con un estimado de 1,24 millones de familias, basado en proyecciones del censo 2010.",
+        "description": "El Registro Nacional de Barrios Populares es el registro oficial de asentamientos informales de Argentina, mantenido por la Secretaría de Integración Socio-Urbana. Documenta 6.467 barrios populares con 1,24 millones de familias. Los conteos de familias derivan de declaraciones de referentes, conteos de campo y conteos de viviendas satelitales, multiplicados por 1,1 familias por vivienda.",
         "link": "Portal Oficial RENABAP"
       },
       "technical": {
         "title": "Detalles Técnicos",
-        "item1": "CRS: EPSG:4326 (WGS84) para ambos conjuntos de datos",
-        "item2": "Unión espacial: Edificios que intersectan límites de asentamientos",
-        "item3": "Datos de edificios: Google-Microsoft-OSM Open Buildings vía Source.Cooperative"
+        "item1": "Unión espacial: edificios que intersectan polígonos de asentamientos vía DuckDB",
+        "item2": "Datos de edificios: conjunto combinado VIDA vía Source.Cooperative",
+        "item3": "Clasificación urbana: capa Planta Urbana del IGN",
+        "item4": "Todo el código y datos disponibles; análisis reproducible en ~3 segundos"
       }
     }
   }

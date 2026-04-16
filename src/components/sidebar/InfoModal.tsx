@@ -81,7 +81,10 @@ function ExplainerContent() {
       {/* Introduction */}
       <section>
         <p className="text-foreground/80 leading-relaxed">
-          {t("intro")}
+          {t("intro")}{" "}
+          <ExternalLink href="https://nlebovits.github.io/posts/writing/informal-settlements-argentina/">
+            {t("introLink")}
+          </ExternalLink>
         </p>
       </section>
 
@@ -92,42 +95,40 @@ function ExplainerContent() {
         </h3>
         <p className="text-foreground/80 leading-relaxed mb-3">
           {t("problem.p1")}
-          <FootnoteRef id={1} />
-          {" "}{t("problem.p1cont")}
-          <FootnoteRef id={2} />
         </p>
         <p className="text-foreground/80 leading-relaxed">
-          {t("problem.p2")}
-          <FootnoteRef id={3} />
+          {t("problem.p2")}<FootnoteRef id={2} />
         </p>
       </section>
 
       {/* Key Findings */}
       <section>
-        <h3 className="text-lg font-semibold text-foreground mb-3">
+        <h3 className="text-lg font-semibold text-foreground mb-4">
           {t("findings.title")}
         </h3>
-        <div className="bg-hinted/80 border border-muted rounded-lg p-4 space-y-3">
-          <div className="flex items-start gap-3">
-            <span className="text-accent font-mono text-sm mt-0.5">63%</span>
-            <p className="text-foreground/80 text-sm leading-relaxed">
-              {t("findings.stat1")}
-            </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Stat 1: Official vs Actual */}
+          <div className="bg-hinted/80 border border-muted rounded-lg p-4 text-center">
+            <div className="text-3xl font-bold text-accent mb-1">+83%</div>
+            <div className="text-xs uppercase tracking-wider text-secondary mb-2">{t("findings.stat1Label")}</div>
+            <p className="text-sm text-foreground/70">{t("findings.stat1")}</p>
           </div>
-          <div className="flex items-start gap-3">
-            <span className="text-accent font-mono text-sm mt-0.5">2.3–3.1M</span>
-            <p className="text-foreground/80 text-sm leading-relaxed">
-              {t("findings.stat2")}
-              <FootnoteRef id={4} />
-            </p>
+          {/* Stat 2: Missing People */}
+          <div className="bg-accent/10 border border-accent/30 rounded-lg p-4 text-center">
+            <div className="text-3xl font-bold text-accent mb-1">2.9–3.4M</div>
+            <div className="text-xs uppercase tracking-wider text-secondary mb-2">{t("findings.stat2Label")}</div>
+            <p className="text-sm text-foreground/70">{t("findings.stat2")}</p>
           </div>
-          <div className="flex items-start gap-3">
-            <span className="text-accent font-mono text-sm mt-0.5">13–17%</span>
-            <p className="text-foreground/80 text-sm leading-relaxed">
-              {t("findings.stat3")}
-            </p>
+          {/* Stat 3: Population Share */}
+          <div className="bg-hinted/80 border border-muted rounded-lg p-4 text-center">
+            <div className="text-3xl font-bold text-accent mb-1">6–7%</div>
+            <div className="text-xs uppercase tracking-wider text-secondary mb-2">{t("findings.stat3Label")}</div>
+            <p className="text-sm text-foreground/70">{t("findings.stat3")}</p>
           </div>
         </div>
+        <p className="text-sm text-secondary mt-4 italic">
+          {t("findings.source")}<FootnoteRef id={6} />
+        </p>
       </section>
 
       {/* Methodology */}
@@ -140,8 +141,22 @@ function ExplainerContent() {
         </p>
         <p className="text-foreground/80 leading-relaxed">
           {t("methodology.p2")}
-          <FootnoteRef id={5} />
-          {" "}{t("methodology.p2cont")}
+        </p>
+        <p className="text-foreground/80 leading-relaxed">
+          {t("methodology.p2cont")}<FootnoteRef id={1} />
+        </p>
+      </section>
+
+      {/* Why This Matters */}
+      <section className="bg-accent/5 border border-accent/20 rounded-lg p-4">
+        <h3 className="text-lg font-semibold text-foreground mb-3">
+          {t("why.title")}
+        </h3>
+        <p className="text-foreground/80 leading-relaxed mb-3">
+          {t("why.p1")}
+        </p>
+        <p className="text-foreground/80 leading-relaxed">
+          {t("why.p2")}
         </p>
       </section>
 
@@ -153,7 +168,7 @@ function ExplainerContent() {
         <ul className="space-y-2 text-foreground/80 text-sm leading-relaxed">
           <li className="flex items-start gap-2">
             <span className="text-secondary mt-1">•</span>
-            <span>{t("caveats.item1")}<FootnoteRef id={6} /></span>
+            <span>{t("caveats.item1")}</span>
           </li>
           <li className="flex items-start gap-2">
             <span className="text-secondary mt-1">•</span>
@@ -173,42 +188,42 @@ function ExplainerContent() {
         </h4>
         <ol className="space-y-2 list-none">
           <FootnoteItem id={1}>
-            <ExternalLink href="https://unstats.un.org/unsd/demographic/meetings/egm/symposium2001/docs/symposium_04.htm">
-              UN Statistics Division (2001)
+            <ExternalLink href="https://doi.org/10.3390/urbansci5020048">
+              Thomson et al. (2021)
             </ExternalLink>
             {" — "}{t("footnotes.fn1")}
           </FootnoteItem>
           <FootnoteItem id={2}>
-            <ExternalLink href="https://data.unhabitat.org/pages/housing-slums-and-informal-settlements">
-              UN-Habitat Data Portal
+            <ExternalLink href="https://www.argentina.gob.ar/sites/default/files/manual-para-la-conformacion-y-actualizacion-del-renabap.pdf">
+              SISU (2023)
             </ExternalLink>
             {" — "}{t("footnotes.fn2")}
           </FootnoteItem>
           <FootnoteItem id={3}>
-            <ExternalLink href="https://dlab.berkeley.edu/news/where-streets-have-no-name-spatial-data-informal-settlements">
-              Berkeley D-Lab
+            <ExternalLink href="https://doi.org/10.1016/j.habitatint.2024.103056">
+              Breuer et al. (2024)
             </ExternalLink>
             {" — "}{t("footnotes.fn3")}
           </FootnoteItem>
           <FootnoteItem id={4}>
-            {t("footnotes.fn4pre")}
-            <ExternalLink href="https://censo.gob.ar/index.php/datos_definitivos_total_pais/">
-              INDEC Censo 2022
+            <ExternalLink href="https://doi.org/10.1038/s41467-022-29094-x">
+              Boo et al. (2022)
+            </ExternalLink>
+            {" — "}{t("footnotes.fn4")}
+          </FootnoteItem>
+          <FootnoteItem id={5}>
+            <ExternalLink href="https://censo.gob.ar/wp-content/uploads/2023/11/censo2022_condiciones_habitacionales.pdf">
+              INDEC (2023)
             </ExternalLink>
             {"; "}
             <ExternalLink href="https://www.argentina.gob.ar/sites/default/files/informe_final-barrios_populares.pdf">
-              Argentina.gob.ar Estudio Barrios Populares
-            </ExternalLink>
-          </FootnoteItem>
-          <FootnoteItem id={5}>
-            <ExternalLink href="https://arxiv.org/html/2508.12872">
-              Okyere et al. (2025)
+              SIEMPRO (2021)
             </ExternalLink>
             {" — "}{t("footnotes.fn5")}
           </FootnoteItem>
           <FootnoteItem id={6}>
-            <ExternalLink href="https://www.sciencedirect.com/science/article/pii/S0264275124000532">
-              Vergara-Perucich et al. (2024)
+            <ExternalLink href="https://ssrn.com/abstract=6588819">
+              Lebovits (2026)
             </ExternalLink>
             {" — "}{t("footnotes.fn6")}
           </FootnoteItem>
@@ -300,7 +315,7 @@ export default function InfoModal({ type, onClose }: InfoModalProps) {
           exit={{ scale: 0.95, opacity: 0 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
           onClick={(e) => e.stopPropagation()}
-          className="relative w-full max-w-2xl max-h-[70vh] bg-background border border-muted rounded-xl shadow-2xl overflow-hidden flex flex-col"
+          className="relative w-[90vw] md:w-[50vw] max-h-[80vh] bg-background border border-muted rounded-xl shadow-2xl overflow-hidden flex flex-col"
         >
           {/* Header - fixed */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-background">

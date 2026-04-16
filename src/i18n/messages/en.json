@@ -107,59 +107,70 @@
   },
   "modals": {
     "explainer": {
-      "title": "How This Works",
-      "intro": "Barrios Visibles uses satellite imagery to estimate the gap between official census records and the actual number of families living in Argentina's informal settlements. The results suggest significant undercounting at the national level.",
+      "title": "About This Project",
+      "intro": "Argentina's official registry of informal settlements undercounts by roughly 83%. This map compares what the government records against what satellites can see.",
+      "introLink": "Read the full working paper →",
       "problem": {
-        "title": "The Census Gap",
-        "p1": "National censuses occur roughly every 10 years, but informal settlements grow faster than cities can count.",
-        "p1cont": "Urban populations in the Global South grow 4% annually; slum populations often outpace that rate.",
-        "p2": "Enumeration itself is difficult: informal settlements often lack addresses, maps, and street names. Residents may distrust enumerators due to fears of eviction."
+        "title": "The Problem",
+        "p1": "RENABAP, Argentina's official registry of barrios populares, lists 1.24 million families across 6,467 settlements. But satellite imagery reveals 1.97 million buildings within those same boundaries—59% more structures than recorded families.",
+        "p1cont": "",
+        "p2": "This isn't about the registry being outdated. RENABAP's own quality-control protocol requires that family counts match dwellings visible in satellite imagery. The gap documented here is a departure from that standard. Closing it requires methodological change, not just updated data."
       },
       "findings": {
         "title": "What the Data Shows",
-        "stat1": "More building footprints than RENABAP's official family estimate, based on spatial analysis of 6,467 settlements nationwide.",
-        "stat2": "People potentially missing from official records, using household sizes from barrios populares studies (3–4 persons/family).",
-        "stat3": "Of Argentina's population may live in informal settlements—6.0 to 8.1 million people."
+        "stat1Label": "Households",
+        "stat1": "Official: 1.24M families. Building-based floor: 2.27M households. The registry undercounts by 83%.",
+        "stat2Label": "People Missing",
+        "stat2": "2.9 to 3.4 million people unaccounted for—roughly 6 to 7% of Argentina's total population.",
+        "stat3Label": "Total Population",
+        "stat3": "Estimated informal-settlement population: 6.3 to 7.6 million, vs. official 3.5 to 4.1 million.",
+        "source": "Based on spatial analysis of 6,467 registered settlements. "
       },
       "methodology": {
-        "title": "Methodology",
-        "p1": "We compare two datasets: RENABAP's official count of 1.24 million families across 6,467 barrios populares, and building footprints detected from satellite imagery by Google, Microsoft, and OpenStreetMap contributors.",
-        "p2": "Building detection in informal areas has known limitations—validation studies show 27–56% overlap with ground truth,",
-        "p2cont": "significantly lower than formal urban contexts. This means our building counts likely underestimate the true number of structures."
+        "title": "How This Was Measured",
+        "p1": "For each settlement, we establish a household floor: the maximum of (a) RENABAP's recorded families or (b) building footprints scaled by RENABAP's own 1.1 families-per-dwelling ratio. This captures undercount regardless of whether it comes from too few buildings counted or too few families per building.",
+        "p2": "The pattern is geographically bimodal. In Buenos Aires city (CABA), consolidated multi-story villas mean RENABAP captures more families than footprints suggest (median 1.9 families per building).",
+        "p2cont": "Everywhere else—90% of settlements—the pattern reverses: building counts substantially exceed family estimates. This matches systematic undercount patterns documented globally in informal settlements."
       },
       "caveats": {
-        "title": "Important Caveats",
-        "item1": "Buenos Aires (CABA) is structurally different: multi-story villas mean multiple families per building footprint. We apply a 2.7× correction factor there.",
-        "item2": "Building footprints are a floor estimate, not a ceiling. In consolidated settlements with vertical densification, actual households exceed building counts.",
-        "item3": "Satellite imagery date may differ from RENABAP survey date (projections from 2010 census, published 2023)."
+        "title": "Important Limitations",
+        "item1": "These are floor estimates, not ceilings. In vertically-densified settlements, actual households exceed building counts. The true population is likely higher.",
+        "item2": "RENABAP only registers settlements in localities above 2,000 inhabitants. Settlements in smaller localities are missing from both the registry and this analysis.",
+        "item3": "This analysis has not been formally ground-truthed. It is intended to motivate field enumeration, not substitute for it."
+      },
+      "why": {
+        "title": "Why This Matters",
+        "p1": "RENABAP serves as the de facto population basis for infrastructure investment, flood risk planning, and service delivery across Argentina. When it undercounts by 83%, planning decisions rest on a false foundation.",
+        "p2": "In La Plata, where this research began, the municipality has now incorporated building footprint data into their first comprehensive plan. The methodology is simple, reproducible, and runs in seconds using open data."
       },
       "footnotes": {
         "title": "Sources & References",
-        "fn1": "Census operations consume 10–15% of national statistical office budgets.",
-        "fn2": "Housing, Slums and Informal Settlements data portal.",
-        "fn3": "Spatial data challenges in informal settlements.",
-        "fn4pre": "Household size multipliers: ",
-        "fn5": "Jaccard Index 0.27–0.56 for informal settlements; 0.68–0.84 for Global North cities.",
-        "fn6": "Vertical densification patterns in Latin American informal settlements."
+        "fn1": "Evaluating gridded population estimates in slums: none of 9 products captured >39% of field-enumerated residents.",
+        "fn2": "RENABAP methodology manual: family counts derive from referente declarations, field counts, and satellite imagery.",
+        "fn3": "Do we underestimate slum dwellers? Systematic undercount patterns in Global South cities.",
+        "fn4": "High-resolution population estimation using household survey data and building footprints.",
+        "fn5": "Household size multipliers: 2.8 (INDEC national average) and 3.35 (RENABAP barrios populares).",
+        "fn6": "Full working paper with methodology, sensitivity analysis, and province-level breakdown."
       }
     },
     "data": {
       "title": "Data Sources",
-      "intro": "This project combines official government records with satellite-derived building footprints to compare what's counted versus what's visible from space.",
+      "intro": "This analysis compares RENABAP's official enumeration against satellite-derived building footprints within registered settlement boundaries.",
       "buildings": {
         "title": "Building Footprints",
-        "description": "Machine learning models trained on satellite imagery detect building outlines worldwide. This combined dataset merges outputs from Google Open Buildings, Microsoft Building Footprints, and OpenStreetMap contributors, covering 33.8 million structures in Argentina."
+        "description": "The VIDA combined dataset merges building footprints from Google Open Buildings, Microsoft GlobalMLFootprints, and OpenStreetMap. Within RENABAP settlement polygons, 1.97 million footprints are detected—59% more than the 1.24 million families officially recorded."
       },
       "renabap": {
         "title": "RENABAP",
-        "description": "The Registro Nacional de Barrios Populares is Argentina's official registry of informal settlements, maintained by the Ministry of Territorial Development and Habitat. It documents 6,467 barrios populares with an estimated 1.24 million families, based on projections from the 2010 census.",
+        "description": "The Registro Nacional de Barrios Populares is Argentina's official registry of informal settlements, maintained by the Secretaría de Integración Socio-Urbana. It documents 6,467 barrios populares with 1.24 million families. Family counts derive from referente declarations, field counts, and satellite dwelling counts, multiplied by 1.1 families per dwelling.",
         "link": "Official RENABAP Portal"
       },
       "technical": {
         "title": "Technical Details",
-        "item1": "CRS: EPSG:4326 (WGS84) for both datasets",
-        "item2": "Spatial join: Buildings intersecting settlement boundaries",
-        "item3": "Building data: Google-Microsoft-OSM Open Buildings via Source.Cooperative"
+        "item1": "Spatial join: buildings intersecting settlement polygons via DuckDB",
+        "item2": "Building data: VIDA combined dataset via Source.Cooperative",
+        "item3": "Urban classification: IGN Planta Urbana layer",
+        "item4": "Full code and data available; analysis reproducible in ~3 seconds"
       }
     }
   }

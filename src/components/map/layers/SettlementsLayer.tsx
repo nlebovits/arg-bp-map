@@ -48,12 +48,12 @@ export default function SettlementsLayer() {
       const feature = features[0];
       const props = feature.properties as Settlement;
 
-      // Calculate discrepancy percentage
+      // Compute derived values
+      const difference = Math.round(props.estimated_families - props.renabap_families);
+      const estPopulation = Math.round(props.estimated_families * 3.3);
       const discrepancyPct =
         props.renabap_families > 0
-          ? ((props.estimated_min_families - props.renabap_families) /
-              props.renabap_families) *
-            100
+          ? (difference / props.renabap_families) * 100
           : 0;
 
       // Update store
@@ -62,16 +62,14 @@ export default function SettlementsLayer() {
       // Create popup content
       const popupContent = `
         <div class="p-3 max-w-xs">
-          <h3 class="font-bold text-base mb-2 text-gray-900">${props.nombre_barrio}</h3>
+          <h3 class="font-bold text-base mb-2 text-gray-900">${props.nombre}</h3>
           <div class="text-xs text-gray-600 mb-3">
             ${props.departamento}, ${props.provincia}
             <span class="ml-2 px-1.5 py-0.5 rounded text-[10px] font-medium ${
-              props.density_tier === "CABA"
-                ? "bg-purple-100 text-purple-700"
-                : props.density_tier === "Urban"
-                  ? "bg-blue-100 text-blue-700"
-                  : "bg-gray-100 text-gray-700"
-            }">${props.density_tier}</span>
+              props.is_urban
+                ? "bg-blue-100 text-blue-700"
+                : "bg-gray-100 text-gray-700"
+            }">${props.is_urban ? "Urban" : "Rural"}</span>
           </div>
 
           <div class="space-y-1.5 text-sm">
@@ -85,20 +83,20 @@ export default function SettlementsLayer() {
             </div>
             <div class="flex justify-between">
               <span class="text-gray-600">Diferencia:</span>
-              <span class="font-medium ${props.difference >= 0 ? "text-orange-600" : "text-green-600"}">
-                ${props.difference >= 0 ? "+" : ""}${formatNumber(props.difference)}
+              <span class="font-medium ${difference >= 0 ? "text-orange-600" : "text-green-600"}">
+                ${difference >= 0 ? "+" : ""}${formatNumber(difference)}
               </span>
             </div>
 
             <hr class="my-2 border-gray-200" />
 
             <div class="flex justify-between">
-              <span class="text-gray-600">Est. familias mín:</span>
-              <span class="font-bold text-orange-700">${formatNumber(props.estimated_min_families)}</span>
+              <span class="text-gray-600">Est. familias:</span>
+              <span class="font-bold text-orange-700">${formatNumber(Math.round(props.estimated_families))}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600">Est. población mín:</span>
-              <span class="font-bold text-red-700">${formatNumber(props.estimated_min_population)}</span>
+              <span class="text-gray-600">Est. población:</span>
+              <span class="font-bold text-red-700">${formatNumber(estPopulation)}</span>
             </div>
             <div class="flex justify-between text-xs">
               <span class="text-gray-500">Discrepancia:</span>

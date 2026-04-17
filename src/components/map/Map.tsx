@@ -310,7 +310,7 @@ export default function Map() {
         ["linear"],
         // Log of (1 + discrepancy ratio), clamped to avoid division by zero
         ["ln", ["max", 1, ["+", 1, ["/",
-          ["max", 0, ["-", ["get", "estimated_min_families"], ["get", "renabap_families"]]],
+          ["max", 0, ["-", ["get", "estimated_families"], ["get", "renabap_families"]]],
           ["max", 1, ["get", "renabap_families"]]
         ]]]],
         0, COLORS.settlements.match,      // ln(1) = 0 -> grey (perfect match)
@@ -319,6 +319,10 @@ export default function Map() {
         1.0, "#c08050",                   // significant
         1.5, COLORS.settlements.undercount // ln(~4.5) -> orange (severe undercount)
       ];
+
+      // Compute population inline: estimated_families * 3.3
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const estPopulation: any = ["*", ["get", "estimated_families"], 3.3];
 
       // Population-based radius with min/max bounds
       // min: 3px (always visible), max: 25px (doesn't overwhelm)
@@ -330,43 +334,33 @@ export default function Map() {
         // z0-4: tight range, all visible
         0, ["max", 3, ["min", 12,
           ["interpolate", ["linear"],
-            ["ln", ["max", 1, ["get", "estimated_min_population"]]],
+            ["ln", ["max", 1, estPopulation]],
             5, 3,     // ln(~150) -> min
             8, 6,     // ln(~3000) -> small
             10, 9,    // ln(~22000) -> medium
             12, 12    // ln(~160000) -> max at this zoom
           ]
         ]],
-        // z5-8: expand range
+        // z5-7: expand range (switch to polygons at z8)
         6, ["max", 4, ["min", 18,
           ["interpolate", ["linear"],
-            ["ln", ["max", 1, ["get", "estimated_min_population"]]],
+            ["ln", ["max", 1, estPopulation]],
             5, 4,
             8, 8,
             10, 12,
             12, 18
           ]
-        ]],
-        // z9-12: full range before switching to polygons
-        10, ["max", 5, ["min", 25,
-          ["interpolate", ["linear"],
-            ["ln", ["max", 1, ["get", "estimated_min_population"]]],
-            5, 5,
-            8, 10,
-            10, 16,
-            12, 25
-          ]
         ]]
       ];
 
-      // Circle layer for points (z0-9) - sized by population, colored by discrepancy
+      // Circle layer for points (z0-7) - sized by population, colored by discrepancy
       mapInstance.addLayer(
         {
           id: LAYERS.settlements.fill,
           type: "circle",
           source: "settlements",
           "source-layer": LAYERS.settlements.sourceLayer,
-          maxzoom: 10,
+          maxzoom: 8,
           paint: {
             "circle-color": discrepancyColor,
             "circle-radius": populationRadius,
@@ -385,30 +379,30 @@ export default function Map() {
         LAYERS.buildings.fill
       );
 
-      // Fill layer for polygons (z10+) - light wash, labels carry data now
+      // Fill layer for polygons (z8+) - light wash, labels carry data now
       mapInstance.addLayer(
         {
           id: LAYERS.settlements.outline,
           type: "fill",
           source: "settlements",
           "source-layer": LAYERS.settlements.sourceLayer,
-          minzoom: 10,
+          minzoom: 8,
           paint: {
             "fill-color": discrepancyColor,
-            "fill-opacity": 0.25,
+            "fill-opacity": 0.6,
           },
         },
         LAYERS.buildings.fill
       );
 
-      // Polygon outline (z10+)
+      // Polygon outline (z8+)
       mapInstance.addLayer(
         {
           id: "settlements-polygon-outline",
           type: "line",
           source: "settlements",
           "source-layer": LAYERS.settlements.sourceLayer,
-          minzoom: 10,
+          minzoom: 8,
           paint: {
             "line-color": COLORS.settlements.outline,
             "line-width": 2,
@@ -418,14 +412,18 @@ export default function Map() {
         LAYERS.buildings.fill
       );
 
-      // Discrepancy labels at polygon zoom (z10+)
+      // Compute difference inline for labels
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const difference: any = ["-", ["get", "estimated_families"], ["get", "renabap_families"]];
+
+      // Discrepancy labels at polygon zoom (z8+)
       // Text size scales with discrepancy magnitude (log scale)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const discrepancyTextSize: any = [
         "interpolate",
         ["linear"],
         // Log of absolute difference, clamped
-        ["ln", ["max", 1, ["get", "difference"]]],
+        ["ln", ["max", 1, ["abs", difference]]],
         0, 10,      // ln(1) = 0 -> minimum readable
         4, 12,      // ln(~55) -> small
         6, 16,      // ln(~400) -> medium
@@ -436,9 +434,9 @@ export default function Map() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const labelTextField: any = [
         "case",
-        [">=", ["get", "difference"], 0],
-        ["concat", "+", ["number-format", ["get", "difference"], { "locale": "es-AR" }]],
-        ["number-format", ["get", "difference"], { "locale": "es-AR" }]
+        [">=", difference, 0],
+        ["concat", "+", ["number-format", difference, { "locale": "es-AR" }]],
+        ["number-format", difference, { "locale": "es-AR" }]
       ];
 
       // Drop shadow layer (rendered first, underneath main labels)
@@ -447,8 +445,8 @@ export default function Map() {
         type: "symbol",
         source: "settlements",
         "source-layer": LAYERS.settlements.sourceLayer,
-        minzoom: 10,
-        maxzoom: 16,
+        minzoom: 8,
+        maxzoom: 14,
         layout: {
           "text-field": labelTextField,
           "text-font": ["Helvetica Bold"],
@@ -456,7 +454,7 @@ export default function Map() {
           "text-anchor": "center",
           "text-allow-overlap": true,       // shadow follows main label
           "text-ignore-placement": true,    // doesn't affect collision
-          "symbol-sort-key": ["-", ["get", "difference"]],
+          "symbol-sort-key": ["-", difference],
           "symbol-avoid-edges": true,
         },
         paint: {
@@ -474,8 +472,8 @@ export default function Map() {
         type: "symbol",
         source: "settlements",
         "source-layer": LAYERS.settlements.sourceLayer,
-        minzoom: 10,
-        maxzoom: 16,
+        minzoom: 8,
+        maxzoom: 14,
         layout: {
           "text-field": labelTextField,
           "text-font": ["Helvetica Bold"],
@@ -483,7 +481,7 @@ export default function Map() {
           "text-anchor": "center",
           "text-allow-overlap": false,
           "text-ignore-placement": false,
-          "symbol-sort-key": ["-", ["get", "difference"]], // larger discrepancies on top
+          "symbol-sort-key": ["-", difference], // larger discrepancies on top
           "symbol-avoid-edges": true,
         },
         paint: {

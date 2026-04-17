@@ -43,4 +43,3 @@ next-env.d.ts
 
 # large spatial data
 bp-w-buildings.geojson
-*.pmtiles

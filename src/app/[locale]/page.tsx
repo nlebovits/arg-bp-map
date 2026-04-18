@@ -36,7 +36,7 @@ export default function Home() {
       {showTutorial && <TutorialModal />}
       <Sidebar />
 
-      <main className="relative flex-1 h-full">
+      <main className="relative flex-1 h-full pt-14 md:pt-0">
         <Map />
 
         {/* Loading indicator */}

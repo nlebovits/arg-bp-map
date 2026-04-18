@@ -129,9 +129,16 @@ body {
   overflow: hidden;
 }
 
+/* Hide zoom controls on mobile - pinch-to-zoom available */
+@media (max-width: 767px) {
+  .maplibregl-ctrl-top-right .maplibregl-ctrl-group {
+    display: none;
+  }
+}
+
 .maplibregl-ctrl-group button {
-  width: 36px !important;
-  height: 36px !important;
+  width: 44px !important;
+  height: 44px !important;
   border: none !important;
   background: var(--surface-raised) !important;
   color: var(--foreground) !important;

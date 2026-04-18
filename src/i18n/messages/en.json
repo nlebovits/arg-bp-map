@@ -130,7 +130,9 @@
     "buildingsInfo": "Individual building footprints detected from satellite imagery.",
     "footprints": "Footprints",
     "low": "Low",
-    "high": "High"
+    "high": "High",
+    "showLegend": "Show legend",
+    "hideLegend": "Hide legend"
   },
   "modals": {
     "explainer": {

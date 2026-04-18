@@ -11,7 +11,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useMapStore, TUTORIAL_STEPS } from "@/lib/store";
 
-// Step indicator dots
+// Step indicator dots - compact visual with reasonable tap targets
 function StepIndicator({
   currentStep,
   totalSteps,
@@ -24,20 +24,24 @@ function StepIndicator({
   goToStepLabel: (step: number) => string;
 }) {
   return (
-    <div className="flex gap-2 justify-center">
+    <div className="flex gap-0 justify-center">
       {Array.from({ length: totalSteps }).map((_, index) => (
         <button
           key={index}
           onClick={() => onStepClick(index)}
-          className={`w-2 h-2 rounded-full transition-all duration-300 ${
-            index === currentStep
-              ? "bg-accent w-6"
-              : index < currentStep
-                ? "bg-accent/50 hover:bg-accent/70"
-                : "bg-muted hover:bg-secondary"
-          }`}
+          className="w-8 h-10 flex items-center justify-center"
           aria-label={goToStepLabel(index + 1)}
-        />
+        >
+          <span
+            className={`block rounded-full transition-all duration-300 ${
+              index === currentStep
+                ? "bg-accent w-5 h-1.5"
+                : index < currentStep
+                  ? "bg-accent/50 hover:bg-accent/70 w-1.5 h-1.5"
+                  : "bg-muted hover:bg-secondary w-1.5 h-1.5"
+            }`}
+          />
+        </button>
       ))}
     </div>
   );
@@ -316,13 +320,13 @@ export function TutorialModal() {
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
         className="relative w-full max-w-md mx-4 bg-surface-raised/95 backdrop-blur-md border border-muted rounded-xl shadow-2xl overflow-hidden pointer-events-auto"
       >
-        {/* Close button (top right) */}
+        {/* Close button (top right) - min 44px touch target */}
         <button
           onClick={handleSkip}
-          className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center text-secondary hover:text-foreground/80 hover:bg-muted rounded-md transition-colors z-10"
+          className="absolute top-2 right-2 w-11 h-11 flex items-center justify-center text-secondary hover:text-foreground/80 hover:bg-muted rounded-lg transition-colors z-10"
           aria-label={t("skip")}
         >
-<XMarkIcon className="w-4 h-4" />
+          <XMarkIcon className="w-5 h-5" />
         </button>
 
         {/* Step content */}
@@ -340,61 +344,70 @@ export function TutorialModal() {
           </AnimatePresence>
         </div>
 
-        {/* Footer */}
-        <div className="px-6 pb-5 space-y-4">
-          {/* Step indicator */}
-          <StepIndicator
-            currentStep={tutorialStep}
-            totalSteps={TUTORIAL_STEPS}
-            onStepClick={handleStepClick}
-            goToStepLabel={(step) => t("goToStep", { step })}
-          />
+        {/* Footer - compact nav row: [←] [dots] [→] */}
+        <div className="px-6 pb-5 space-y-3">
+          {/* Navigation row with step indicator */}
+          <div className="flex items-center justify-center">
+            {/* Back arrow - subtle icon only, invisible on first step */}
+            <button
+              onClick={handleBack}
+              disabled={isFirstStep}
+              className={`w-11 h-11 flex items-center justify-center transition-colors ${
+                isFirstStep
+                  ? "text-transparent cursor-default"
+                  : "text-secondary/40 hover:text-foreground"
+              }`}
+              aria-label={t("back")}
+              aria-hidden={isFirstStep}
+            >
+              <ChevronLeftIcon className="w-4 h-4" />
+            </button>
 
-          {/* Navigation buttons */}
-          <div className="flex items-center justify-center gap-4">
-            {!isFirstStep && (
-              <button
-                onClick={handleBack}
-                className="w-9 h-9 flex items-center justify-center text-secondary hover:text-foreground border border-muted hover:border-secondary rounded-lg transition-colors"
-                aria-label={t("back")}
-              >
-<ChevronLeftIcon className="w-4 h-4" />
-              </button>
-            )}
-            {isLastStep ? (
+            {/* Step indicator dots */}
+            <StepIndicator
+              currentStep={tutorialStep}
+              totalSteps={TUTORIAL_STEPS}
+              onStepClick={handleStepClick}
+              goToStepLabel={(step) => t("goToStep", { step })}
+            />
+
+            {/* Next arrow - subtle icon only, hidden on last step */}
+            {!isLastStep ? (
               <button
                 onClick={handleNext}
-                className="px-6 py-2 text-sm font-sans font-medium rounded-lg bg-accent hover:bg-accent-hover text-background transition-colors"
-              >
-                {t("start")}
-              </button>
-            ) : (
-              <button
-                onClick={handleNext}
-                className="w-9 h-9 flex items-center justify-center bg-muted hover:bg-secondary text-foreground rounded-lg transition-colors"
+                className="w-11 h-11 flex items-center justify-center text-secondary/40 hover:text-foreground transition-colors"
                 aria-label={t("next")}
               >
-<ChevronRightIcon className="w-4 h-4" />
+                <ChevronRightIcon className="w-4 h-4" />
               </button>
+            ) : (
+              <div className="w-11" /> // Spacer for alignment
             )}
           </div>
 
-          {/* Don't show again checkbox - only on last step */}
+          {/* Start button - only on last step */}
           {isLastStep && (
-            <label className="flex items-center justify-center gap-2 text-sm text-secondary cursor-pointer">
-              <input
-                type="checkbox"
-                defaultChecked={true}
-                onChange={(e) => {
-                  if (!e.target.checked) {
-                    // If unchecked, they want to see it again
-                    setTutorialSeen(false);
-                  }
-                }}
-                className="w-3.5 h-3.5 rounded border-muted bg-hinted text-accent focus:ring-accent focus:ring-offset-0"
-              />
-              <span>{t("dontShowAgain")}</span>
-            </label>
+            <div className="flex flex-col items-center gap-3">
+              <button
+                onClick={handleNext}
+                className="px-6 py-2.5 text-sm font-sans font-medium rounded-lg bg-accent hover:bg-accent-hover text-background transition-colors"
+              >
+                {t("start")}
+              </button>
+              <label className="flex items-center gap-2 text-sm text-secondary cursor-pointer">
+                <input
+                  type="checkbox"
+                  defaultChecked={true}
+                  onChange={(e) => {
+                    if (!e.target.checked) {
+                      setTutorialSeen(false);
+                    }
+                  }}
+                  className="w-3.5 h-3.5 rounded border-muted bg-hinted text-accent focus:ring-accent focus:ring-offset-0"
+                />
+                <span>{t("dontShowAgain")}</span>
+              </label>
+            </div>
           )}
         </div>
       </motion.div>

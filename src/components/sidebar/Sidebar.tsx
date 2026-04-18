@@ -60,18 +60,32 @@ function SidebarComponent() {
 
   return (
     <>
-      {/* Mobile toggle button */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="md:hidden fixed top-4 left-4 z-50 bg-surface-raised/95 backdrop-blur-sm p-2.5 rounded-lg border border-border shadow-xl"
-        aria-label={sidebarOpen ? t("closeSidebar") : t("openSidebar")}
-      >
-        {sidebarOpen ? (
+      {/* Mobile header bar - shows when sidebar closed */}
+      {!sidebarOpen && (
+        <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-[0_4px_12px_-2px_rgba(0,0,0,0.3)] px-4 h-14 flex items-center justify-between">
+          <h1 className="text-lg font-semibold text-foreground uppercase tracking-wide">
+            Barrios Visibles
+          </h1>
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="w-11 h-11 flex items-center justify-center text-foreground"
+            aria-label={t("openSidebar")}
+          >
+            <Bars3Icon className="w-6 h-6" />
+          </button>
+        </div>
+      )}
+
+      {/* Mobile close button - shows when sidebar open */}
+      {sidebarOpen && (
+        <button
+          onClick={() => setSidebarOpen(false)}
+          className="md:hidden fixed top-4 left-4 z-50 bg-surface-raised/95 backdrop-blur-sm p-3 rounded-lg border border-border shadow-xl min-w-[44px] min-h-[44px] flex items-center justify-center"
+          aria-label={t("closeSidebar")}
+        >
           <XMarkIcon className="w-5 h-5 text-foreground" />
-        ) : (
-          <Bars3Icon className="w-5 h-5 text-foreground" />
-        )}
-      </button>
+        </button>
+      )}
 
       {/* Sidebar panel */}
       <aside
@@ -127,13 +141,13 @@ function SidebarComponent() {
 
             {/* Population multiplier */}
             <div>
-              <div className="flex items-center gap-1.5 mb-2">
+              <div className="flex items-center gap-1 mb-2">
                 <label className="text-sm text-secondary">
                   {tPop("multiplier")}
                 </label>
                 <button
                   onClick={() => setMultiplierInfoExpanded(!multiplierInfoExpanded)}
-                  className="w-5 h-5 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors rounded hover:bg-muted"
+                  className="w-11 h-11 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors rounded hover:bg-muted -my-2"
                   aria-label={multiplierInfoExpanded ? tPop("hideInfo") : tPop("showInfo")}
                   aria-expanded={multiplierInfoExpanded}
                 >
@@ -150,7 +164,7 @@ function SidebarComponent() {
               <div className="flex gap-2">
                 <button
                   onClick={() => setPopulationMultiplier(2.8)}
-                  className={`flex-1 px-3 py-2 text-sm rounded border transition-colors ${
+                  className={`flex-1 px-3 py-2 min-h-[44px] text-sm rounded border transition-colors ${
                     populationMultiplier === 2.8
                       ? "bg-accent/20 border-accent text-foreground"
                       : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
@@ -160,7 +174,7 @@ function SidebarComponent() {
                 </button>
                 <button
                   onClick={() => setPopulationMultiplier(3.35)}
-                  className={`flex-1 px-3 py-2 text-sm rounded border transition-colors ${
+                  className={`flex-1 px-3 py-2 min-h-[44px] text-sm rounded border transition-colors ${
                     populationMultiplier === 3.35
                       ? "bg-accent/20 border-accent text-foreground"
                       : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
@@ -173,13 +187,13 @@ function SidebarComponent() {
 
             {/* Occupation rate */}
             <div>
-              <div className="flex items-center gap-1.5 mb-2">
+              <div className="flex items-center gap-1 mb-2">
                 <label className="text-sm text-secondary">
                   {tPop("occupation")}
                 </label>
                 <button
                   onClick={() => setOccupationInfoExpanded(!occupationInfoExpanded)}
-                  className="w-5 h-5 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors rounded hover:bg-muted"
+                  className="w-11 h-11 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors rounded hover:bg-muted -my-2"
                   aria-label={occupationInfoExpanded ? tPop("hideInfo") : tPop("showInfo")}
                   aria-expanded={occupationInfoExpanded}
                 >
@@ -206,7 +220,7 @@ function SidebarComponent() {
                   <button
                     key={rate}
                     onClick={() => setOccupationRate(rate)}
-                    className={`flex-1 px-2 py-2 text-sm rounded border transition-colors ${
+                    className={`flex-1 px-2 py-2 min-h-[44px] text-sm rounded border transition-colors ${
                       occupationRate === rate
                         ? "bg-accent/20 border-accent text-foreground"
                         : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
@@ -253,13 +267,13 @@ function SidebarComponent() {
 
         {/* Footer - Language toggle + Tutorial */}
         <footer className="px-6 py-4 border-t border-border flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm">
+          <div className="flex items-center gap-1 text-sm">
             <button
               onClick={() => router.replace(pathname, { locale: "es" })}
-              className={`transition-colors ${
+              className={`px-3 py-2 min-h-[44px] rounded transition-colors ${
                 locale === "es"
-                  ? "text-foreground font-medium"
-                  : "text-secondary hover:text-foreground/80"
+                  ? "text-foreground font-medium bg-muted"
+                  : "text-secondary hover:text-foreground/80 hover:bg-muted/50"
               }`}
             >
               ES
@@ -267,10 +281,10 @@ function SidebarComponent() {
             <span className="text-secondary/50">|</span>
             <button
               onClick={() => router.replace(pathname, { locale: "en" })}
-              className={`transition-colors ${
+              className={`px-3 py-2 min-h-[44px] rounded transition-colors ${
                 locale === "en"
-                  ? "text-foreground font-medium"
-                  : "text-secondary hover:text-foreground/80"
+                  ? "text-foreground font-medium bg-muted"
+                  : "text-secondary hover:text-foreground/80 hover:bg-muted/50"
               }`}
             >
               EN
@@ -278,7 +292,7 @@ function SidebarComponent() {
           </div>
           <button
             onClick={handleReplayTutorial}
-            className="w-7 h-7 flex items-center justify-center text-secondary hover:text-foreground/80 hover:bg-muted rounded-full transition-colors"
+            className="w-11 h-11 flex items-center justify-center text-secondary hover:text-foreground/80 hover:bg-muted rounded-full transition-colors"
             title={t("replayTutorial")}
             aria-label={t("replayTutorial")}
           >

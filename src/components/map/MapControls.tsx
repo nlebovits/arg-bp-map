@@ -45,20 +45,21 @@ export default function MapControls() {
 
   return (
     <>
-      {/* Top left: Search bar - hidden during tutorial */}
+      {/* Top left: Search bar - hidden during tutorial and on mobile (overlaps toggle) */}
       {!tutorialActive && (
-        <div className="absolute top-4 left-4 z-20 w-72">
+        <div className="absolute top-4 left-4 z-20 w-72 hidden md:block">
           <SearchInput placeholder={tSidebar("search.placeholder")} />
         </div>
       )}
 
-      {/* Top right: Reset + Location buttons (below zoom controls) - hidden during tutorial */}
+      {/* Top right: Reset + Location buttons (below zoom controls) - hidden on mobile & during tutorial */}
+      {/* Position: zoom controls are 2×44px + borders ≈ 90px, plus 16px gap */}
       {!tutorialActive && (
-        <div className="absolute top-[90px] right-[10px] z-20 flex flex-col bg-surface-raised border border-border rounded-lg overflow-hidden">
-          {/* Reset view button */}
+        <div className="absolute top-[106px] right-[10px] z-20 hidden md:flex flex-col bg-surface-raised border border-border rounded-lg overflow-hidden">
+          {/* Reset view button - match zoom control size (44px) */}
           <button
             onClick={handleResetView}
-            className="w-[36px] h-[36px] flex items-center justify-center bg-surface-raised hover:bg-muted text-foreground transition-colors"
+            className="w-[44px] h-[44px] flex items-center justify-center bg-surface-raised hover:bg-muted text-foreground transition-colors"
             title={t("resetView")}
           >
             <GlobeAltIcon className="w-5 h-5" />
@@ -68,7 +69,7 @@ export default function MapControls() {
           <button
             onClick={handleFindMyLocation}
             disabled={locating}
-            className="w-[36px] h-[36px] flex items-center justify-center bg-surface-raised hover:bg-muted text-foreground transition-colors border-t border-border disabled:opacity-50"
+            className="w-[44px] h-[44px] flex items-center justify-center bg-surface-raised hover:bg-muted text-foreground transition-colors border-t border-border disabled:opacity-50"
             title={locating ? t("locating") : t("findMyLocation")}
           >
             <MapPinIcon className={`w-5 h-5 ${locating ? "animate-pulse" : ""}`} />
@@ -76,10 +77,10 @@ export default function MapControls() {
         </div>
       )}
 
-      {/* Bottom right: Attribution with toggle */}
+      {/* Bottom right: Attribution with toggle - min 44px touch target */}
       <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
         {attributionExpanded && (
-          <div className="font-mono text-[9px] text-secondary tracking-wide bg-surface-raised/70 px-2 py-1 rounded-sm">
+          <div className="font-mono text-[9px] text-secondary tracking-wide bg-surface-raised/70 px-2 py-1 rounded-sm hidden sm:block">
             <a
               href="https://source.coop/vida/google-microsoft-osm-open-buildings"
               target="_blank"
@@ -125,7 +126,7 @@ export default function MapControls() {
         )}
         <button
           onClick={() => setAttributionExpanded(!attributionExpanded)}
-          className="p-2 bg-surface-raised/90 backdrop-blur-sm border border-muted hover:border-secondary text-secondary hover:text-foreground transition-all rounded-sm"
+          className="w-11 h-11 flex items-center justify-center bg-surface-raised/90 backdrop-blur-sm border border-muted hover:border-secondary text-secondary hover:text-foreground transition-all rounded-sm"
           title={attributionExpanded ? t("hideAttribution") : t("showAttribution")}
         >
           <InformationCircleIcon className="w-5 h-5" />

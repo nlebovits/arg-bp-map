@@ -70,8 +70,8 @@ export const useMapStore = create<MapStore>((set, get) => ({
   occupationRate: 1.0,
   setOccupationRate: (occupationRate) => set({ occupationRate }),
 
-  // UI
-  sidebarOpen: true,
+  // UI - default closed for mobile-first SSR, hydrate sets correct value
+  sidebarOpen: false,
   setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
 
   // Tutorial state
@@ -154,11 +154,14 @@ export function hydrateStore() {
 
   isHydrated = true;
   const tutorialSeen = localStorage.getItem("tutorialSeen") === "true";
+  const isMobile = window.innerWidth < 768;
+
   useMapStore.setState({
     tutorialSeen,
     showTutorial: !tutorialSeen,
     tutorialActive: !tutorialSeen,
     tutorialStep: 0,
+    sidebarOpen: !isMobile, // Start closed on mobile, open on desktop
   });
 }
 

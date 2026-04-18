@@ -130,7 +130,9 @@
     "buildingsInfo": "Huellas de edificios individuales detectadas por imágenes satelitales.",
     "footprints": "Huellas",
     "low": "Baja",
-    "high": "Alta"
+    "high": "Alta",
+    "showLegend": "Mostrar leyenda",
+    "hideLegend": "Ocultar leyenda"
   },
   "modals": {
     "explainer": {

@@ -285,7 +285,7 @@ export default function Map() {
         ],
       },
       center: INITIAL_VIEW.center,
-      zoom: INITIAL_VIEW.zoom,
+      zoom: window.innerWidth < 768 ? 3.5 : INITIAL_VIEW.zoom,
       minZoom: MAP_BOUNDS.minZoom,
       maxZoom: MAP_BOUNDS.maxZoom,
       attributionControl: false,

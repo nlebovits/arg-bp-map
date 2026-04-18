@@ -39,14 +39,14 @@ export default function PopulationComparison() {
 
   return (
     <div className="space-y-3">
-      {/* Header with info toggle */}
+      {/* Header with info toggle - min 44px touch target */}
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-medium text-secondary uppercase tracking-widest">
           {t("header")}
         </h2>
         <button
           onClick={() => setInfoExpanded(!infoExpanded)}
-          className="w-7 h-7 flex items-center justify-center text-secondary hover:text-foreground transition-colors rounded hover:bg-muted"
+          className="w-11 h-11 -mr-2 flex items-center justify-center text-secondary hover:text-foreground transition-colors rounded hover:bg-muted"
           aria-label={infoExpanded ? t("hideInfo") : t("showInfo")}
           aria-expanded={infoExpanded}
         >

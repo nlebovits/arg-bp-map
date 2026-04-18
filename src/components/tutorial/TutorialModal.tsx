@@ -57,7 +57,7 @@ function StatComparison({
   label2: string;
   value2: string;
   sub2?: string;
-  conclusion: string;
+  conclusion?: string;
 }) {
   return (
     <div className="space-y-4">
@@ -89,9 +89,11 @@ function StatComparison({
         </div>
       </div>
 
-      <p className="text-base text-foreground/80 leading-relaxed bg-cp-red/10 border border-cp-red/20 rounded-lg p-3">
-        {conclusion}
-      </p>
+      {conclusion && (
+        <p className="text-base text-foreground/80 leading-relaxed bg-cp-red/10 border border-cp-red/20 rounded-lg p-3">
+          {conclusion}
+        </p>
+      )}
     </div>
   );
 }
@@ -160,7 +162,6 @@ function Step3Content() {
         value1={t("stat1Value")}
         label2={t("stat2Label")}
         value2={t("stat2Value")}
-        conclusion={t("conclusion")}
       />
     </div>
   );
@@ -212,20 +213,6 @@ function Step5Content() {
         </div>
       </div>
 
-      {/* Source.Cooperative attribution */}
-      <div className="bg-gradient-to-r from-accent-muted to-cp-red/10 rounded-lg p-4 border border-accent/20">
-        <p className="text-base text-secondary text-center">
-          {t("dataSource")}{" "}
-          <a
-            href="https://source.coop/vida/google-microsoft-osm-open-buildings"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-accent hover:text-accent-hover font-medium underline underline-offset-2"
-          >
-            {t("sourceCoopLink")}
-          </a>
-        </p>
-      </div>
     </div>
   );
 }

@@ -16,14 +16,11 @@ export default function SettlementsLayer() {
   const setSelectedSettlement = useMapStore((s) => s.setSelectedSettlement);
   const popupRef = useRef<Popup | null>(null);
 
+  const populationMultiplier = useMapStore((s) => s.populationMultiplier);
+  const occupationRate = useMapStore((s) => s.occupationRate);
+
   // Format number with thousands separator
   const formatNumber = (n: number) => n.toLocaleString("es-AR");
-
-  // Format percentage
-  const formatPct = (n: number) => {
-    const sign = n >= 0 ? "+" : "";
-    return `${sign}${n.toFixed(1)}%`;
-  };
 
   // Handle click on settlement
   const handleClick = useCallback(
@@ -48,61 +45,31 @@ export default function SettlementsLayer() {
       const feature = features[0];
       const props = feature.properties as Settlement;
 
-      // Compute derived values
-      const difference = Math.round(props.estimated_families - props.renabap_families);
-      const estPopulation = Math.round(props.estimated_families * 3.3);
-      const discrepancyPct =
-        props.renabap_families > 0
-          ? (difference / props.renabap_families) * 100
-          : 0;
-
       // Update store
       setSelectedSettlement(props);
 
-      // Create popup content
+      // Compute population estimate using sidebar params
+      const estPopulation = Math.round(
+        props.building_count * occupationRate * populationMultiplier
+      );
+
+      // Create popup content - simplified to key fields only
       const popupContent = `
-        <div class="p-3 max-w-xs">
-          <h3 class="font-bold text-base mb-2 text-gray-900">${props.nombre}</h3>
-          <div class="text-xs text-gray-600 mb-3">
-            ${props.departamento}, ${props.provincia}
-            <span class="ml-2 px-1.5 py-0.5 rounded text-[10px] font-medium ${
-              props.is_urban
-                ? "bg-blue-100 text-blue-700"
-                : "bg-gray-100 text-gray-700"
-            }">${props.is_urban ? "Urban" : "Rural"}</span>
-          </div>
-
-          <div class="space-y-1.5 text-sm">
-            <div class="flex justify-between">
-              <span class="text-gray-600">RENABAP familias:</span>
-              <span class="font-medium">${formatNumber(props.renabap_families)}</span>
+        <div class="settlement-popup-content">
+          <h3 class="popup-name">${props.nombre}</h3>
+          <p class="popup-location">${props.departamento}, ${props.provincia}</p>
+          <div class="popup-stats">
+            <div class="popup-stat">
+              <span class="popup-label">RENABAP familias</span>
+              <span class="popup-value">${formatNumber(props.renabap_families)}</span>
             </div>
-            <div class="flex justify-between">
-              <span class="text-gray-600">Edificios detectados:</span>
-              <span class="font-medium">${formatNumber(props.building_count)}</span>
+            <div class="popup-stat">
+              <span class="popup-label">Edificios detectados</span>
+              <span class="popup-value">${formatNumber(props.building_count)}</span>
             </div>
-            <div class="flex justify-between">
-              <span class="text-gray-600">Diferencia:</span>
-              <span class="font-medium ${difference >= 0 ? "text-orange-600" : "text-green-600"}">
-                ${difference >= 0 ? "+" : ""}${formatNumber(difference)}
-              </span>
-            </div>
-
-            <hr class="my-2 border-gray-200" />
-
-            <div class="flex justify-between">
-              <span class="text-gray-600">Est. familias:</span>
-              <span class="font-bold text-orange-700">${formatNumber(Math.round(props.estimated_families))}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-600">Est. población:</span>
-              <span class="font-bold text-red-700">${formatNumber(estPopulation)}</span>
-            </div>
-            <div class="flex justify-between text-xs">
-              <span class="text-gray-500">Discrepancia:</span>
-              <span class="font-medium ${discrepancyPct >= 0 ? "text-orange-600" : "text-green-600"}">
-                ${formatPct(discrepancyPct)}
-              </span>
+            <div class="popup-stat popup-highlight">
+              <span class="popup-label">Est. población</span>
+              <span class="popup-value popup-accent">${formatNumber(estPopulation)}</span>
             </div>
           </div>
         </div>
@@ -124,7 +91,7 @@ export default function SettlementsLayer() {
         .setHTML(popupContent)
         .addTo(map);
     },
-    [map, setSelectedSettlement]
+    [map, setSelectedSettlement, populationMultiplier, occupationRate]
   );
 
   // Hover cursor change

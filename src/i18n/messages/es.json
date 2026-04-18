@@ -5,7 +5,7 @@
   },
   "sidebar": {
     "title": "Barrios Visibles",
-    "tagline": "Haciendo visibles los asentamientos informales de Argentina",
+    "tagline": "Haciendo visibles los asentamientos informales de Argentina.",
     "subheader": {
       "prefix": "Lee nuestro",
       "explainer": "explicador",
@@ -67,7 +67,7 @@
   "tutorial": {
     "step1": {
       "title": "Datos globales, impacto local",
-      "description": "Los datos censales envejecen rápidamente. Los registros oficiales de Argentina no se han actualizado desde 2023—pero los asentamientos informales crecen cada día.\n\n¿Y si las imágenes satelitales pudieran llenar ese vacío?"
+      "description": "Los datos globales pueden llenar vacíos locales cruciales. Las huellas de edificios derivadas de satélites nos permiten mapear millones de familias no contabilizadas en los asentamientos informales de Argentina."
     },
     "step2": {
       "title": "La Plata: El caso de estudio",
@@ -84,24 +84,21 @@
       "stat1Label": "Estimación RENABAP",
       "stat1Value": "330 familias",
       "stat2Label": "Huellas de edificios",
-      "stat2Value": "4.000+ edificios",
-      "conclusion": "Los datos oficiales capturan menos del 10% de las estructuras en este único asentamiento."
+      "stat2Value": "4.200+ edificios"
     },
     "step4": {
-      "title": "Este patrón se repite a nivel nacional",
-      "stat1Label": "Total de asentamientos informales",
-      "stat1Value": "6.467 barrios",
-      "stat2Label": "Población oficial",
-      "stat2Value": "1,24M familias",
-      "conclusion": "Si el patrón de La Plata se mantiene, más de un millón de familias podrían estar ausentes de los registros oficiales de Argentina."
+      "title": "83% subconteo a nivel nacional",
+      "stat1Label": "RENABAP oficial",
+      "stat1Value": "1,24M familias",
+      "stat2Label": "Mínimo por huellas de edificios",
+      "stat2Value": "2,27M hogares",
+      "conclusion": "2,9 a 3,4 millones de personas—aproximadamente 6% de Argentina—ausentes de los registros oficiales."
     },
     "step5": {
       "title": "Explora los datos tú mismo",
       "feature1": "Busca cualquier asentamiento por nombre",
       "feature2": "Compara RENABAP vs recuento de edificios",
-      "feature3": "Haz zoom para ver huellas individuales",
-      "dataSource": "Huellas de edificios de Google-Microsoft-OSM Open Buildings, alojados en",
-      "sourceCoopLink": "Source.Cooperative"
+      "feature3": "Haz zoom para ver huellas individuales"
     },
     "next": "Siguiente",
     "back": "Atrás",

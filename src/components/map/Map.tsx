@@ -304,30 +304,33 @@ export default function Map() {
 
     // Add settlement layers after map loads
     mapInstance.on("load", () => {
-      // Color expression: grey (match) -> orange (undercount)
-      // Based on log of discrepancy ratio: ln(1 + (est - renabap) / renabap)
+      // Positive discrepancy: buildings - renabap_families, clamped to 0
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const buildingDiscrepancy: any = ["max", 0, ["-", ["get", "building_count"], ["get", "renabap_families"]]];
+
+      // Color expression: grey (match/overcounted) -> orange (undercount)
+      // Based on log of discrepancy ratio
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const discrepancyColor: any = [
         "interpolate",
         ["linear"],
         // Log of (1 + discrepancy ratio), clamped to avoid division by zero
         ["ln", ["max", 1, ["+", 1, ["/",
-          ["max", 0, ["-", ["get", "estimated_families"], ["get", "renabap_families"]]],
+          buildingDiscrepancy,
           ["max", 1, ["get", "renabap_families"]]
         ]]]],
-        0, COLORS.settlements.match,      // ln(1) = 0 -> grey (perfect match)
+        0, COLORS.settlements.match,      // ln(1) = 0 -> grey (match or overcounted)
         0.4, "#909090",                   // slight undercount
         0.7, "#a08060",                   // moderate
         1.0, "#c08050",                   // significant
         1.5, COLORS.settlements.undercount // ln(~4.5) -> orange (severe undercount)
       ];
 
-      // Compute population inline: estimated_families * 3.3
+      // Population estimate for dot size: building_count * 3.3
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const estPopulation: any = ["*", ["get", "estimated_families"], 3.3];
+      const estPopulation: any = ["*", ["get", "building_count"], 3.3];
 
-      // Population-based radius with min/max bounds
-      // min: 3px (always visible), max: 25px (doesn't overwhelm)
+      // Dot size based on estimated population (SIZE = total, COLOR = discrepancy)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const populationRadius: any = [
         "interpolate",
@@ -414,18 +417,16 @@ export default function Map() {
         LAYERS.buildings.fill
       );
 
-      // Compute difference inline for labels
+      // Positive discrepancy only (buildings > RENABAP families)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const difference: any = ["-", ["get", "estimated_families"], ["get", "renabap_families"]];
+      const positiveDiscrepancy: any = ["max", 0, ["-", ["get", "building_count"], ["get", "renabap_families"]]];
 
-      // Discrepancy labels at polygon zoom (z8+)
       // Text size scales with discrepancy magnitude (log scale)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const discrepancyTextSize: any = [
         "interpolate",
         ["linear"],
-        // Log of absolute difference, clamped
-        ["ln", ["max", 1, ["abs", difference]]],
+        ["ln", ["max", 1, positiveDiscrepancy]],
         0, 10,      // ln(1) = 0 -> minimum readable
         4, 12,      // ln(~55) -> small
         6, 16,      // ln(~400) -> medium
@@ -433,42 +434,7 @@ export default function Map() {
         10, 28      // ln(~22000) -> maximum
       ];
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const labelTextField: any = [
-        "case",
-        [">=", difference, 0],
-        ["concat", "+", ["number-format", difference, { "locale": "es-AR" }]],
-        ["number-format", difference, { "locale": "es-AR" }]
-      ];
-
-      // Drop shadow layer (rendered first, underneath main labels)
-      mapInstance.addLayer({
-        id: "settlements-labels-shadow",
-        type: "symbol",
-        source: "settlements",
-        "source-layer": LAYERS.settlements.sourceLayer,
-        minzoom: 8,
-        maxzoom: 14,
-        layout: {
-          "text-field": labelTextField,
-          "text-font": ["Helvetica Bold"],
-          "text-size": discrepancyTextSize,
-          "text-anchor": "center",
-          "text-allow-overlap": true,       // shadow follows main label
-          "text-ignore-placement": true,    // doesn't affect collision
-          "symbol-sort-key": ["-", difference],
-          "symbol-avoid-edges": true,
-        },
-        paint: {
-          "text-color": "rgba(0, 0, 0, 0.5)",
-          "text-halo-color": "rgba(0, 0, 0, 0.3)",
-          "text-halo-width": 2,
-          "text-halo-blur": 3,
-          "text-translate": [2, 3],         // offset down-right
-        },
-      });
-
-      // Main labels (on top of shadow)
+      // Single label layer - only shows positive discrepancy
       mapInstance.addLayer({
         id: "settlements-labels",
         type: "symbol",
@@ -476,21 +442,23 @@ export default function Map() {
         "source-layer": LAYERS.settlements.sourceLayer,
         minzoom: 8,
         maxzoom: 14,
+        // Only show labels where buildings > renabap_families
+        filter: [">", ["get", "building_count"], ["get", "renabap_families"]],
         layout: {
-          "text-field": labelTextField,
+          "text-field": ["concat", "+", ["number-format", positiveDiscrepancy, { "locale": "es-AR" }]],
           "text-font": ["Helvetica Bold"],
           "text-size": discrepancyTextSize,
           "text-anchor": "center",
           "text-allow-overlap": false,
           "text-ignore-placement": false,
-          "symbol-sort-key": ["-", difference], // larger discrepancies on top
+          "symbol-sort-key": ["-", positiveDiscrepancy], // larger discrepancies on top
           "symbol-avoid-edges": true,
         },
         paint: {
           "text-color": "#ffffff",
           "text-halo-color": discrepancyColor,
-          "text-halo-width": 3,
-          "text-halo-blur": 0,
+          "text-halo-width": 2,
+          "text-halo-blur": 1,
         },
       });
 
@@ -557,9 +525,6 @@ export default function Map() {
     if (map.getLayer("settlements-polygon-outline")) {
       map.setLayoutProperty("settlements-polygon-outline", "visibility", visibility);
     }
-    if (map.getLayer("settlements-labels-shadow")) {
-      map.setLayoutProperty("settlements-labels-shadow", "visibility", visibility);
-    }
     if (map.getLayer("settlements-labels")) {
       map.setLayoutProperty("settlements-labels", "visibility", visibility);
     }
@@ -570,7 +535,7 @@ export default function Map() {
     if (!map || !map.getStyle()) return;
     if (!map.getLayer(LAYERS.settlements.highlight)) return;
 
-    // Show highlight on step 3 (Barrio Sin Nombre)
+    // Show highlight on step 3 only (Barrio Sin Nombre)
     const highlightOpacity = tutorialActive && tutorialStep === 2 ? 1 : 0;
     map.setPaintProperty(
       LAYERS.settlements.highlight,

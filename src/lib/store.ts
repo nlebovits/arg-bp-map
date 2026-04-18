@@ -13,17 +13,17 @@ export const TUTORIAL_LOCATIONS = {
     lat: -34.0,
     zoom: 5,
   },
-  // Step 2: La Plata region
+  // Step 2: La Plata region (centered on Barrio Sin Nombre)
   laPlata: {
-    lng: -57.95,
-    lat: -34.92,
+    lng: -57.9583,
+    lat: -34.9729,
     zoom: 11,
   },
-  // Step 3: Barrio Sin Nombre (Los Hornos)
+  // Step 3: Barrio Sin Nombre (id 6541, 330 families, 4205 buildings)
   barrioSinNombre: {
-    lng: -57.9948,
-    lat: -34.9646,
-    zoom: 15,
+    lng: -57.9583,
+    lat: -34.9729,
+    zoom: 14,
   },
   // Step 4: Back to national view
   national: {

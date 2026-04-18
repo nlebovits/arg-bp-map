@@ -5,7 +5,7 @@
   },
   "sidebar": {
     "title": "Barrios Visibles",
-    "tagline": "Making Argentina's informal settlements count",
+    "tagline": "Making Argentina's informal settlements count.",
     "subheader": {
       "prefix": "Read our",
       "explainer": "explainer",
@@ -67,7 +67,7 @@
   "tutorial": {
     "step1": {
       "title": "Global data, local impact",
-      "description": "Census data age rapidly. Argentina's official records haven't been updated since 2023—but informal settlements grow every day.\n\nWhat if satellite imagery could fill the gap?"
+      "description": "Global data can fill crucial local data gaps. Satellite-derived building footprints allow us to map millions of unaccounted-for families in Argentina's informal settlements."
     },
     "step2": {
       "title": "La Plata: The case study",
@@ -84,24 +84,21 @@
       "stat1Label": "RENABAP estimate",
       "stat1Value": "330 families",
       "stat2Label": "Building footprints",
-      "stat2Value": "4,000+ buildings",
-      "conclusion": "Official data captures less than 10% of the structures in this single settlement."
+      "stat2Value": "4,200+ buildings"
     },
     "step4": {
-      "title": "This pattern repeats nationwide",
-      "stat1Label": "Total informal settlements",
-      "stat1Value": "6,467 barrios",
-      "stat2Label": "Official population",
-      "stat2Value": "1.24M families",
-      "conclusion": "If the La Plata pattern holds, over a million families may be missing from Argentina's official records."
+      "title": "83% undercounted nationwide",
+      "stat1Label": "RENABAP official",
+      "stat1Value": "1.24M families",
+      "stat2Label": "Building-footprint minimum",
+      "stat2Value": "2.27M households",
+      "conclusion": "2.9 to 3.4 million people—roughly 6% of Argentina—missing from official records."
     },
     "step5": {
       "title": "Explore the data yourself",
       "feature1": "Search any settlement by name",
       "feature2": "Compare RENABAP vs building counts",
-      "feature3": "Zoom to see individual footprints",
-      "dataSource": "Building footprints from Google-Microsoft-OSM Open Buildings, hosted on",
-      "sourceCoopLink": "Source.Cooperative"
+      "feature3": "Zoom to see individual footprints"
     },
     "next": "Next",
     "back": "Back",

@@ -67,7 +67,7 @@ export const MAP_BOUNDS = {
 // Zoom 3.5 gives padding around the country boundary
 export const INITIAL_VIEW = {
   center: [-65.0, -40.0] as [number, number],
-  zoom: 3.5,
+  zoom: 3.75,
 };
 
 // Styling - CarbonPlan-inspired palette
@@ -86,4 +86,4 @@ export const COLORS = {
 };
 
 // Barrio Sin Nombre ID for tutorial highlighting
-export const BARRIO_SIN_NOMBRE_ID = 46;
+export const BARRIO_SIN_NOMBRE_ID = 6541;

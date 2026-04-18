@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { ArrowTopRightOnSquareIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 type ModalType = "explainer" | "data" | null;
 
@@ -25,19 +26,7 @@ function ExternalLink({
       className="text-accent hover:text-accent-hover underline underline-offset-2"
     >
       {children}
-      <svg
-        className="inline-block w-3 h-3 ml-0.5 -mt-0.5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        strokeWidth={2}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-        />
-      </svg>
+      <ArrowTopRightOnSquareIcon className="inline-block w-3 h-3 ml-0.5 -mt-0.5" />
     </a>
   );
 }
@@ -327,19 +316,7 @@ export default function InfoModal({ type, onClose }: InfoModalProps) {
               className="w-8 h-8 flex items-center justify-center text-secondary hover:text-foreground hover:bg-muted rounded-lg transition-colors"
               aria-label="Close"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              <XMarkIcon className="w-5 h-5" />
             </button>
           </div>
 

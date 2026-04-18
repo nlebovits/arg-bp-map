@@ -3,21 +3,26 @@
 import { useState, memo } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useShallow } from "zustand/react/shallow";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { useMapStore } from "@/lib/store";
 import type { Locale } from "@/i18n/routing";
-import DiscrepancyLegend from "./DiscrepancyLegend";
+import { Bars3Icon, XMarkIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
+import PopulationComparison from "./PopulationComparison";
 import InfoModal from "./InfoModal";
 
 type ModalType = "explainer" | "data" | null;
 
 function SidebarComponent() {
   const t = useTranslations("sidebar");
+  const tPop = useTranslations("sidebar.population");
   const locale = useLocale() as Locale;
   const router = useRouter();
   const pathname = usePathname();
 
   const [activeModal, setActiveModal] = useState<ModalType>(null);
+  const [multiplierInfoExpanded, setMultiplierInfoExpanded] = useState(false);
+  const [occupationInfoExpanded, setOccupationInfoExpanded] = useState(false);
 
   // Optimized store selectors
   const {
@@ -26,6 +31,10 @@ function SidebarComponent() {
     setShowTutorial,
     setTutorialActive,
     setTutorialStep,
+    populationMultiplier,
+    setPopulationMultiplier,
+    occupationRate,
+    setOccupationRate,
   } = useMapStore(
     useShallow((s) => ({
       sidebarOpen: s.sidebarOpen,
@@ -33,6 +42,10 @@ function SidebarComponent() {
       setShowTutorial: s.setShowTutorial,
       setTutorialActive: s.setTutorialActive,
       setTutorialStep: s.setTutorialStep,
+      populationMultiplier: s.populationMultiplier,
+      setPopulationMultiplier: s.setPopulationMultiplier,
+      occupationRate: s.occupationRate,
+      setOccupationRate: s.setOccupationRate,
     }))
   );
 
@@ -53,28 +66,11 @@ function SidebarComponent() {
         className="md:hidden fixed top-4 left-4 z-50 bg-surface-raised/95 backdrop-blur-sm p-2.5 rounded-lg border border-border shadow-xl"
         aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
       >
-        <svg
-          className="w-5 h-5 text-foreground"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          {sidebarOpen ? (
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          ) : (
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          )}
-        </svg>
+        {sidebarOpen ? (
+          <XMarkIcon className="w-5 h-5 text-foreground" />
+        ) : (
+          <Bars3Icon className="w-5 h-5 text-foreground" />
+        )}
       </button>
 
       {/* Sidebar panel */}
@@ -98,10 +94,7 @@ function SidebarComponent() {
             <span className="block ml-8">Visibles</span>
           </h1>
           <p className="text-lg text-secondary mt-8 leading-relaxed">
-            {t("tagline")}
-          </p>
-          {/* Subheader links */}
-          <p className="text-base text-secondary/80 mt-3">
+            {t("tagline")}{" "}
             {t("subheader.prefix")}{" "}
             <button
               onClick={() => setActiveModal("explainer")}
@@ -122,37 +115,129 @@ function SidebarComponent() {
 
         {/* Main content */}
         <div className="flex-1 px-6 py-6 overflow-y-auto space-y-8">
-          {/* Discrepancy Legend */}
-          <DiscrepancyLegend />
+          {/* Population comparison - lead number */}
+          <PopulationComparison />
 
-          {/* Stats section */}
-          <div>
-            <h2 className="text-sm font-medium text-secondary uppercase tracking-widest mb-4">
-              {t("stats.header")}
+          {/* Estimate parameters */}
+          <div className="space-y-4">
+            {/* Header */}
+            <h2 className="text-sm font-medium text-secondary uppercase tracking-widest">
+              {tPop("header")}
             </h2>
-            <div className="rounded-lg bg-hinted/50 border border-border p-5">
-              <p className="text-base text-secondary leading-relaxed">
-                {t("stats.placeholder")}
-              </p>
+
+            {/* Population multiplier */}
+            <div>
+              <div className="flex items-center gap-1.5 mb-2">
+                <label className="text-sm text-secondary">
+                  {tPop("multiplier")}
+                </label>
+                <button
+                  onClick={() => setMultiplierInfoExpanded(!multiplierInfoExpanded)}
+                  className="w-5 h-5 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors rounded hover:bg-muted"
+                  aria-label={multiplierInfoExpanded ? tPop("hideInfo") : tPop("showInfo")}
+                  aria-expanded={multiplierInfoExpanded}
+                >
+                  <InformationCircleIcon className="w-4 h-4" />
+                </button>
+              </div>
+              <AnimatePresence>
+                {multiplierInfoExpanded && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="overflow-hidden"
+                  >
+                    <p className="text-xs text-secondary leading-relaxed mb-2">
+                      {tPop("multiplierInfo")}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setPopulationMultiplier(2.8)}
+                  className={`flex-1 px-3 py-2 text-sm rounded border transition-colors ${
+                    populationMultiplier === 2.8
+                      ? "bg-accent/20 border-accent text-foreground"
+                      : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
+                  }`}
+                >
+                  {tPop("multiplierINDEC")}
+                </button>
+                <button
+                  onClick={() => setPopulationMultiplier(3.35)}
+                  className={`flex-1 px-3 py-2 text-sm rounded border transition-colors ${
+                    populationMultiplier === 3.35
+                      ? "bg-accent/20 border-accent text-foreground"
+                      : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
+                  }`}
+                >
+                  {tPop("multiplierRENABAP")}
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* About section */}
-          <div>
-            <h2 className="text-sm font-medium text-secondary uppercase tracking-widest mb-4">
-              {t("about.header")}
-            </h2>
-            <div className="text-base text-secondary leading-relaxed space-y-3">
-              <p>{t("about.description")}</p>
-              <p className="text-sm text-secondary/70">
-                {t("about.credits")}
-              </p>
+            {/* Occupation rate */}
+            <div>
+              <div className="flex items-center gap-1.5 mb-2">
+                <label className="text-sm text-secondary">
+                  {tPop("occupation")}
+                </label>
+                <button
+                  onClick={() => setOccupationInfoExpanded(!occupationInfoExpanded)}
+                  className="w-5 h-5 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors rounded hover:bg-muted"
+                  aria-label={occupationInfoExpanded ? tPop("hideInfo") : tPop("showInfo")}
+                  aria-expanded={occupationInfoExpanded}
+                >
+                  <InformationCircleIcon className="w-4 h-4" />
+                </button>
+              </div>
+              <AnimatePresence>
+                {occupationInfoExpanded && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="overflow-hidden"
+                  >
+                    <p className="text-xs text-secondary leading-relaxed mb-2">
+                      {tPop("occupationInfo")}{" "}
+                      <a
+                        href="https://nlebovits.github.io/posts/writing/informal-settlements-argentina/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-2 hover:text-foreground/80"
+                      >
+                        {tPop("occupationInfoLink")}
+                      </a>
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <div className="flex gap-2">
+                {([0.85, 0.9, 0.95, 1.0] as const).map((rate) => (
+                  <button
+                    key={rate}
+                    onClick={() => setOccupationRate(rate)}
+                    className={`flex-1 px-2 py-2 text-sm rounded border transition-colors ${
+                      occupationRate === rate
+                        ? "bg-accent/20 border-accent text-foreground"
+                        : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
+                    }`}
+                  >
+                    {Math.round(rate * 100)}%
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
         {/* Attribution */}
-        <div className="px-6 py-2 text-sm text-secondary">
+        <div className="px-6 py-2 text-sm text-secondary leading-relaxed">
           Built by{" "}
           <a
             href="https://nlebovits.github.io/"
@@ -161,6 +246,24 @@ function SidebarComponent() {
             className="underline underline-offset-2 hover:text-foreground/80"
           >
             Nissim Lebovits
+          </a>{" "}
+          with data from{" "}
+          <a
+            href="https://source.coop/vida/google-microsoft-osm-open-buildings"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-foreground/80"
+          >
+            Google-Microsoft-OSM building footprints
+          </a>{" "}
+          and{" "}
+          <a
+            href="https://www.argentina.gob.ar/habitat/renabap"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-foreground/80"
+          >
+            RENABAP
           </a>.
         </div>
 

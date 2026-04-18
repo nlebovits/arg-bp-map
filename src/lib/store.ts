@@ -64,6 +64,12 @@ export const useMapStore = create<MapStore>((set, get) => ({
   selectedSettlement: null,
   setSelectedSettlement: (selectedSettlement) => set({ selectedSettlement }),
 
+  // Population estimation parameters
+  populationMultiplier: 3.35,
+  setPopulationMultiplier: (populationMultiplier) => set({ populationMultiplier }),
+  occupationRate: 1.0,
+  setOccupationRate: (occupationRate) => set({ occupationRate }),
+
   // UI
   sidebarOpen: true,
   setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
@@ -88,6 +94,10 @@ export const useMapStore = create<MapStore>((set, get) => ({
   // Tutorial active state (for map dimming)
   tutorialActive: false,
   setTutorialActive: (tutorialActive) => set({ tutorialActive }),
+
+  // Zoom tracking
+  currentZoom: 5,
+  setCurrentZoom: (currentZoom) => set({ currentZoom }),
 
   // Locale (kept for backward compat, URL is source of truth now)
   locale: "es",

@@ -21,16 +21,28 @@
       "buildings": "Detected buildings",
       "settlements": "RENABAP settlements"
     },
-    "stats": {
-      "header": "Statistics",
-      "placeholder": "Zoom to a settlement to view detailed statistics."
+    "comparison": {
+      "header": "Population Estimate",
+      "renabap": "RENABAP official",
+      "estimated": "Building-based",
+      "uncounted": "uncounted",
+      "info": "This shows the discrepancy between official RENABAP data and satellite-detected building footprints. RENABAP recorded 1.24M families, but building analysis suggests significantly more households exist within settlement boundaries.",
+      "showInfo": "Show info",
+      "hideInfo": "Hide info"
     },
-    "about": {
-      "header": "About",
-      "description": "Barrios Visibles compares official census data from RENABAP with satellite-derived building footprints to reveal gaps in how Argentina counts its informal settlements.",
-      "credits": "Built with data from Google-Microsoft-OSM Open Buildings and RENABAP."
+    "population": {
+      "header": "Estimate Parameters",
+      "multiplier": "People per household",
+      "multiplierINDEC": "2.8 (INDEC)",
+      "multiplierRENABAP": "3.35 (RENABAP)",
+      "multiplierInfo": "2.8 is the 2022 INDEC national average. 3.35 is derived from RENABAP's 2016–2017 enumeration (526,686 families, 1,763,248 persons). The lower provides a conservative floor; the higher reflects larger household sizes in barrios populares.",
+      "occupation": "Occupation rate",
+      "occupationInfo": "Informal settlements operate at near-full occupancy: land scarcity drives vertical densification and internal rental markets, making vacancy negligible. The 85% floor is a deliberately permissive lower bound.",
+      "occupationInfoLink": "Read more →",
+      "showInfo": "Show info",
+      "hideInfo": "Hide info"
     },
-    "language": {
+        "language": {
       "label": "Language"
     },
     "replayTutorial": "Replay Tutorial",
@@ -98,12 +110,17 @@
     "dontShowAgain": "Don't show again"
   },
   "legend": {
-    "header": "Discrepancy",
+    "settlementsHeader": "Settlements",
+    "buildingsHeader": "Buildings",
     "undercount": "Undercount",
     "match": "Match",
     "showInfo": "Show info",
     "hideInfo": "Hide info",
-    "info": "This gradient shows the discrepancy between official RENABAP data and satellite-detected building footprints. Amber indicates areas where buildings significantly outnumber official records."
+    "info": "Color shows discrepancy between official RENABAP data and satellite-detected buildings. Amber = undercount. Size shows estimated population.",
+    "buildingsInfo": "Individual building footprints detected from satellite imagery.",
+    "footprints": "Footprints",
+    "low": "Low",
+    "high": "High"
   },
   "modals": {
     "explainer": {

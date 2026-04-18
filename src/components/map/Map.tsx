@@ -23,12 +23,14 @@ import BuildingsLayer from "./layers/BuildingsLayer";
 import SettlementsLayer from "./layers/SettlementsLayer";
 import ArgentinaMask from "./layers/ArgentinaMask";
 import MapControls from "./MapControls";
+import DiscrepancyLegend from "./DiscrepancyLegend";
 
 export default function Map() {
   const containerRef = useRef<HTMLDivElement>(null);
   const map = useMapStore((s) => s.map);
   const setMap = useMapStore((s) => s.setMap);
   const setMapLoading = useMapStore((s) => s.setMapLoading);
+  const setCurrentZoom = useMapStore((s) => s.setCurrentZoom);
   const showSatellite = useMapStore((s) => s.showSatellite);
   const showSettlements = useMapStore((s) => s.showSettlements);
   const tutorialActive = useMapStore((s) => s.tutorialActive);
@@ -513,6 +515,13 @@ export default function Map() {
       setMapLoading(false);
     });
 
+    // Track zoom level for legend display
+    mapInstance.on("zoomend", () => {
+      setCurrentZoom(mapInstance.getZoom());
+    });
+    // Set initial zoom
+    setCurrentZoom(mapInstance.getZoom());
+
     setMap(mapInstance);
 
     return () => {
@@ -520,7 +529,7 @@ export default function Map() {
       removeProtocol("pmtiles");
       setMap(null);
     };
-  }, [setMap, setMapLoading]);
+  }, [setMap, setMapLoading, setCurrentZoom]);
 
   // Toggle satellite visibility
   useEffect(() => {
@@ -588,6 +597,8 @@ export default function Map() {
       <SettlementsLayer />
       {/* Map controls overlay */}
       <MapControls />
+      {/* Discrepancy legend */}
+      <DiscrepancyLegend />
     </div>
   );
 }

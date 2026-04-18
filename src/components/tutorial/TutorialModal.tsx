@@ -3,6 +3,12 @@
 import { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
+import {
+  GlobeAltIcon,
+  XMarkIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/outline";
 import { useMapStore, TUTORIAL_STEPS } from "@/lib/store";
 
 // Step indicator dots
@@ -97,19 +103,7 @@ function Step1Content() {
   return (
     <div className="text-center space-y-6">
       <div className="w-16 h-16 mx-auto bg-accent-muted rounded-full flex items-center justify-center">
-        <svg
-          className="w-8 h-8 text-accent"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
-          />
-        </svg>
+        <GlobeAltIcon className="w-8 h-8 text-accent" />
       </div>
 
       <h2 className="text-2xl font-sans font-semibold text-foreground">
@@ -339,9 +333,7 @@ export function TutorialModal() {
           className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center text-secondary hover:text-foreground/80 hover:bg-muted rounded-md transition-colors z-10"
           aria-label={t("skip")}
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+<XMarkIcon className="w-4 h-4" />
         </button>
 
         {/* Step content */}
@@ -376,9 +368,7 @@ export function TutorialModal() {
                 className="w-9 h-9 flex items-center justify-center text-secondary hover:text-foreground border border-muted hover:border-secondary rounded-lg transition-colors"
                 aria-label={t("back")}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
+<ChevronLeftIcon className="w-4 h-4" />
               </button>
             )}
             {isLastStep ? (
@@ -394,9 +384,7 @@ export function TutorialModal() {
                 className="w-9 h-9 flex items-center justify-center bg-muted hover:bg-secondary text-foreground rounded-lg transition-colors"
                 aria-label={t("next")}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
+<ChevronRightIcon className="w-4 h-4" />
               </button>
             )}
           </div>

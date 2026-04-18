@@ -21,16 +21,28 @@
       "buildings": "Edificios detectados",
       "settlements": "Asentamientos RENABAP"
     },
-    "stats": {
-      "header": "Estadísticas",
-      "placeholder": "Zoom a un asentamiento para ver estadísticas detalladas."
+    "comparison": {
+      "header": "Estimación de Población",
+      "renabap": "RENABAP oficial",
+      "estimated": "Basado en edificios",
+      "uncounted": "no contabilizados",
+      "info": "Esto muestra la discrepancia entre los datos oficiales de RENABAP y las huellas de edificios detectadas por satélite. RENABAP registró 1,24M de familias, pero el análisis de edificios sugiere que existen significativamente más hogares dentro de los límites de los asentamientos.",
+      "showInfo": "Mostrar info",
+      "hideInfo": "Ocultar info"
     },
-    "about": {
-      "header": "Acerca de",
-      "description": "Barrios Visibles compara datos censales oficiales de RENABAP con huellas de edificios derivadas de satélite para revelar brechas en cómo Argentina cuenta sus asentamientos informales.",
-      "credits": "Construido con datos de Google-Microsoft-OSM Open Buildings y RENABAP."
+    "population": {
+      "header": "Parámetros de Estimación",
+      "multiplier": "Personas por hogar",
+      "multiplierINDEC": "2.8 (INDEC)",
+      "multiplierRENABAP": "3.35 (RENABAP)",
+      "multiplierInfo": "2.8 es el promedio nacional INDEC 2022. 3.35 deriva de la enumeración RENABAP 2016–2017 (526.686 familias, 1.763.248 personas). El menor provee un piso conservador; el mayor refleja hogares más grandes en barrios populares.",
+      "occupation": "Tasa de ocupación",
+      "occupationInfo": "Los asentamientos informales operan a ocupación casi total: la escasez de tierra impulsa densificación vertical y mercados internos de alquiler, haciendo la vacancia despreciable. El piso del 85% es un límite inferior deliberadamente permisivo.",
+      "occupationInfoLink": "Leer más →",
+      "showInfo": "Mostrar info",
+      "hideInfo": "Ocultar info"
     },
-    "language": {
+        "language": {
       "label": "Idioma"
     },
     "replayTutorial": "Repetir Tutorial",
@@ -98,12 +110,17 @@
     "dontShowAgain": "No mostrar de nuevo"
   },
   "legend": {
-    "header": "Discrepancia",
+    "settlementsHeader": "Asentamientos",
+    "buildingsHeader": "Edificios",
     "undercount": "Subconteo",
     "match": "Coincidencia",
     "showInfo": "Mostrar info",
     "hideInfo": "Ocultar info",
-    "info": "Este gradiente muestra la discrepancia entre los datos oficiales de RENABAP y las huellas de edificios detectadas por satélite. El ámbar indica áreas donde los edificios superan significativamente los registros oficiales."
+    "info": "El color muestra la discrepancia entre datos oficiales de RENABAP y edificios detectados por satélite. Ámbar = subconteo. El tamaño muestra la población estimada.",
+    "buildingsInfo": "Huellas de edificios individuales detectadas por imágenes satelitales.",
+    "footprints": "Huellas",
+    "low": "Baja",
+    "high": "Alta"
   },
   "modals": {
     "explainer": {

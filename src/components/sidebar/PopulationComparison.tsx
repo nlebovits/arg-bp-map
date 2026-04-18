@@ -1,0 +1,103 @@
+"use client";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import { useMapStore } from "@/lib/store";
+import { useShallow } from "zustand/react/shallow";
+import { useTranslations } from "next-intl";
+
+// RENABAP official count (fixed)
+const RENABAP_FAMILIES = 1_240_000;
+
+// Base households at 100% occupation (from building analysis)
+const BASE_HOUSEHOLDS = 2_265_499;
+
+export default function PopulationComparison() {
+  const t = useTranslations("sidebar.comparison");
+  const [infoExpanded, setInfoExpanded] = useState(false);
+
+  const { occupationRate, populationMultiplier } = useMapStore(
+    useShallow((s) => ({
+      occupationRate: s.occupationRate,
+      populationMultiplier: s.populationMultiplier,
+    }))
+  );
+
+  // Population estimates (households × multiplier)
+  const renabapPopulation = Math.round(RENABAP_FAMILIES * populationMultiplier);
+  const estimatedPopulation = Math.round(BASE_HOUSEHOLDS * occupationRate * populationMultiplier);
+
+  // Max for scaling (100% occupation × max multiplier = full width)
+  const maxPopulation = BASE_HOUSEHOLDS * populationMultiplier;
+
+  // Bar widths proportional to max
+  const renabapWidth = Math.round((renabapPopulation / maxPopulation) * 100);
+  const estimateWidth = Math.round((estimatedPopulation / maxPopulation) * 100);
+
+  // Format numbers
+  const formatMillions = (n: number) => (n / 1_000_000).toFixed(2) + "M";
+
+  return (
+    <div className="space-y-3">
+      {/* Header with info toggle */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-medium text-secondary uppercase tracking-widest">
+          {t("header")}
+        </h2>
+        <button
+          onClick={() => setInfoExpanded(!infoExpanded)}
+          className="w-7 h-7 flex items-center justify-center text-secondary hover:text-foreground transition-colors rounded hover:bg-muted"
+          aria-label={infoExpanded ? t("hideInfo") : t("showInfo")}
+          aria-expanded={infoExpanded}
+        >
+          <InformationCircleIcon className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* Expandable info panel */}
+      <AnimatePresence>
+        {infoExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="overflow-hidden"
+          >
+            <p className="text-sm text-secondary leading-relaxed pb-2">
+              {t("info")}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Two bars - RENABAP (fixed) vs Estimate (scales) */}
+      <div className="space-y-2">
+        {/* RENABAP official - scales with multiplier */}
+        <div className="space-y-1">
+          <div className="flex justify-between text-xs">
+            <span className="text-secondary">{t("renabap")}</span>
+            <span className="text-secondary">{formatMillions(renabapPopulation)}</span>
+          </div>
+          <div
+            className="h-4 rounded-full transition-all duration-300"
+            style={{ width: `${renabapWidth}%`, background: 'var(--secondary)' }}
+          />
+        </div>
+
+        {/* Our estimate - scales with occupation and multiplier */}
+        <div className="space-y-1">
+          <div className="flex justify-between text-xs">
+            <span className="text-accent font-medium">{t("estimated")}</span>
+            <span className="text-accent font-medium">{formatMillions(estimatedPopulation)}</span>
+          </div>
+          <div
+            className="h-4 rounded-full transition-all duration-300"
+            style={{ width: `${estimateWidth}%`, background: 'var(--accent)' }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

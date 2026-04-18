@@ -16,10 +16,12 @@ function StepIndicator({
   currentStep,
   totalSteps,
   onStepClick,
+  goToStepLabel,
 }: {
   currentStep: number;
   totalSteps: number;
   onStepClick: (step: number) => void;
+  goToStepLabel: (step: number) => string;
 }) {
   return (
     <div className="flex gap-2 justify-center">
@@ -34,7 +36,7 @@ function StepIndicator({
                 ? "bg-accent/50 hover:bg-accent/70"
                 : "bg-muted hover:bg-secondary"
           }`}
-          aria-label={`Go to step ${index + 1}`}
+          aria-label={goToStepLabel(index + 1)}
         />
       ))}
     </div>
@@ -345,6 +347,7 @@ export function TutorialModal() {
             currentStep={tutorialStep}
             totalSteps={TUTORIAL_STEPS}
             onStepClick={handleStepClick}
+            goToStepLabel={(step) => t("goToStep", { step })}
           />
 
           {/* Navigation buttons */}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useCallback, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { Popup } from "maplibre-gl";
 import type { MapMouseEvent } from "maplibre-gl";
 import { useMapStore } from "@/lib/store";
@@ -12,12 +13,17 @@ import type { Settlement } from "@/types";
  * Shows popup with all settlement data fields on click.
  */
 export default function SettlementsLayer() {
+  const t = useTranslations("popup");
   const map = useMapStore((s) => s.map);
   const setSelectedSettlement = useMapStore((s) => s.setSelectedSettlement);
   const popupRef = useRef<Popup | null>(null);
 
   const populationMultiplier = useMapStore((s) => s.populationMultiplier);
   const occupationRate = useMapStore((s) => s.occupationRate);
+
+  // Use refs for values that change frequently to avoid listener churn
+  const paramsRef = useRef({ populationMultiplier, occupationRate });
+  paramsRef.current = { populationMultiplier, occupationRate };
 
   // Format number with thousands separator
   const formatNumber = (n: number) => n.toLocaleString("es-AR");
@@ -48,10 +54,9 @@ export default function SettlementsLayer() {
       // Update store
       setSelectedSettlement(props);
 
-      // Compute population estimate using sidebar params
-      const estPopulation = Math.round(
-        props.building_count * occupationRate * populationMultiplier
-      );
+      // Compute population estimate using sidebar params (via ref to avoid listener churn)
+      const { populationMultiplier: mult, occupationRate: occ } = paramsRef.current;
+      const estPopulation = Math.round(props.building_count * occ * mult);
 
       // Create popup content - simplified to key fields only
       const popupContent = `
@@ -60,15 +65,15 @@ export default function SettlementsLayer() {
           <p class="popup-location">${props.departamento}, ${props.provincia}</p>
           <div class="popup-stats">
             <div class="popup-stat">
-              <span class="popup-label">RENABAP familias</span>
+              <span class="popup-label">${t("renabapFamilies")}</span>
               <span class="popup-value">${formatNumber(props.renabap_families)}</span>
             </div>
             <div class="popup-stat">
-              <span class="popup-label">Edificios detectados</span>
+              <span class="popup-label">${t("detectedBuildings")}</span>
               <span class="popup-value">${formatNumber(props.building_count)}</span>
             </div>
             <div class="popup-stat popup-highlight">
-              <span class="popup-label">Est. población</span>
+              <span class="popup-label">${t("estPopulation")}</span>
               <span class="popup-value popup-accent">${formatNumber(estPopulation)}</span>
             </div>
           </div>
@@ -91,7 +96,7 @@ export default function SettlementsLayer() {
         .setHTML(popupContent)
         .addTo(map);
     },
-    [map, setSelectedSettlement, populationMultiplier, occupationRate]
+    [map, setSelectedSettlement, t]
   );
 
   // Hover cursor change

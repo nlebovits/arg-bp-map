@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { useMapStore } from "@/lib/store";
 import { useShallow } from "zustand/react/shallow";
@@ -56,21 +55,13 @@ export default function PopulationComparison() {
       </div>
 
       {/* Expandable info panel */}
-      <AnimatePresence>
-        {infoExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="overflow-hidden"
-          >
-            <p className="text-sm text-secondary leading-relaxed pb-2">
-              {t("info")}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className={`expandable-panel ${infoExpanded ? "expanded" : ""}`}>
+        <div>
+          <p className="text-sm text-secondary leading-relaxed pb-2">
+            {t("info")}
+          </p>
+        </div>
+      </div>
 
       {/* Two bars - RENABAP (fixed) vs Estimate (scales) */}
       <div className="space-y-2">

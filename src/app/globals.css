@@ -100,6 +100,23 @@ body {
   background: var(--secondary);
 }
 
+/* CSS-based expandable panel (replaces framer-motion for simple height animations) */
+.expandable-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 200ms ease-out, opacity 200ms ease-out;
+}
+
+.expandable-panel.expanded {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.expandable-panel > * {
+  overflow: hidden;
+}
+
 /* MapLibre overrides */
 .maplibregl-map {
   font-family: inherit;

@@ -282,6 +282,7 @@ function DataSourcesContent() {
 
 export default function InfoModal({ type, onClose }: InfoModalProps) {
   const t = useTranslations("modals");
+  const tCommon = useTranslations("common");
 
   if (!type) return null;
 
@@ -314,7 +315,7 @@ export default function InfoModal({ type, onClose }: InfoModalProps) {
             <button
               onClick={onClose}
               className="w-8 h-8 flex items-center justify-center text-secondary hover:text-foreground hover:bg-muted rounded-lg transition-colors"
-              aria-label="Close"
+              aria-label={tCommon("close")}
             >
               <XMarkIcon className="w-5 h-5" />
             </button>

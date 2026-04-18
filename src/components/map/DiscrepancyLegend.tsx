@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   InformationCircleIcon,
   EyeIcon,
@@ -37,7 +36,7 @@ export default function DiscrepancyLegend() {
             <button
               onClick={() => setShowSettlements(!showSettlements)}
               className="w-6 h-6 flex items-center justify-center text-secondary hover:text-foreground transition-colors rounded hover:bg-muted"
-              aria-label={showSettlements ? "Hide layer" : "Show layer"}
+              aria-label={showSettlements ? t("hideLayer") : t("showLayer")}
             >
               {showSettlements ? (
                 <EyeIcon className="w-5 h-5 text-accent" />
@@ -57,21 +56,13 @@ export default function DiscrepancyLegend() {
         </div>
 
         {/* Expandable info panel */}
-        <AnimatePresence>
-          {discrepancyInfoExpanded && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="overflow-hidden"
-            >
-              <p className="text-xs text-secondary leading-relaxed pb-3">
-                {t("info")}
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className={`expandable-panel ${discrepancyInfoExpanded ? "expanded" : ""}`}>
+          <div>
+            <p className="text-xs text-secondary leading-relaxed pb-3">
+              {t("info")}
+            </p>
+          </div>
+        </div>
 
         {/* Color scale */}
         <div
@@ -113,7 +104,7 @@ export default function DiscrepancyLegend() {
             <button
               onClick={() => setShowBuildings(!showBuildings)}
               className="w-6 h-6 flex items-center justify-center text-secondary hover:text-foreground transition-colors rounded hover:bg-muted"
-              aria-label={showBuildings ? "Hide layer" : "Show layer"}
+              aria-label={showBuildings ? t("hideLayer") : t("showLayer")}
             >
               {showBuildings ? (
                 <EyeIcon className="w-5 h-5 text-accent" />
@@ -133,21 +124,13 @@ export default function DiscrepancyLegend() {
         </div>
 
         {/* Expandable info panel */}
-        <AnimatePresence>
-          {sizeInfoExpanded && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="overflow-hidden"
-            >
-              <p className="text-xs text-secondary leading-relaxed pt-2">
-                {t("buildingsInfo")}
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className={`expandable-panel ${sizeInfoExpanded ? "expanded" : ""}`}>
+          <div>
+            <p className="text-xs text-secondary leading-relaxed pt-2">
+              {t("buildingsInfo")}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

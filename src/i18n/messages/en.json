@@ -13,7 +13,8 @@
       "data": "data sources"
     },
     "search": {
-      "placeholder": "Search location..."
+      "placeholder": "Search location...",
+      "ariaLabel": "Search for an address"
     },
     "layers": {
       "header": "Layers",
@@ -46,11 +47,20 @@
       "label": "Language"
     },
     "replayTutorial": "Replay Tutorial",
-    "help": "Help"
+    "help": "Help",
+    "openSidebar": "Open sidebar",
+    "closeSidebar": "Close sidebar",
+    "attribution": {
+      "builtBy": "Built by",
+      "withDataFrom": "with data from",
+      "and": "and"
+    }
   },
   "common": {
     "loading": "Loading...",
-    "loadingTiles": "Loading tiles..."
+    "loadingTiles": "Loading tiles...",
+    "loadingMap": "Loading map...",
+    "close": "Close"
   },
   "map": {
     "layers": "Map Layers",
@@ -104,7 +114,8 @@
     "back": "Back",
     "skip": "Skip tutorial",
     "start": "Start Exploring",
-    "dontShowAgain": "Don't show again"
+    "dontShowAgain": "Don't show again",
+    "goToStep": "Go to step {step}"
   },
   "legend": {
     "settlementsHeader": "Settlements",
@@ -113,6 +124,8 @@
     "match": "Match",
     "showInfo": "Show info",
     "hideInfo": "Hide info",
+    "showLayer": "Show layer",
+    "hideLayer": "Hide layer",
     "info": "Color shows discrepancy between official RENABAP data and satellite-detected buildings. Amber = undercount. Size shows estimated population.",
     "buildingsInfo": "Individual building footprints detected from satellite imagery.",
     "footprints": "Footprints",
@@ -187,5 +200,10 @@
         "item4": "Full code and data available; analysis reproducible in ~3 seconds"
       }
     }
+  },
+  "popup": {
+    "renabapFamilies": "RENABAP families",
+    "detectedBuildings": "Detected buildings",
+    "estPopulation": "Est. population"
   }
 }

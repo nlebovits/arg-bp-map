@@ -3,7 +3,6 @@
 import { useState, memo } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useShallow } from "zustand/react/shallow";
-import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { useMapStore } from "@/lib/store";
 import type { Locale } from "@/i18n/routing";
@@ -16,6 +15,7 @@ type ModalType = "explainer" | "data" | null;
 function SidebarComponent() {
   const t = useTranslations("sidebar");
   const tPop = useTranslations("sidebar.population");
+  const tAttr = useTranslations("sidebar.attribution");
   const locale = useLocale() as Locale;
   const router = useRouter();
   const pathname = usePathname();
@@ -64,7 +64,7 @@ function SidebarComponent() {
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
         className="md:hidden fixed top-4 left-4 z-50 bg-surface-raised/95 backdrop-blur-sm p-2.5 rounded-lg border border-border shadow-xl"
-        aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
+        aria-label={sidebarOpen ? t("closeSidebar") : t("openSidebar")}
       >
         {sidebarOpen ? (
           <XMarkIcon className="w-5 h-5 text-foreground" />
@@ -140,21 +140,13 @@ function SidebarComponent() {
                   <InformationCircleIcon className="w-4 h-4" />
                 </button>
               </div>
-              <AnimatePresence>
-                {multiplierInfoExpanded && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="overflow-hidden"
-                  >
-                    <p className="text-xs text-secondary leading-relaxed mb-2">
-                      {tPop("multiplierInfo")}
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <div className={`expandable-panel ${multiplierInfoExpanded ? "expanded" : ""}`}>
+                <div>
+                  <p className="text-xs text-secondary leading-relaxed mb-2">
+                    {tPop("multiplierInfo")}
+                  </p>
+                </div>
+              </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => setPopulationMultiplier(2.8)}
@@ -194,29 +186,21 @@ function SidebarComponent() {
                   <InformationCircleIcon className="w-4 h-4" />
                 </button>
               </div>
-              <AnimatePresence>
-                {occupationInfoExpanded && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="overflow-hidden"
-                  >
-                    <p className="text-xs text-secondary leading-relaxed mb-2">
-                      {tPop("occupationInfo")}{" "}
-                      <a
-                        href="https://nlebovits.github.io/posts/writing/informal-settlements-argentina/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline underline-offset-2 hover:text-foreground/80"
-                      >
-                        {tPop("occupationInfoLink")}
-                      </a>
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <div className={`expandable-panel ${occupationInfoExpanded ? "expanded" : ""}`}>
+                <div>
+                  <p className="text-xs text-secondary leading-relaxed mb-2">
+                    {tPop("occupationInfo")}{" "}
+                    <a
+                      href="https://nlebovits.github.io/posts/writing/informal-settlements-argentina/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline underline-offset-2 hover:text-foreground/80"
+                    >
+                      {tPop("occupationInfoLink")}
+                    </a>
+                  </p>
+                </div>
+              </div>
               <div className="flex gap-2">
                 {([0.85, 0.9, 0.95, 1.0] as const).map((rate) => (
                   <button
@@ -238,7 +222,7 @@ function SidebarComponent() {
 
         {/* Attribution */}
         <div className="px-6 py-2 text-sm text-secondary leading-relaxed">
-          Built by{" "}
+          {tAttr("builtBy")}{" "}
           <a
             href="https://nlebovits.github.io/"
             target="_blank"
@@ -247,7 +231,7 @@ function SidebarComponent() {
           >
             Nissim Lebovits
           </a>{" "}
-          with data from{" "}
+          {tAttr("withDataFrom")}{" "}
           <a
             href="https://source.coop/vida/google-microsoft-osm-open-buildings"
             target="_blank"
@@ -256,7 +240,7 @@ function SidebarComponent() {
           >
             Google-Microsoft-OSM building footprints
           </a>{" "}
-          and{" "}
+          {tAttr("and")}{" "}
           <a
             href="https://www.argentina.gob.ar/habitat/renabap"
             target="_blank"

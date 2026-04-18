@@ -1,27 +1,26 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
+// Base URL for absolute URLs in metadata (OG images, canonical, etc.)
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://barriosvisibles.ar";
 
 export const metadata: Metadata = {
-  title: "Barrios Visibles | Argentina",
-  description:
-    "Explore informal settlements in Argentina and compare official RENABAP data with satellite-derived building footprints.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Barrios Visibles | Argentina",
+    template: "%s | Barrios Visibles",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
+// Root layout passes through to [locale]/layout.tsx which handles html/body
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="es" className={`${inter.variable} h-full`}>
-      <body className="h-full font-sans">{children}</body>
-    </html>
-  );
+  return children;
 }

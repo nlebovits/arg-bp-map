@@ -1,0 +1,11 @@
+# Barrios Visibles - Argentina Informal Settlements Map
+# https://barriosvisibles.ar
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://barriosvisibles.ar/sitemap.xml
+
+# Disallow data files (PMTiles are binary, not useful to crawl)
+Disallow: /data/

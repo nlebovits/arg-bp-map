@@ -13,7 +13,8 @@
       "data": "fuentes de datos"
     },
     "search": {
-      "placeholder": "Buscar ubicación..."
+      "placeholder": "Buscar ubicación...",
+      "ariaLabel": "Buscar una dirección"
     },
     "layers": {
       "header": "Capas",
@@ -46,11 +47,20 @@
       "label": "Idioma"
     },
     "replayTutorial": "Repetir Tutorial",
-    "help": "Ayuda"
+    "help": "Ayuda",
+    "openSidebar": "Abrir barra lateral",
+    "closeSidebar": "Cerrar barra lateral",
+    "attribution": {
+      "builtBy": "Creado por",
+      "withDataFrom": "con datos de",
+      "and": "y"
+    }
   },
   "common": {
     "loading": "Cargando...",
-    "loadingTiles": "Cargando tiles..."
+    "loadingTiles": "Cargando tiles...",
+    "loadingMap": "Cargando mapa...",
+    "close": "Cerrar"
   },
   "map": {
     "layers": "Capas del Mapa",
@@ -104,7 +114,8 @@
     "back": "Atrás",
     "skip": "Omitir tutorial",
     "start": "Comenzar a Explorar",
-    "dontShowAgain": "No mostrar de nuevo"
+    "dontShowAgain": "No mostrar de nuevo",
+    "goToStep": "Ir al paso {step}"
   },
   "legend": {
     "settlementsHeader": "Asentamientos",
@@ -113,6 +124,8 @@
     "match": "Coincidencia",
     "showInfo": "Mostrar info",
     "hideInfo": "Ocultar info",
+    "showLayer": "Mostrar capa",
+    "hideLayer": "Ocultar capa",
     "info": "El color muestra la discrepancia entre datos oficiales de RENABAP y edificios detectados por satélite. Ámbar = subconteo. El tamaño muestra la población estimada.",
     "buildingsInfo": "Huellas de edificios individuales detectadas por imágenes satelitales.",
     "footprints": "Huellas",
@@ -187,5 +200,10 @@
         "item4": "Todo el código y datos disponibles; análisis reproducible en ~3 segundos"
       }
     }
+  },
+  "popup": {
+    "renabapFamilies": "RENABAP familias",
+    "detectedBuildings": "Edificios detectados",
+    "estPopulation": "Est. población"
   }
 }

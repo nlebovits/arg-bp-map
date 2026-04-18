@@ -21,6 +21,10 @@ interface NominatimResult {
 // Argentina bounding box for biasing results
 const ARGENTINA_VIEWBOX = "-73.6,-55.0,-53.6,-21.8";
 
+// Simple in-memory cache for geocoding results (avoids re-fetching same queries)
+const geocodeCache = new Map<string, GeocodeSuggestion[]>();
+const CACHE_MAX_SIZE = 50;
+
 export function useGeocode(query: string, debounceMs = 300) {
   const [suggestions, setSuggestions] = useState<GeocodeSuggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,8 +37,17 @@ export function useGeocode(query: string, debounceMs = 300) {
     abortRef.current?.abort();
     abortRef.current = new AbortController();
 
-    if (!searchQuery.trim()) {
+    const trimmed = searchQuery.trim().toLowerCase();
+    if (!trimmed) {
       setSuggestions([]);
+      setIsLoading(false);
+      return;
+    }
+
+    // Check cache first
+    const cached = geocodeCache.get(trimmed);
+    if (cached) {
+      setSuggestions(cached);
       setIsLoading(false);
       return;
     }
@@ -69,15 +82,22 @@ export function useGeocode(query: string, debounceMs = 300) {
 
       const results: NominatimResult[] = await response.json();
 
-      setSuggestions(
-        results.map((r) => ({
-          id: String(r.place_id),
-          name: r.name || r.display_name.split(",")[0],
-          displayName: r.display_name,
-          lat: parseFloat(r.lat),
-          lng: parseFloat(r.lon),
-        }))
-      );
+      const mapped = results.map((r) => ({
+        id: String(r.place_id),
+        name: r.name || r.display_name.split(",")[0],
+        displayName: r.display_name,
+        lat: parseFloat(r.lat),
+        lng: parseFloat(r.lon),
+      }));
+
+      // Cache the result (with LRU eviction)
+      if (geocodeCache.size >= CACHE_MAX_SIZE) {
+        const firstKey = geocodeCache.keys().next().value;
+        if (firstKey) geocodeCache.delete(firstKey);
+      }
+      geocodeCache.set(trimmed, mapped);
+
+      setSuggestions(mapped);
     } catch (err) {
       if (err instanceof Error && err.name === "AbortError") {
         return; // Ignore aborted requests

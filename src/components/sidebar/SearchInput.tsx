@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect, memo } from "react";
+import { useTranslations } from "next-intl";
 import { useGeocode, type GeocodeSuggestion } from "@/hooks/useGeocode";
 import { useMapStore } from "@/lib/store";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -9,7 +10,9 @@ interface SearchInputProps {
   placeholder?: string;
 }
 
-function SearchInputComponent({ placeholder = "Search address..." }: SearchInputProps) {
+function SearchInputComponent({ placeholder }: SearchInputProps) {
+  const t = useTranslations("sidebar.search");
+  const resolvedPlaceholder = placeholder ?? t("placeholder");
   const [query, setQuery] = useState("");
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [dismissedQuery, setDismissedQuery] = useState<string | null>(null);
@@ -98,13 +101,13 @@ function SearchInputComponent({ placeholder = "Search address..." }: SearchInput
             // Delay to allow click on suggestion
             setTimeout(() => setDismissedQuery(query), 150);
           }}
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           className="w-full pl-11 pr-4 py-3 bg-surface-raised border border-muted rounded-md
                      font-mono text-sm text-foreground placeholder:text-secondary
                      focus:outline-none focus:ring-1 focus:ring-accent/50 focus:border-accent/50
                      transition-all"
           role="combobox"
-          aria-label="Search for an address"
+          aria-label={t("ariaLabel")}
           aria-expanded={isOpen}
           aria-haspopup="listbox"
           aria-controls="search-suggestions"

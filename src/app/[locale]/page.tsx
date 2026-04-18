@@ -4,23 +4,22 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import Sidebar from "@/components/sidebar/Sidebar";
-import { TutorialModal } from "@/components/tutorial/TutorialModal";
 import { useMapStore, hydrateStore } from "@/lib/store";
 
-// Dynamic import for Map to avoid SSR issues with MapLibre
+// Dynamic imports for heavy components
 const Map = dynamic(() => import("@/components/map/Map"), {
   ssr: false,
-  loading: () => {
-    return (
-      <div className="absolute inset-0 flex items-center justify-center bg-surface-raised">
-        <div className="flex items-center gap-3 text-secondary">
-          <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin" />
-          <span className="text-sm font-mono">Loading map...</span>
-        </div>
-      </div>
-    );
-  },
+  loading: () => (
+    <div className="absolute inset-0 flex items-center justify-center bg-surface-raised">
+      <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+    </div>
+  ),
 });
+
+const TutorialModal = dynamic(
+  () => import("@/components/tutorial/TutorialModal").then((m) => m.TutorialModal),
+  { ssr: false }
+);
 
 export default function Home() {
   // Hydrate store from localStorage after mount (avoids hydration mismatch)
@@ -37,7 +36,7 @@ export default function Home() {
       {showTutorial && <TutorialModal />}
       <Sidebar />
 
-      <div className="relative flex-1 h-full">
+      <main className="relative flex-1 h-full">
         <Map />
 
         {/* Loading indicator */}
@@ -49,7 +48,7 @@ export default function Home() {
             </div>
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }

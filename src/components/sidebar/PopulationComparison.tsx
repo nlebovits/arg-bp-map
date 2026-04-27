@@ -38,7 +38,7 @@ export default function PopulationComparison() {
   const formatMillions = (n: number) => (n / 1_000_000).toFixed(2) + "M";
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       {/* Header with info toggle - min 44px touch target */}
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-medium text-secondary uppercase tracking-widest">

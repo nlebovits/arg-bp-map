@@ -207,5 +207,26 @@
     "renabapFamilies": "RENABAP familias",
     "detectedBuildings": "Edificios detectados",
     "estPopulation": "Est. población"
+  },
+  "discrepancyTable": {
+    "header": "Discrepancia por Área",
+    "departamento": "Departamento",
+    "provincia": "Provincia",
+    "urbanRural": "Tipo",
+    "difference": "Diferencia",
+    "urban": "Urbano",
+    "rural": "Rural",
+    "all": "Todos",
+    "allProvinces": "Todas las Provincias",
+    "allTypes": "Todos los Tipos",
+    "showMore": "Mostrar todos ({count})",
+    "showLess": "Mostrar top 10",
+    "noData": "Sin datos disponibles",
+    "loading": "Cargando...",
+    "adjustEstimates": "Ajustar Estimaciones",
+    "people": "personas",
+    "info": "Muestra la brecha poblacional estimada entre estimaciones basadas en edificios y datos oficiales de RENABAP, agregada por departamento. Valores positivos indican posible subconteo en registros oficiales.",
+    "showInfo": "Mostrar info",
+    "hideInfo": "Ocultar info"
   }
 }

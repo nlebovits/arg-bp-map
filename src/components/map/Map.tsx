@@ -35,6 +35,8 @@ export default function Map() {
   const showSettlements = useMapStore((s) => s.showSettlements);
   const tutorialActive = useMapStore((s) => s.tutorialActive);
   const tutorialStep = useMapStore((s) => s.tutorialStep);
+  const populationMultiplier = useMapStore((s) => s.populationMultiplier);
+  const occupationRate = useMapStore((s) => s.occupationRate);
 
   // Initialize map
   useEffect(() => {
@@ -417,24 +419,29 @@ export default function Map() {
         LAYERS.buildings.fill
       );
 
-      // Positive discrepancy only (buildings > RENABAP families)
+      // Population-based discrepancy (will be updated dynamically via useEffect)
+      // Default: mult=3.35, occ=1.0
+      // Formula: mult * (building_count * occ - renabap_families)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const positiveDiscrepancy: any = ["max", 0, ["-", ["get", "building_count"], ["get", "renabap_families"]]];
+      const positivePopDiscrepancy: any = [
+        "max", 0,
+        ["*", 3.35, ["-", ["*", ["get", "building_count"], 1.0], ["get", "renabap_families"]]]
+      ];
 
-      // Text size scales with discrepancy magnitude (log scale)
+      // Text size scales with population discrepancy magnitude (log scale)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const discrepancyTextSize: any = [
         "interpolate",
         ["linear"],
-        ["ln", ["max", 1, positiveDiscrepancy]],
+        ["ln", ["max", 1, positivePopDiscrepancy]],
         0, 10,      // ln(1) = 0 -> minimum readable
-        4, 12,      // ln(~55) -> small
-        6, 16,      // ln(~400) -> medium
-        8, 22,      // ln(~3000) -> large
-        10, 28      // ln(~22000) -> maximum
+        5, 12,      // ln(~150) -> small
+        7, 16,      // ln(~1100) -> medium
+        9, 22,      // ln(~8100) -> large
+        11, 28      // ln(~60000) -> maximum
       ];
 
-      // Single label layer - only shows positive discrepancy
+      // Single label layer - shows population discrepancy
       mapInstance.addLayer({
         id: "settlements-labels",
         type: "symbol",
@@ -442,16 +449,16 @@ export default function Map() {
         "source-layer": LAYERS.settlements.sourceLayer,
         minzoom: 8,
         maxzoom: 14,
-        // Only show labels where buildings > renabap_families
+        // Only show labels where estimated pop > RENABAP pop
         filter: [">", ["get", "building_count"], ["get", "renabap_families"]],
         layout: {
-          "text-field": ["concat", "+", ["number-format", positiveDiscrepancy, { "locale": "es-AR" }]],
+          "text-field": ["concat", "+", ["number-format", positivePopDiscrepancy, { "locale": "es-AR" }]],
           "text-font": ["Helvetica Bold"],
           "text-size": discrepancyTextSize,
           "text-anchor": "center",
           "text-allow-overlap": false,
           "text-ignore-placement": false,
-          "symbol-sort-key": ["-", positiveDiscrepancy], // larger discrepancies on top
+          "symbol-sort-key": ["-", positivePopDiscrepancy],
           "symbol-avoid-edges": true,
         },
         paint: {
@@ -543,6 +550,40 @@ export default function Map() {
       highlightOpacity
     );
   }, [map, tutorialActive, tutorialStep]);
+
+  // Update label layer when population params change
+  useEffect(() => {
+    if (!map || !map.getStyle()) return;
+    if (!map.getLayer("settlements-labels")) return;
+
+    // Population discrepancy: mult * (building_count * occ - renabap_families)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const positivePopDiscrepancy: any = [
+      "max", 0,
+      ["*", populationMultiplier, ["-", ["*", ["get", "building_count"], occupationRate], ["get", "renabap_families"]]]
+    ];
+
+    // Text size scales with population discrepancy magnitude
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const discrepancyTextSize: any = [
+      "interpolate",
+      ["linear"],
+      ["ln", ["max", 1, positivePopDiscrepancy]],
+      0, 10,
+      5, 12,
+      7, 16,
+      9, 22,
+      11, 28
+    ];
+
+    map.setLayoutProperty(
+      "settlements-labels",
+      "text-field",
+      ["concat", "+", ["number-format", positivePopDiscrepancy, { "locale": "es-AR" }]]
+    );
+    map.setLayoutProperty("settlements-labels", "text-size", discrepancyTextSize);
+    map.setLayoutProperty("settlements-labels", "symbol-sort-key", ["-", positivePopDiscrepancy]);
+  }, [map, populationMultiplier, occupationRate]);
 
   return (
     <div className="absolute inset-0">

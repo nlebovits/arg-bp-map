@@ -6,8 +6,9 @@ import { useShallow } from "zustand/react/shallow";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { useMapStore } from "@/lib/store";
 import type { Locale } from "@/i18n/routing";
-import { Bars3Icon, XMarkIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon, InformationCircleIcon, ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import PopulationComparison from "./PopulationComparison";
+import DiscrepancyTable from "./DiscrepancyTable";
 import InfoModal from "./InfoModal";
 
 type ModalType = "explainer" | "data" | null;
@@ -16,11 +17,13 @@ function SidebarComponent() {
   const t = useTranslations("sidebar");
   const tPop = useTranslations("sidebar.population");
   const tAttr = useTranslations("sidebar.attribution");
+  const tDisc = useTranslations("discrepancyTable");
   const locale = useLocale() as Locale;
   const router = useRouter();
   const pathname = usePathname();
 
   const [activeModal, setActiveModal] = useState<ModalType>(null);
+  const [paramsExpanded, setParamsExpanded] = useState(false);
   const [multiplierInfoExpanded, setMultiplierInfoExpanded] = useState(false);
   const [occupationInfoExpanded, setOccupationInfoExpanded] = useState(false);
 
@@ -128,110 +131,126 @@ function SidebarComponent() {
         </header>
 
         {/* Main content */}
-        <div className="flex-1 px-6 py-6 overflow-y-auto space-y-8">
+        <div className="flex-1 px-6 py-6 overflow-y-auto space-y-4">
           {/* Population comparison - lead number */}
           <PopulationComparison />
 
-          {/* Estimate parameters */}
-          <div className="space-y-4">
-            {/* Header */}
-            <h2 className="text-sm font-medium text-secondary uppercase tracking-widest">
-              {tPop("header")}
-            </h2>
+          {/* Collapsible estimate parameters */}
+          <div className="space-y-2">
+            {/* Toggle header */}
+            <button
+              onClick={() => setParamsExpanded(!paramsExpanded)}
+              className="flex items-center gap-2 text-sm font-medium text-secondary uppercase tracking-widest hover:text-foreground transition-colors w-full"
+            >
+              {paramsExpanded ? (
+                <ChevronUpIcon className="w-4 h-4" />
+              ) : (
+                <ChevronDownIcon className="w-4 h-4" />
+              )}
+              {tDisc("adjustEstimates")}
+            </button>
 
-            {/* Population multiplier */}
-            <div>
-              <div className="flex items-center gap-1 mb-2">
-                <label className="text-sm text-secondary">
-                  {tPop("multiplier")}
-                </label>
-                <button
-                  onClick={() => setMultiplierInfoExpanded(!multiplierInfoExpanded)}
-                  className="w-11 h-11 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors rounded hover:bg-muted -my-2"
-                  aria-label={multiplierInfoExpanded ? tPop("hideInfo") : tPop("showInfo")}
-                  aria-expanded={multiplierInfoExpanded}
-                >
-                  <InformationCircleIcon className="w-4 h-4" />
-                </button>
-              </div>
-              <div className={`expandable-panel ${multiplierInfoExpanded ? "expanded" : ""}`}>
+            {/* Collapsible content */}
+            <div className={`expandable-panel ${paramsExpanded ? "expanded" : ""}`}>
+              <div className="space-y-4 pt-2">
+                {/* Population multiplier */}
                 <div>
-                  <p className="text-xs text-secondary leading-relaxed mb-2">
-                    {tPop("multiplierInfo")}
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setPopulationMultiplier(2.8)}
-                  className={`flex-1 px-3 py-2 min-h-[44px] text-sm rounded border transition-colors ${
-                    populationMultiplier === 2.8
-                      ? "bg-accent/20 border-accent text-foreground"
-                      : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
-                  }`}
-                >
-                  {tPop("multiplierINDEC")}
-                </button>
-                <button
-                  onClick={() => setPopulationMultiplier(3.35)}
-                  className={`flex-1 px-3 py-2 min-h-[44px] text-sm rounded border transition-colors ${
-                    populationMultiplier === 3.35
-                      ? "bg-accent/20 border-accent text-foreground"
-                      : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
-                  }`}
-                >
-                  {tPop("multiplierRENABAP")}
-                </button>
-              </div>
-            </div>
-
-            {/* Occupation rate */}
-            <div>
-              <div className="flex items-center gap-1 mb-2">
-                <label className="text-sm text-secondary">
-                  {tPop("occupation")}
-                </label>
-                <button
-                  onClick={() => setOccupationInfoExpanded(!occupationInfoExpanded)}
-                  className="w-11 h-11 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors rounded hover:bg-muted -my-2"
-                  aria-label={occupationInfoExpanded ? tPop("hideInfo") : tPop("showInfo")}
-                  aria-expanded={occupationInfoExpanded}
-                >
-                  <InformationCircleIcon className="w-4 h-4" />
-                </button>
-              </div>
-              <div className={`expandable-panel ${occupationInfoExpanded ? "expanded" : ""}`}>
-                <div>
-                  <p className="text-xs text-secondary leading-relaxed mb-2">
-                    {tPop("occupationInfo")}{" "}
-                    <a
-                      href="https://nlebovits.github.io/posts/writing/informal-settlements-argentina/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline underline-offset-2 hover:text-foreground/80"
+                  <div className="flex items-center gap-1 mb-2">
+                    <label className="text-sm text-secondary">
+                      {tPop("multiplier")}
+                    </label>
+                    <button
+                      onClick={() => setMultiplierInfoExpanded(!multiplierInfoExpanded)}
+                      className="w-11 h-11 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors rounded hover:bg-muted -my-2"
+                      aria-label={multiplierInfoExpanded ? tPop("hideInfo") : tPop("showInfo")}
+                      aria-expanded={multiplierInfoExpanded}
                     >
-                      {tPop("occupationInfoLink")}
-                    </a>
-                  </p>
+                      <InformationCircleIcon className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className={`expandable-panel ${multiplierInfoExpanded ? "expanded" : ""}`}>
+                    <div>
+                      <p className="text-xs text-secondary leading-relaxed mb-2">
+                        {tPop("multiplierInfo")}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setPopulationMultiplier(2.8)}
+                      className={`flex-1 px-3 py-2 min-h-[44px] text-sm rounded border transition-colors ${
+                        populationMultiplier === 2.8
+                          ? "bg-accent/20 border-accent text-foreground"
+                          : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
+                      }`}
+                    >
+                      {tPop("multiplierINDEC")}
+                    </button>
+                    <button
+                      onClick={() => setPopulationMultiplier(3.35)}
+                      className={`flex-1 px-3 py-2 min-h-[44px] text-sm rounded border transition-colors ${
+                        populationMultiplier === 3.35
+                          ? "bg-accent/20 border-accent text-foreground"
+                          : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
+                      }`}
+                    >
+                      {tPop("multiplierRENABAP")}
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-2">
-                {([0.85, 0.9, 0.95, 1.0] as const).map((rate) => (
-                  <button
-                    key={rate}
-                    onClick={() => setOccupationRate(rate)}
-                    className={`flex-1 px-2 py-2 min-h-[44px] text-sm rounded border transition-colors ${
-                      occupationRate === rate
-                        ? "bg-accent/20 border-accent text-foreground"
-                        : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
-                    }`}
-                  >
-                    {Math.round(rate * 100)}%
-                  </button>
-                ))}
+
+                {/* Occupation rate */}
+                <div>
+                  <div className="flex items-center gap-1 mb-2">
+                    <label className="text-sm text-secondary">
+                      {tPop("occupation")}
+                    </label>
+                    <button
+                      onClick={() => setOccupationInfoExpanded(!occupationInfoExpanded)}
+                      className="w-11 h-11 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors rounded hover:bg-muted -my-2"
+                      aria-label={occupationInfoExpanded ? tPop("hideInfo") : tPop("showInfo")}
+                      aria-expanded={occupationInfoExpanded}
+                    >
+                      <InformationCircleIcon className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className={`expandable-panel ${occupationInfoExpanded ? "expanded" : ""}`}>
+                    <div>
+                      <p className="text-xs text-secondary leading-relaxed mb-2">
+                        {tPop("occupationInfo")}{" "}
+                        <a
+                          href="https://nlebovits.github.io/posts/writing/informal-settlements-argentina/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline underline-offset-2 hover:text-foreground/80"
+                        >
+                          {tPop("occupationInfoLink")}
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    {([0.85, 0.9, 0.95, 1.0] as const).map((rate) => (
+                      <button
+                        key={rate}
+                        onClick={() => setOccupationRate(rate)}
+                        className={`flex-1 px-2 py-2 min-h-[44px] text-sm rounded border transition-colors ${
+                          occupationRate === rate
+                            ? "bg-accent/20 border-accent text-foreground"
+                            : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
+                        }`}
+                      >
+                        {Math.round(rate * 100)}%
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
+          {/* Discrepancy by area table */}
+          <DiscrepancyTable />
         </div>
 
         {/* Attribution */}

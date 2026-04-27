@@ -207,5 +207,26 @@
     "renabapFamilies": "RENABAP families",
     "detectedBuildings": "Detected buildings",
     "estPopulation": "Est. population"
+  },
+  "discrepancyTable": {
+    "header": "Discrepancy by Area",
+    "departamento": "Department",
+    "provincia": "Province",
+    "urbanRural": "Type",
+    "difference": "Difference",
+    "urban": "Urban",
+    "rural": "Rural",
+    "all": "All",
+    "allProvinces": "All Provinces",
+    "allTypes": "All Types",
+    "showMore": "Show all {count}",
+    "showLess": "Show top 10",
+    "noData": "No data available",
+    "loading": "Loading...",
+    "adjustEstimates": "Adjust Estimates",
+    "people": "people",
+    "info": "Shows the estimated population gap between building-based estimates and official RENABAP data, aggregated by department. Positive values indicate potential undercount in official records.",
+    "showInfo": "Show info",
+    "hideInfo": "Hide info"
   }
 }

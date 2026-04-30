@@ -99,22 +99,19 @@ function SidebarComponent() {
       >
         {/* Header */}
         <header className="relative px-6 py-6 border-b border-border">
-          {/* CNG attribution eyebrow */}
-          <div className="flex items-center gap-2 mb-3 font-mono text-[11px] uppercase tracking-[0.1em] text-secondary">
-            <svg
-              viewBox="0 0 96 96"
-              className="h-3 w-3"
-              aria-hidden="true"
-              focusable="false"
+          {/* Radiant Earth attribution */}
+          <p className="mb-3 font-mono text-[11px] tracking-[0.02em] text-secondary">
+            Barrios Visibles is a{" "}
+            <a
+              href="https://radiant.earth"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 hover:text-foreground"
             >
-              <path fill="#FFF" d="M0 0h96v96H0z" />
-              <path
-                fill="#2126F7"
-                d="M58.094 11.56a2.47 2.47 0 0 0-1.57-.56h-8.495c-.432 0-.86.095-1.251.275L18.722 24.23a3.37 3.37 0 0 0-1.934 2.682l-3.765 33.725a3.7 3.7 0 0 0 1.333 3.276l25 20.525c.445.364.998.563 1.573.563h7.64c.432 0 .862-.095 1.254-.275L78.46 71.468a3.17 3.17 0 0 0 1.813-2.517L83.97 35.55a4.73 4.73 0 0 0-1.703-4.178zM48.387 31c8.231 2.122 12.683 9.195 12.612 16.613-.066 7.076-4.464 14.363-12.455 16.387-16.944-4.6-16.453-28.356-.157-33"
-              />
-            </svg>
-            <span>A Radiant Earth × CNG project</span>
-          </div>
+              Radiant Earth
+            </a>{" "}
+            project
+          </p>
 
           {/* Mobile close X — inside sidebar top-right */}
           <button
@@ -310,7 +307,7 @@ function SidebarComponent() {
               onClick={() => router.replace(pathname, { locale: "es" })}
               className={`w-9 h-7 border min-h-[44px] md:min-h-0 transition-colors ${
                 locale === "es"
-                  ? "bg-accent text-white border-accent"
+                  ? "bg-transparent text-foreground border-foreground"
                   : "bg-transparent text-secondary border-border hover:text-foreground"
               }`}
             >
@@ -320,7 +317,7 @@ function SidebarComponent() {
               onClick={() => router.replace(pathname, { locale: "en" })}
               className={`w-9 h-7 border border-l-0 min-h-[44px] md:min-h-0 transition-colors ${
                 locale === "en"
-                  ? "bg-accent text-white border-accent"
+                  ? "bg-transparent text-foreground border-foreground"
                   : "bg-transparent text-secondary border-border hover:text-foreground"
               }`}
             >

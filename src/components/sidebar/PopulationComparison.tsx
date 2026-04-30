@@ -72,7 +72,7 @@ export default function PopulationComparison() {
             <span className="text-foreground font-mono text-xs">{formatMillions(renabapPopulation)}</span>
           </div>
           <div
-            className="h-3 transition-all duration-300"
+            className="h-3 rounded-sm transition-all duration-300"
             style={{ width: `${renabapWidth}%`, background: 'var(--secondary)' }}
           />
         </div>
@@ -84,7 +84,7 @@ export default function PopulationComparison() {
             <span className="text-foreground font-mono font-bold text-xs">{formatMillions(estimatedPopulation)}</span>
           </div>
           <div
-            className="h-3 transition-all duration-300"
+            className="h-3 rounded-sm transition-all duration-300"
             style={{ width: `${estimateWidth}%`, background: 'var(--accent)' }}
           />
         </div>

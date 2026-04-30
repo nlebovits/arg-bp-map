@@ -216,7 +216,7 @@ export default function DiscrepancyTable() {
               >
                 <div className="flex justify-between items-baseline gap-2">
                   <span className="font-bold text-foreground text-sm">{row.departamento}</span>
-                  <span className="font-mono font-bold text-foreground whitespace-nowrap">
+                  <span className="font-mono font-bold text-accent whitespace-nowrap">
                     +{formatNumber(row.difference)}
                   </span>
                 </div>
@@ -252,7 +252,7 @@ export default function DiscrepancyTable() {
                         {row.provincia} · {row.isUrban ? t("urban") : t("rural")}
                       </div>
                     </td>
-                    <td className="text-right px-2 py-1.5 font-mono font-bold text-foreground whitespace-nowrap">
+                    <td className="text-right px-2 py-1.5 font-mono font-bold text-accent whitespace-nowrap">
                       +{formatNumber(row.difference)}
                     </td>
                   </tr>

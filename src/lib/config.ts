@@ -70,18 +70,18 @@ export const INITIAL_VIEW = {
   zoom: 3.75,
 };
 
-// Styling - CarbonPlan-inspired palette
+// Styling
 export const COLORS = {
   buildings: {
-    fill: "rgba(255, 255, 255, 0.25)", // White, subtle
+    fill: "rgba(255, 255, 255, 0.25)",
     outline: "rgba(255, 255, 255, 0.4)",
   },
   settlements: {
     // Grey (match) -> Orange (undercount) per legend
-    match: "#808080",      // Grey - low discrepancy
-    undercount: "#ea9755", // CarbonPlan orange - high discrepancy
-    outline: "rgba(234, 151, 85, 0.9)", // Orange outline
-    highlight: "#fbbf24",  // amber-400 for tutorial highlight
+    match: "#808080",
+    undercount: "#ea9755",
+    outline: "rgba(234, 151, 85, 0.9)",
+    highlight: "#fbbf24",
   },
 };
 

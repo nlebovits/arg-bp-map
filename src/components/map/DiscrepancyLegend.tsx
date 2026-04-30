@@ -71,7 +71,7 @@ export default function DiscrepancyLegend() {
               aria-label={showSettlements ? t("hideLayer") : t("showLayer")}
             >
               {showSettlements ? (
-                <EyeIcon className="w-5 h-5 text-accent" />
+                <EyeIcon className="w-5 h-5 text-foreground" />
               ) : (
                 <EyeSlashIcon className="w-5 h-5" />
               )}
@@ -139,7 +139,7 @@ export default function DiscrepancyLegend() {
               aria-label={showBuildings ? t("hideLayer") : t("showLayer")}
             >
               {showBuildings ? (
-                <EyeIcon className="w-5 h-5 text-accent" />
+                <EyeIcon className="w-5 h-5 text-foreground" />
               ) : (
                 <EyeSlashIcon className="w-5 h-5" />
               )}

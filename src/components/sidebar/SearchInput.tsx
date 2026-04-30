@@ -102,8 +102,8 @@ function SearchInputComponent({ placeholder }: SearchInputProps) {
             setTimeout(() => setDismissedQuery(query), 150);
           }}
           placeholder={resolvedPlaceholder}
-          className="w-full pl-11 pr-4 py-3 bg-surface-raised border border-muted rounded-md
-                     font-mono text-sm text-foreground placeholder:text-secondary
+          className="w-full pl-11 pr-4 py-3 bg-surface-raised border border-muted rounded-none
+                     font-mono text-xs text-foreground placeholder:text-secondary
                      focus:outline-none focus:ring-1 focus:ring-accent/50 focus:border-accent/50
                      transition-all"
           role="combobox"
@@ -127,7 +127,7 @@ function SearchInputComponent({ placeholder }: SearchInputProps) {
           id="search-suggestions"
           role="listbox"
           className="absolute z-50 w-full mt-1 bg-surface-raised border border-muted
-                     rounded shadow-lg max-h-60 overflow-auto"
+                     rounded-none shadow-lg max-h-60 overflow-auto"
         >
           {suggestions.map((suggestion, index) => (
             <li
@@ -136,11 +136,11 @@ function SearchInputComponent({ placeholder }: SearchInputProps) {
               aria-selected={index === highlightedIndex}
               onClick={() => handleSelect(suggestion)}
               onMouseEnter={() => setHighlightedIndex(index)}
-              className={`px-3 py-2 cursor-pointer font-mono text-sm transition-colors
+              className={`px-3 py-2 cursor-pointer font-mono text-xs transition-colors
                 ${
                   index === highlightedIndex
                     ? "bg-accent-muted text-accent-hover"
-                    : "text-foreground/80 hover:bg-hinted"
+                    : "text-foreground hover:bg-hinted"
                 }`}
             >
               <div className="font-medium truncate">{suggestion.name}</div>

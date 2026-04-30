@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-100 -100 200 200" fill="none">
+  <title>Barrios Visibles — mark, white</title>
+  <g transform="rotate(-38)" fill="#FFFFFF">
+    <polygon points="-72,-72 -28,-74 -26,-30 -70,-28"></polygon>
+    <polygon points="-22,-74 22,-72 24,-28 -20,-30"></polygon>
+    <polygon points="-72,-22 -2,-24 0,22 -70,20"></polygon>
+    <polygon points="6,-24 72,-22 70,22 4,20"></polygon>
+    <polygon points="-72,28 -28,30 -26,72 -70,70"></polygon>
+    <polygon points="-22,30 22,28 24,72 -20,70"></polygon>
+    <polygon points="28,28 72,30 74,72 30,70"></polygon>
+    <polygon points="28,-72 72,-74 74,-50 56,-48 58,-30 30,-28"></polygon>
+  </g>
+</svg>

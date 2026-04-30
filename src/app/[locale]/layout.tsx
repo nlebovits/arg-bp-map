@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
+import { JetBrains_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
@@ -7,9 +8,21 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { routing, type Locale } from "@/i18n/routing";
 
-const inter = Inter({
-  variable: "--font-inter",
+const iaWriter = localFont({
+  src: [
+    { path: "../../../public/fonts/iAWriterQuattroS-Regular.woff2",    weight: "400", style: "normal" },
+    { path: "../../../public/fonts/iAWriterQuattroS-Italic.woff2",     weight: "400", style: "italic" },
+    { path: "../../../public/fonts/iAWriterQuattroS-Bold.woff2",       weight: "700", style: "normal" },
+    { path: "../../../public/fonts/iAWriterQuattroS-BoldItalic.woff2", weight: "700", style: "italic" },
+  ],
+  variable: "--font-sans-cng",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono-cng",
   subsets: ["latin"],
+  weight: ["400", "700"],
   display: "swap",
 });
 
@@ -101,7 +114,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   };
 
   return (
-    <html lang={locale} className={`${inter.variable} h-full`}>
+    <html lang={locale} className={`${iaWriter.variable} ${jetbrainsMono.variable} h-full`}>
       <head>
         {/* Preconnect to tile CDNs for faster map loading */}
         <link rel="preconnect" href="https://server.arcgisonline.com" />

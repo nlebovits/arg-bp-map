@@ -15,13 +15,6 @@ interface RawRow {
   e: number; // estimated_families (building_count * 1.1)
 }
 
-interface AggregatedRow {
-  departamento: string;
-  provincia: string;
-  isUrban: boolean;
-  difference: number;
-}
-
 export default function DiscrepancyTable() {
   const t = useTranslations("discrepancyTable");
 
@@ -129,7 +122,7 @@ export default function DiscrepancyTable() {
     return (
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-medium text-secondary uppercase tracking-widest">
+          <h2 className="font-mono text-xs uppercase tracking-[0.1em] font-bold text-foreground">
             {t("header")}
           </h2>
         </div>
@@ -142,11 +135,11 @@ export default function DiscrepancyTable() {
     return (
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-medium text-secondary uppercase tracking-widest">
+          <h2 className="font-mono text-xs uppercase tracking-[0.1em] font-bold text-foreground">
             {t("header")}
           </h2>
         </div>
-        <p className="text-xs text-red-400">Error: {error}</p>
+        <p className="text-xs text-cp-yellow">Error: {error}</p>
       </div>
     );
   }
@@ -155,7 +148,7 @@ export default function DiscrepancyTable() {
     <div className="space-y-2">
       {/* Header with info toggle */}
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-secondary uppercase tracking-widest">
+        <h2 className="font-mono text-xs uppercase tracking-[0.1em] font-bold text-foreground">
           {t("header")}
         </h2>
         <button
@@ -189,10 +182,10 @@ export default function DiscrepancyTable() {
           onFocus={() => setShowSuggestions(true)}
           onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
           placeholder={t("departamento")}
-          className="w-full px-2 py-1.5 text-xs bg-background border border-border rounded text-foreground min-h-[36px]"
+          className="w-full px-2 py-1.5 font-mono text-xs bg-background border border-border rounded-none text-foreground placeholder:text-secondary min-h-[36px] focus:outline-none focus:border-accent"
         />
         {showSuggestions && suggestions.length > 0 && (
-          <ul className="absolute z-10 w-full mt-1 bg-background border border-border rounded shadow-lg max-h-40 overflow-y-auto">
+          <ul className="absolute z-10 w-full mt-1 bg-background border border-border rounded-none shadow-lg max-h-40 overflow-y-auto">
             {suggestions.map((d) => (
               <li
                 key={d}
@@ -200,7 +193,7 @@ export default function DiscrepancyTable() {
                   setDeptFilter(d);
                   setShowSuggestions(false);
                 }}
-                className="px-2 py-1.5 text-xs text-foreground hover:bg-hinted cursor-pointer"
+                className="px-2 py-1.5 font-mono text-xs text-foreground hover:bg-hinted cursor-pointer"
               >
                 {d}
               </li>
@@ -213,38 +206,61 @@ export default function DiscrepancyTable() {
       {filteredData.length === 0 ? (
         <p className="text-xs text-secondary">{t("noData")}</p>
       ) : (
-        <div className="max-h-[240px] overflow-y-auto border border-border rounded">
-          <table className="w-full text-xs">
-            <thead className="sticky top-0 bg-background border-b border-border">
-              <tr>
-                <th className="text-left px-2 py-1.5 text-secondary font-medium">
-                  {t("departamento")}
-                </th>
-                <th className="text-right px-2 py-1.5 text-secondary font-medium">
-                  {t("difference")}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {displayData.map((row, i) => (
-                <tr
-                  key={`${row.departamento}-${row.provincia}-${row.isUrban}`}
-                  className={i % 2 === 0 ? "bg-hinted/30" : ""}
-                >
-                  <td className="px-2 py-1.5">
-                    <div className="text-foreground">{row.departamento}</div>
-                    <div className="text-secondary text-[10px]">
-                      {row.provincia} · {row.isUrban ? t("urban") : t("rural")}
-                    </div>
-                  </td>
-                  <td className="text-right px-2 py-1.5 text-accent font-medium whitespace-nowrap">
+        <>
+          {/* Mobile: stacked rows */}
+          <div className="md:hidden border-y border-border">
+            {displayData.map((row) => (
+              <div
+                key={`m-${row.departamento}-${row.provincia}-${row.isUrban}`}
+                className="flex flex-col py-3 px-2 border-b border-border last:border-b-0"
+              >
+                <div className="flex justify-between items-baseline gap-2">
+                  <span className="font-bold text-foreground text-sm">{row.departamento}</span>
+                  <span className="font-mono font-bold text-accent whitespace-nowrap">
                     +{formatNumber(row.difference)}
-                  </td>
+                  </span>
+                </div>
+                <span className="font-mono text-[10px] uppercase tracking-[0.04em] text-secondary mt-0.5">
+                  {row.provincia} · {row.isUrban ? t("urban") : t("rural")}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop: table */}
+          <div className="hidden md:block max-h-[240px] overflow-y-auto border border-border focus:outline-none focus:ring-1 focus:ring-accent" tabIndex={0}>
+            <table className="w-full text-xs">
+              <thead className="sticky top-0 bg-background border-b border-border">
+                <tr>
+                  <th className="text-left px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.08em] font-bold text-foreground">
+                    {t("departamento")}
+                  </th>
+                  <th className="text-right px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.08em] font-bold text-foreground">
+                    {t("difference")}
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {displayData.map((row, i) => (
+                  <tr
+                    key={`d-${row.departamento}-${row.provincia}-${row.isUrban}`}
+                    className={i % 2 === 0 ? "bg-hinted/30" : ""}
+                  >
+                    <td className="px-2 py-1.5">
+                      <div className="font-bold text-foreground">{row.departamento}</div>
+                      <div className="font-mono text-[10px] uppercase tracking-[0.04em] text-secondary">
+                        {row.provincia} · {row.isUrban ? t("urban") : t("rural")}
+                      </div>
+                    </td>
+                    <td className="text-right px-2 py-1.5 font-mono font-bold text-accent whitespace-nowrap">
+                      +{formatNumber(row.difference)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
 
       {/* Show more/less toggle */}

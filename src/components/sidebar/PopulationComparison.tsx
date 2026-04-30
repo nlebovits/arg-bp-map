@@ -41,7 +41,7 @@ export default function PopulationComparison() {
     <div className="space-y-2">
       {/* Header with info toggle - min 44px touch target */}
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-secondary uppercase tracking-widest">
+        <h2 className="font-mono text-xs uppercase tracking-[0.1em] font-bold text-foreground">
           {t("header")}
         </h2>
         <button
@@ -67,24 +67,24 @@ export default function PopulationComparison() {
       <div className="space-y-2">
         {/* RENABAP official - scales with multiplier */}
         <div className="space-y-1">
-          <div className="flex justify-between text-xs">
-            <span className="text-secondary">{t("renabap")}</span>
-            <span className="text-secondary">{formatMillions(renabapPopulation)}</span>
+          <div className="flex justify-between">
+            <span className="text-foreground font-mono text-xs uppercase tracking-[0.04em]">{t("renabap")}</span>
+            <span className="text-foreground font-mono text-xs">{formatMillions(renabapPopulation)}</span>
           </div>
           <div
-            className="h-4 rounded-full transition-all duration-300"
+            className="h-3 rounded-sm transition-all duration-300"
             style={{ width: `${renabapWidth}%`, background: 'var(--secondary)' }}
           />
         </div>
 
         {/* Our estimate - scales with occupation and multiplier */}
         <div className="space-y-1">
-          <div className="flex justify-between text-xs">
-            <span className="text-accent font-medium">{t("estimated")}</span>
-            <span className="text-accent font-medium">{formatMillions(estimatedPopulation)}</span>
+          <div className="flex justify-between">
+            <span className="text-foreground font-mono font-bold text-xs uppercase tracking-[0.04em]">{t("estimated")}</span>
+            <span className="text-foreground font-mono font-bold text-xs">{formatMillions(estimatedPopulation)}</span>
           </div>
           <div
-            className="h-4 rounded-full transition-all duration-300"
+            className="h-3 rounded-sm transition-all duration-300"
             style={{ width: `${estimateWidth}%`, background: 'var(--accent)' }}
           />
         </div>

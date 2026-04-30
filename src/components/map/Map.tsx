@@ -322,9 +322,8 @@ export default function Map() {
           ["max", 1, ["get", "renabap_families"]]
         ]]]],
         0, COLORS.settlements.match,      // ln(1) = 0 -> grey (match or overcounted)
-        0.4, "#909090",                   // slight undercount
-        0.7, "#a08060",                   // moderate
-        1.0, "#c08050",                   // significant
+        0.4, "#a08575",                   // slight undercount (muted orange-grey)
+        0.8, "#c99060",                   // moderate (mid orange)
         1.5, COLORS.settlements.undercount // ln(~4.5) -> orange (severe undercount)
       ];
 
@@ -372,15 +371,6 @@ export default function Map() {
             "circle-color": discrepancyColor,
             "circle-radius": populationRadius,
             "circle-opacity": 0.85,
-            "circle-stroke-color": COLORS.settlements.outline,
-            "circle-stroke-width": [
-              "interpolate",
-              ["linear"],
-              ["zoom"],
-              0, 0.5,
-              8, 1,
-              12, 1.5
-            ],
           },
         },
         LAYERS.buildings.fill

@@ -36,7 +36,7 @@ function FootnoteRef({ id }: { id: number }) {
     <sup>
       <a
         href={`#fn-${id}`}
-        className="text-accent hover:text-accent-hover no-underline ml-0.5"
+        className="font-mono text-secondary hover:text-foreground no-underline ml-0.5"
       >
         [{id}]
       </a>
@@ -56,7 +56,7 @@ function FootnoteItem({
       id={`fn-${id}`}
       className="text-sm text-secondary scroll-mt-4"
     >
-      <span className="text-accent/70 mr-1">[{id}]</span>
+      <span className="font-mono text-secondary mr-1">[{id}]</span>
       {children}
     </li>
   );
@@ -69,7 +69,7 @@ function ExplainerContent() {
     <div className="space-y-6">
       {/* Introduction */}
       <section>
-        <p className="text-foreground/80 leading-relaxed">
+        <p className="text-secondary leading-relaxed">
           {t("intro")}{" "}
           <ExternalLink href="https://nlebovits.github.io/posts/writing/informal-settlements-argentina/">
             {t("introLink")}
@@ -79,40 +79,40 @@ function ExplainerContent() {
 
       {/* The Problem */}
       <section>
-        <h3 className="text-lg font-semibold text-foreground mb-3">
+        <h3 className="font-sans font-bold text-2xl tracking-tight text-foreground mb-3">
           {t("problem.title")}
         </h3>
-        <p className="text-foreground/80 leading-relaxed mb-3">
+        <p className="text-secondary leading-relaxed mb-3">
           {t("problem.p1")}
         </p>
-        <p className="text-foreground/80 leading-relaxed">
+        <p className="text-secondary leading-relaxed">
           {t("problem.p2")}<FootnoteRef id={2} />
         </p>
       </section>
 
       {/* Key Findings */}
       <section>
-        <h3 className="text-lg font-semibold text-foreground mb-4">
+        <h3 className="font-sans font-bold text-2xl tracking-tight text-foreground mb-4">
           {t("findings.title")}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Stat 1: Official vs Actual */}
-          <div className="bg-hinted/80 border border-muted rounded-lg p-4 text-center">
-            <div className="text-3xl font-bold text-accent mb-1">+83%</div>
-            <div className="text-xs uppercase tracking-wider text-secondary mb-2">{t("findings.stat1Label")}</div>
-            <p className="text-sm text-foreground/70">{t("findings.stat1")}</p>
+          <div className="bg-hinted/80 border border-border p-4 text-center">
+            <div className="font-mono text-3xl font-bold text-foreground mb-1">+83%</div>
+            <div className="font-mono text-[11px] uppercase tracking-[0.1em] text-secondary mb-2">{t("findings.stat1Label")}</div>
+            <p className="text-sm text-secondary">{t("findings.stat1")}</p>
           </div>
           {/* Stat 2: Missing People */}
-          <div className="bg-accent/10 border border-accent/30 rounded-lg p-4 text-center">
-            <div className="text-3xl font-bold text-accent mb-1">2.9–3.4M</div>
-            <div className="text-xs uppercase tracking-wider text-secondary mb-2">{t("findings.stat2Label")}</div>
-            <p className="text-sm text-foreground/70">{t("findings.stat2")}</p>
+          <div className="bg-accent/10 border border-accent/30 p-4 text-center">
+            <div className="font-mono text-3xl font-bold text-foreground mb-1">2.9–3.4M</div>
+            <div className="font-mono text-[11px] uppercase tracking-[0.1em] text-secondary mb-2">{t("findings.stat2Label")}</div>
+            <p className="text-sm text-secondary">{t("findings.stat2")}</p>
           </div>
           {/* Stat 3: Population Share */}
-          <div className="bg-hinted/80 border border-muted rounded-lg p-4 text-center">
-            <div className="text-3xl font-bold text-accent mb-1">6–7%</div>
-            <div className="text-xs uppercase tracking-wider text-secondary mb-2">{t("findings.stat3Label")}</div>
-            <p className="text-sm text-foreground/70">{t("findings.stat3")}</p>
+          <div className="bg-hinted/80 border border-border p-4 text-center">
+            <div className="font-mono text-3xl font-bold text-foreground mb-1">6–7%</div>
+            <div className="font-mono text-[11px] uppercase tracking-[0.1em] text-secondary mb-2">{t("findings.stat3Label")}</div>
+            <p className="text-sm text-secondary">{t("findings.stat3")}</p>
           </div>
         </div>
         <p className="text-sm text-secondary mt-4 italic">
@@ -122,39 +122,39 @@ function ExplainerContent() {
 
       {/* Methodology */}
       <section>
-        <h3 className="text-lg font-semibold text-foreground mb-3">
+        <h3 className="font-sans font-bold text-2xl tracking-tight text-foreground mb-3">
           {t("methodology.title")}
         </h3>
-        <p className="text-foreground/80 leading-relaxed mb-3">
+        <p className="text-secondary leading-relaxed mb-3">
           {t("methodology.p1")}
         </p>
-        <p className="text-foreground/80 leading-relaxed">
+        <p className="text-secondary leading-relaxed">
           {t("methodology.p2")}
         </p>
-        <p className="text-foreground/80 leading-relaxed">
+        <p className="text-secondary leading-relaxed">
           {t("methodology.p2cont")}<FootnoteRef id={1} />
         </p>
       </section>
 
       {/* Why This Matters */}
-      <section className="bg-accent/5 border border-accent/20 rounded-lg p-4">
-        <h3 className="text-lg font-semibold text-foreground mb-3">
+      <section className="bg-accent/5 border border-accent/20 p-4">
+        <h3 className="font-sans font-bold text-2xl tracking-tight text-foreground mb-3">
           {t("why.title")}
         </h3>
-        <p className="text-foreground/80 leading-relaxed mb-3">
+        <p className="text-secondary leading-relaxed mb-3">
           {t("why.p1")}
         </p>
-        <p className="text-foreground/80 leading-relaxed">
+        <p className="text-secondary leading-relaxed">
           {t("why.p2")}
         </p>
       </section>
 
       {/* Caveats */}
       <section>
-        <h3 className="text-lg font-semibold text-foreground mb-3">
+        <h3 className="font-sans font-bold text-2xl tracking-tight text-foreground mb-3">
           {t("caveats.title")}
         </h3>
-        <ul className="space-y-2 text-foreground/80 text-sm leading-relaxed">
+        <ul className="space-y-2 text-secondary text-sm leading-relaxed">
           <li className="flex items-start gap-2">
             <span className="text-secondary mt-1">•</span>
             <span>{t("caveats.item1")}</span>
@@ -172,7 +172,7 @@ function ExplainerContent() {
 
       {/* Footnotes */}
       <section className="border-t border-border pt-4 mt-6">
-        <h4 className="text-xs font-medium text-secondary uppercase tracking-wider mb-3">
+        <h4 className="font-mono text-[11px] uppercase tracking-[0.1em] font-bold text-foreground mb-3">
           {t("footnotes.title")}
         </h4>
         <ol className="space-y-2 list-none">
@@ -227,13 +227,13 @@ function DataSourcesContent() {
 
   return (
     <div className="space-y-6">
-      <p className="text-foreground/80 leading-relaxed">
+      <p className="text-secondary leading-relaxed">
         {t("intro")}
       </p>
 
       {/* Building Footprints */}
-      <div className="bg-hinted/80 border border-muted rounded-lg p-4">
-        <h3 className="text-base font-semibold text-foreground mb-2">
+      <div className="bg-hinted/80 border border-border p-4">
+        <h3 className="font-sans font-bold text-xl tracking-tight text-foreground mb-2">
           {t("buildings.title")}
         </h3>
         <p className="text-sm text-secondary leading-relaxed mb-3">
@@ -253,8 +253,8 @@ function DataSourcesContent() {
       </div>
 
       {/* RENABAP */}
-      <div className="bg-hinted/80 border border-muted rounded-lg p-4">
-        <h3 className="text-base font-semibold text-foreground mb-2">
+      <div className="bg-hinted/80 border border-border p-4">
+        <h3 className="font-sans font-bold text-xl tracking-tight text-foreground mb-2">
           {t("renabap.title")}
         </h3>
         <p className="text-sm text-secondary leading-relaxed mb-3">
@@ -267,7 +267,7 @@ function DataSourcesContent() {
 
       {/* Technical details */}
       <div className="border-t border-border pt-4">
-        <h4 className="text-xs font-medium text-secondary uppercase tracking-wider mb-3">
+        <h4 className="font-mono text-[11px] uppercase tracking-[0.1em] font-bold text-foreground mb-3">
           {t("technical.title")}
         </h4>
         <ul className="space-y-1 text-sm text-secondary">
@@ -305,16 +305,16 @@ export default function InfoModal({ type, onClose }: InfoModalProps) {
           exit={{ scale: 0.95, opacity: 0 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
           onClick={(e) => e.stopPropagation()}
-          className="relative w-[90vw] md:w-[50vw] max-h-[80vh] bg-background border border-muted rounded-xl shadow-2xl overflow-hidden flex flex-col"
+          className="relative w-[90vw] md:w-[50vw] max-h-[80vh] bg-surface border border-border md:shadow-[4px_4px_0_var(--border)] overflow-hidden flex flex-col"
         >
           {/* Header - fixed */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-background">
-            <h2 className="text-xl font-semibold text-foreground">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-surface">
+            <h2 className="font-sans font-bold text-2xl tracking-tight text-foreground">
               {t(`${type}.title`)}
             </h2>
             <button
               onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center text-secondary hover:text-foreground hover:bg-muted rounded-lg transition-colors"
+              className="min-w-[44px] min-h-[44px] flex items-center justify-center text-secondary hover:text-foreground transition-colors"
               aria-label={tCommon("close")}
             >
               <XMarkIcon className="w-5 h-5" />

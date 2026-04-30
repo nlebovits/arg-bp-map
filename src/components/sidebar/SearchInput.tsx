@@ -140,7 +140,7 @@ function SearchInputComponent({ placeholder }: SearchInputProps) {
                 ${
                   index === highlightedIndex
                     ? "bg-accent-muted text-accent-hover"
-                    : "text-foreground/80 hover:bg-hinted"
+                    : "text-foreground hover:bg-hinted"
                 }`}
             >
               <div className="font-medium truncate">{suggestion.name}</div>

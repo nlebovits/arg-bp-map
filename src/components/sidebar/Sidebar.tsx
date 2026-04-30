@@ -134,14 +134,14 @@ function SidebarComponent() {
             {t("subheader.prefix")}{" "}
             <button
               onClick={() => setActiveModal("explainer")}
-              className="underline underline-offset-2 hover:text-cp-blue"
+              className="underline underline-offset-2 hover:text-foreground"
             >
               {t("subheader.explainer")}
             </button>
             {" "}{t("subheader.or")}{" "}
             <button
               onClick={() => setActiveModal("data")}
-              className="underline underline-offset-2 hover:text-cp-blue"
+              className="underline underline-offset-2 hover:text-foreground"
             >
               {t("subheader.data")}
             </button>
@@ -180,7 +180,7 @@ function SidebarComponent() {
                     </label>
                     <button
                       onClick={() => setMultiplierInfoExpanded(!multiplierInfoExpanded)}
-                      className="w-11 h-11 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors -my-2"
+                      className="w-11 h-11 flex items-center justify-center text-secondary hover:text-foreground transition-colors -my-2"
                       aria-label={multiplierInfoExpanded ? tPop("hideInfo") : tPop("showInfo")}
                       aria-expanded={multiplierInfoExpanded}
                     >
@@ -226,7 +226,7 @@ function SidebarComponent() {
                     </label>
                     <button
                       onClick={() => setOccupationInfoExpanded(!occupationInfoExpanded)}
-                      className="w-11 h-11 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors -my-2"
+                      className="w-11 h-11 flex items-center justify-center text-secondary hover:text-foreground transition-colors -my-2"
                       aria-label={occupationInfoExpanded ? tPop("hideInfo") : tPop("showInfo")}
                       aria-expanded={occupationInfoExpanded}
                     >
@@ -241,7 +241,7 @@ function SidebarComponent() {
                           href="https://nlebovits.github.io/posts/writing/informal-settlements-argentina/"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="underline underline-offset-2 hover:text-cp-blue"
+                          className="underline underline-offset-2 hover:text-foreground"
                         >
                           {tPop("occupationInfoLink")}
                         </a>
@@ -279,7 +279,7 @@ function SidebarComponent() {
             href="https://nlebovits.github.io/"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:text-cp-blue"
+            className="underline underline-offset-2 hover:text-foreground"
           >
             Nissim Lebovits
           </a>{" "}
@@ -288,7 +288,7 @@ function SidebarComponent() {
             href="https://source.coop/vida/google-microsoft-osm-open-buildings"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:text-cp-blue"
+            className="underline underline-offset-2 hover:text-foreground"
           >
             Google-Microsoft-OSM building footprints
           </a>{" "}
@@ -297,7 +297,7 @@ function SidebarComponent() {
             href="https://www.argentina.gob.ar/habitat/renabap"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:text-cp-blue"
+            className="underline underline-offset-2 hover:text-foreground"
           >
             RENABAP
           </a>.

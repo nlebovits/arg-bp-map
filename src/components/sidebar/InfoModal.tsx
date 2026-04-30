@@ -36,7 +36,7 @@ function FootnoteRef({ id }: { id: number }) {
     <sup>
       <a
         href={`#fn-${id}`}
-        className="font-mono text-cp-blue hover:text-foreground no-underline ml-0.5"
+        className="font-mono text-secondary hover:text-foreground no-underline ml-0.5"
       >
         [{id}]
       </a>
@@ -69,7 +69,7 @@ function ExplainerContent() {
     <div className="space-y-6">
       {/* Introduction */}
       <section>
-        <p className="text-foreground/80 leading-relaxed">
+        <p className="text-secondary leading-relaxed">
           {t("intro")}{" "}
           <ExternalLink href="https://nlebovits.github.io/posts/writing/informal-settlements-argentina/">
             {t("introLink")}
@@ -82,10 +82,10 @@ function ExplainerContent() {
         <h3 className="font-sans font-bold text-2xl tracking-tight text-foreground mb-3">
           {t("problem.title")}
         </h3>
-        <p className="text-foreground/80 leading-relaxed mb-3">
+        <p className="text-secondary leading-relaxed mb-3">
           {t("problem.p1")}
         </p>
-        <p className="text-foreground/80 leading-relaxed">
+        <p className="text-secondary leading-relaxed">
           {t("problem.p2")}<FootnoteRef id={2} />
         </p>
       </section>
@@ -100,19 +100,19 @@ function ExplainerContent() {
           <div className="bg-hinted/80 border border-border p-4 text-center">
             <div className="font-mono text-3xl font-bold text-foreground mb-1">+83%</div>
             <div className="font-mono text-[11px] uppercase tracking-[0.1em] text-secondary mb-2">{t("findings.stat1Label")}</div>
-            <p className="text-sm text-foreground/70">{t("findings.stat1")}</p>
+            <p className="text-sm text-secondary">{t("findings.stat1")}</p>
           </div>
           {/* Stat 2: Missing People */}
           <div className="bg-accent/10 border border-accent/30 p-4 text-center">
             <div className="font-mono text-3xl font-bold text-foreground mb-1">2.9–3.4M</div>
             <div className="font-mono text-[11px] uppercase tracking-[0.1em] text-secondary mb-2">{t("findings.stat2Label")}</div>
-            <p className="text-sm text-foreground/70">{t("findings.stat2")}</p>
+            <p className="text-sm text-secondary">{t("findings.stat2")}</p>
           </div>
           {/* Stat 3: Population Share */}
           <div className="bg-hinted/80 border border-border p-4 text-center">
             <div className="font-mono text-3xl font-bold text-foreground mb-1">6–7%</div>
             <div className="font-mono text-[11px] uppercase tracking-[0.1em] text-secondary mb-2">{t("findings.stat3Label")}</div>
-            <p className="text-sm text-foreground/70">{t("findings.stat3")}</p>
+            <p className="text-sm text-secondary">{t("findings.stat3")}</p>
           </div>
         </div>
         <p className="text-sm text-secondary mt-4 italic">
@@ -125,13 +125,13 @@ function ExplainerContent() {
         <h3 className="font-sans font-bold text-2xl tracking-tight text-foreground mb-3">
           {t("methodology.title")}
         </h3>
-        <p className="text-foreground/80 leading-relaxed mb-3">
+        <p className="text-secondary leading-relaxed mb-3">
           {t("methodology.p1")}
         </p>
-        <p className="text-foreground/80 leading-relaxed">
+        <p className="text-secondary leading-relaxed">
           {t("methodology.p2")}
         </p>
-        <p className="text-foreground/80 leading-relaxed">
+        <p className="text-secondary leading-relaxed">
           {t("methodology.p2cont")}<FootnoteRef id={1} />
         </p>
       </section>
@@ -141,10 +141,10 @@ function ExplainerContent() {
         <h3 className="font-sans font-bold text-2xl tracking-tight text-foreground mb-3">
           {t("why.title")}
         </h3>
-        <p className="text-foreground/80 leading-relaxed mb-3">
+        <p className="text-secondary leading-relaxed mb-3">
           {t("why.p1")}
         </p>
-        <p className="text-foreground/80 leading-relaxed">
+        <p className="text-secondary leading-relaxed">
           {t("why.p2")}
         </p>
       </section>
@@ -154,7 +154,7 @@ function ExplainerContent() {
         <h3 className="font-sans font-bold text-2xl tracking-tight text-foreground mb-3">
           {t("caveats.title")}
         </h3>
-        <ul className="space-y-2 text-foreground/80 text-sm leading-relaxed">
+        <ul className="space-y-2 text-secondary text-sm leading-relaxed">
           <li className="flex items-start gap-2">
             <span className="text-secondary mt-1">•</span>
             <span>{t("caveats.item1")}</span>
@@ -227,7 +227,7 @@ function DataSourcesContent() {
 
   return (
     <div className="space-y-6">
-      <p className="text-foreground/80 leading-relaxed">
+      <p className="text-secondary leading-relaxed">
         {t("intro")}
       </p>
 

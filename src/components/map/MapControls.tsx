@@ -55,8 +55,7 @@ export default function MapControls() {
       {/* Top right: Reset + Location buttons - on mobile sits below the mobile header bar; on desktop below the zoom controls */}
       {!tutorialActive && (
         <div
-          className="absolute right-[10px] z-20 flex flex-col bg-surface-raised border border-border overflow-hidden md:top-[120px]"
-          style={{ top: "calc(env(safe-area-inset-top) + 72px)" }}
+          className="map-control-buttons absolute right-[10px] z-20 flex flex-col bg-surface-raised border border-border overflow-hidden"
         >
           {/* Reset view button - match zoom control size (44px) */}
           <button

@@ -120,6 +120,17 @@ body {
   overflow: hidden;
 }
 
+/* Map control buttons positioning — below header on mobile, below zoom on desktop */
+.map-control-buttons {
+  top: calc(env(safe-area-inset-top) + 72px);
+}
+
+@media (min-width: 768px) {
+  .map-control-buttons {
+    top: 120px;
+  }
+}
+
 /* MapLibre overrides — CNG hard edges */
 .maplibregl-map {
   font-family: inherit;

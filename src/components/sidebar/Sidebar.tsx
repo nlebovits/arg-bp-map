@@ -69,9 +69,12 @@ function SidebarComponent() {
           className="md:hidden fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border px-4 flex items-center justify-between pt-[env(safe-area-inset-top)]"
           style={{ height: "calc(56px + env(safe-area-inset-top))" }}
         >
-          <h1 className="font-sans font-bold text-base tracking-tight text-foreground">
-            Barrios Visibles
-          </h1>
+{/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logos/barrios-visibles-mark-white.svg"
+            alt="Barrios Visibles"
+            className="h-8 w-auto"
+          />
           <button
             onClick={() => setSidebarOpen(true)}
             className="w-11 h-11 flex items-center justify-center text-foreground"
@@ -122,10 +125,12 @@ function SidebarComponent() {
             <XMarkIcon className="w-5 h-5" />
           </button>
 
-          <h1 className="font-sans font-bold text-[44px] sm:text-5xl md:text-6xl text-foreground tracking-[-0.025em] leading-[0.95]">
-            <span className="block">BARRIOS</span>
-            <span className="block ml-8">VISIBLES</span>
-          </h1>
+{/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logos/barrios-visibles-lockup-white.svg"
+            alt="Barrios Visibles"
+            className="h-20 sm:h-24 md:h-28 w-auto"
+          />
           <p className="text-lg text-secondary mt-8 leading-relaxed">
             {t("tagline")}{" "}
             {t("subheader.prefix")}{" "}

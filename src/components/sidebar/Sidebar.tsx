@@ -101,9 +101,9 @@ function SidebarComponent() {
         `}
       >
         {/* Header */}
-        <header className="relative px-6 py-6 border-b border-border">
+        <header className="relative px-6 py-5 border-b border-border">
           {/* Radiant Earth attribution */}
-          <p className="mb-3 font-mono text-[11px] tracking-[0.02em] text-secondary">
+          <p className="mb-5 font-mono text-xs tracking-[0.02em] text-secondary">
             Barrios Visibles is a{" "}
             <a
               href="https://radiant.earth"
@@ -129,9 +129,9 @@ function SidebarComponent() {
           <img
             src="/logos/barrios-visibles-lockup-white.svg"
             alt="Barrios Visibles"
-            className="h-28 sm:h-32 md:h-40 w-auto"
+            className="h-24 sm:h-28 md:h-32 w-auto"
           />
-          <p className="text-lg text-secondary mt-8 leading-relaxed">
+          <p className="text-lg text-secondary mt-4 leading-relaxed">
             {t("tagline")}{" "}
             {t("subheader.prefix")}{" "}
             <button

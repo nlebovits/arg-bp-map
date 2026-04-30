@@ -11,7 +11,7 @@
     <polygon points="28,-72 72,-74 74,-50 56,-48 58,-30 30,-28"></polygon>
   </g>
   <g fill="#FFFFFF" font-family="iA Writer Quattro, ui-sans-serif, system-ui, sans-serif" font-weight="700">
-    <text x="260" y="108" font-size="50" letter-spacing="-1.5">BARRIOS</text>
-    <text x="298" y="166" font-size="50" letter-spacing="-1.5">VISIBLES</text>
+    <text x="250" y="100" font-size="62" letter-spacing="-1.5">BARRIOS</text>
+    <text x="295" y="168" font-size="62" letter-spacing="-1.5">VISIBLES</text>
   </g>
 </svg>

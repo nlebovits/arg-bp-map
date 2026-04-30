@@ -10,11 +10,10 @@
   --muted: #2A303A;
   --hinted: #1C2128;
 
-  /* Accent — Bonus Blue replaces CarbonPlan orange */
-  --accent: #2126F7;
-  --accent-muted: rgba(33, 38, 247, 0.15);
-  --accent-hover: #1B1FD4;
-  --accent-text: #7B80FF;  /* Higher luminance for text on dark — passes WCAG AA */
+  /* Accent — Orange for visibility/urgency */
+  --accent: #ea9755;
+  --accent-muted: rgba(234, 151, 85, 0.15);
+  --accent-hover: #f0a366;
 
   /* Semantic */
   --border: #2A303A;
@@ -43,7 +42,6 @@
   --color-accent: var(--accent);
   --color-accent-muted: var(--accent-muted);
   --color-accent-hover: var(--accent-hover);
-  --color-accent-text: var(--accent-text);
   --color-border: var(--border);
   --color-surface: var(--surface);
   --color-surface-raised: var(--surface-raised);

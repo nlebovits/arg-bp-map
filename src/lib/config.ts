@@ -70,18 +70,18 @@ export const INITIAL_VIEW = {
   zoom: 3.75,
 };
 
-// Styling - CNG palette (Bonus Blue accent)
+// Styling
 export const COLORS = {
   buildings: {
-    fill: "rgba(246, 245, 244, 0.22)",   // CNG soft-white at low alpha
-    outline: "rgba(246, 245, 244, 0.4)",
+    fill: "rgba(255, 255, 255, 0.25)",
+    outline: "rgba(255, 255, 255, 0.4)",
   },
   settlements: {
-    // Grey (match) -> Bonus Blue (undercount) per legend
-    match: "#6B7079",                    // CNG ink-3 grey for low discrepancy
-    undercount: "#2126F7",               // CNG Bonus Blue for high discrepancy
-    outline: "rgba(33, 38, 247, 0.9)",
-    highlight: "#7B80FF",                // CNG link-on-dark blue for tutorial highlight
+    // Grey (match) -> Orange (undercount) per legend
+    match: "#808080",
+    undercount: "#ea9755",
+    outline: "rgba(234, 151, 85, 0.9)",
+    highlight: "#fbbf24",
   },
 };
 

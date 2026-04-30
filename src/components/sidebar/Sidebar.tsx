@@ -129,7 +129,7 @@ function SidebarComponent() {
           <img
             src="/logos/barrios-visibles-lockup-white.svg"
             alt="Barrios Visibles"
-            className="h-20 sm:h-24 md:h-28 w-auto"
+            className="h-28 sm:h-32 md:h-40 w-auto"
           />
           <p className="text-lg text-secondary mt-8 leading-relaxed">
             {t("tagline")}{" "}

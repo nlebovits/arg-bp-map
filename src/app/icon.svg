@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-100 -100 200 200" fill="none">
-  <title>Barrios Visibles — mark, white</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-100 -100 200 200">
+  <title>Barrios Visibles</title>
+  <rect x="-100" y="-100" width="200" height="200" fill="#14191F"/>
   <g transform="rotate(-38)" fill="#FFFFFF">
     <polygon points="-72,-72 -28,-74 -26,-30 -70,-28"></polygon>
     <polygon points="-22,-74 22,-72 24,-28 -20,-30"></polygon>

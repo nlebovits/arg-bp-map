@@ -270,10 +270,9 @@ function SidebarComponent() {
 
           {/* Discrepancy by area table */}
           <DiscrepancyTable />
-        </div>
 
-        {/* Attribution */}
-        <div className="px-6 py-2 font-mono text-xs leading-relaxed tracking-[0.02em] text-secondary">
+          {/* Attribution - inside scroll area */}
+          <div className="font-mono text-xs leading-relaxed tracking-[0.02em] text-secondary pt-4">
           {tAttr("builtBy")}{" "}
           <a
             href="https://nlebovits.github.io/"
@@ -301,6 +300,7 @@ function SidebarComponent() {
           >
             RENABAP
           </a>.
+          </div>
         </div>
 
         {/* Footer - Language toggle (segmented) + Tutorial */}

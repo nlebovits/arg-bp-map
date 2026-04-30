@@ -148,7 +148,7 @@ export default function DiscrepancyTable() {
     <div className="space-y-2">
       {/* Header with info toggle */}
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-secondary uppercase tracking-widest">
+        <h2 className="font-mono text-xs uppercase tracking-[0.1em] font-bold text-foreground">
           {t("header")}
         </h2>
         <button

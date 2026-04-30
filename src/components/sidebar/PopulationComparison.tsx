@@ -80,7 +80,7 @@ export default function PopulationComparison() {
         {/* Our estimate - scales with occupation and multiplier */}
         <div className="space-y-1">
           <div className="flex justify-between">
-            <span className="text-accent-text font-mono font-bold text-xs uppercase tracking-[0.04em] ml-3">{t("estimated")}</span>
+            <span className="text-accent-text font-mono font-bold text-xs uppercase tracking-[0.04em]">{t("estimated")}</span>
             <span className="text-accent-text font-mono font-bold text-xs">{formatMillions(estimatedPopulation)}</span>
           </div>
           <div

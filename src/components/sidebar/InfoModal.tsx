@@ -56,7 +56,7 @@ function FootnoteItem({
       id={`fn-${id}`}
       className="text-sm text-secondary scroll-mt-4"
     >
-      <span className="font-mono text-cp-blue mr-1">[{id}]</span>
+      <span className="font-mono text-secondary mr-1">[{id}]</span>
       {children}
     </li>
   );
@@ -98,19 +98,19 @@ function ExplainerContent() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Stat 1: Official vs Actual */}
           <div className="bg-hinted/80 border border-border p-4 text-center">
-            <div className="font-mono text-3xl font-bold text-accent-text mb-1">+83%</div>
+            <div className="font-mono text-3xl font-bold text-foreground mb-1">+83%</div>
             <div className="font-mono text-[11px] uppercase tracking-[0.1em] text-secondary mb-2">{t("findings.stat1Label")}</div>
             <p className="text-sm text-foreground/70">{t("findings.stat1")}</p>
           </div>
           {/* Stat 2: Missing People */}
           <div className="bg-accent/10 border border-accent/30 p-4 text-center">
-            <div className="font-mono text-3xl font-bold text-accent-text mb-1">2.9–3.4M</div>
+            <div className="font-mono text-3xl font-bold text-foreground mb-1">2.9–3.4M</div>
             <div className="font-mono text-[11px] uppercase tracking-[0.1em] text-secondary mb-2">{t("findings.stat2Label")}</div>
             <p className="text-sm text-foreground/70">{t("findings.stat2")}</p>
           </div>
           {/* Stat 3: Population Share */}
           <div className="bg-hinted/80 border border-border p-4 text-center">
-            <div className="font-mono text-3xl font-bold text-accent-text mb-1">6–7%</div>
+            <div className="font-mono text-3xl font-bold text-foreground mb-1">6–7%</div>
             <div className="font-mono text-[11px] uppercase tracking-[0.1em] text-secondary mb-2">{t("findings.stat3Label")}</div>
             <p className="text-sm text-foreground/70">{t("findings.stat3")}</p>
           </div>

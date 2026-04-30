@@ -83,14 +83,14 @@ function StatComparison({
 
         {/* Satellite data */}
         <div className="bg-accent-muted p-4 border border-accent/30">
-          <p className="font-mono text-[11px] uppercase tracking-[0.1em] font-bold text-accent-text/70 mb-1">
+          <p className="font-mono text-[11px] uppercase tracking-[0.1em] font-bold text-foreground/70 mb-1">
             {label2}
           </p>
-          <p className="font-mono text-2xl font-bold text-accent-text">
+          <p className="font-mono text-2xl font-bold text-foreground">
             {value2}
           </p>
           {sub2 && (
-            <p className="text-sm text-accent-text/70 mt-1">{sub2}</p>
+            <p className="text-sm text-foreground/70 mt-1">{sub2}</p>
           )}
         </div>
       </div>

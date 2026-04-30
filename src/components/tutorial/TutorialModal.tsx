@@ -96,7 +96,7 @@ function StatComparison({
       </div>
 
       {conclusion && (
-        <p className="text-base text-foreground/80 leading-relaxed bg-cp-red/10 border border-cp-red/20 p-3">
+        <p className="text-base text-foreground/80 leading-relaxed bg-cp-yellow/10 border border-cp-yellow/20 p-3">
           {conclusion}
         </p>
       )}

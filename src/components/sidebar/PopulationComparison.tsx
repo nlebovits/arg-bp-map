@@ -67,9 +67,9 @@ export default function PopulationComparison() {
       <div className="space-y-2">
         {/* RENABAP official - scales with multiplier */}
         <div className="space-y-1">
-          <div className="flex justify-between text-xs">
-            <span className="text-secondary font-mono uppercase tracking-[0.04em]">{t("renabap")}</span>
-            <span className="font-mono font-bold text-secondary">{formatMillions(renabapPopulation)}</span>
+          <div className="flex justify-between">
+            <span className="text-secondary font-mono text-xs uppercase tracking-[0.04em]">{t("renabap")}</span>
+            <span className="text-secondary font-mono text-xs">{formatMillions(renabapPopulation)}</span>
           </div>
           <div
             className="h-3 transition-all duration-300"

@@ -139,7 +139,7 @@ export default function DiscrepancyTable() {
             {t("header")}
           </h2>
         </div>
-        <p className="text-xs text-red-400">Error: {error}</p>
+        <p className="text-xs text-cp-yellow">Error: {error}</p>
       </div>
     );
   }

@@ -371,15 +371,6 @@ export default function Map() {
             "circle-color": discrepancyColor,
             "circle-radius": populationRadius,
             "circle-opacity": 0.85,
-            "circle-stroke-color": COLORS.settlements.outline,
-            "circle-stroke-width": [
-              "interpolate",
-              ["linear"],
-              ["zoom"],
-              0, 0.5,
-              8, 1,
-              12, 1.5
-            ],
           },
         },
         LAYERS.buildings.fill

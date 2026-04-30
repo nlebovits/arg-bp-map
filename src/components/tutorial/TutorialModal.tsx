@@ -69,11 +69,11 @@ function StatComparison({
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         {/* Official data */}
-        <div className="bg-hinted/50 rounded-lg p-4 border border-muted">
-          <p className="text-sm font-sans uppercase tracking-wider text-secondary mb-1">
+        <div className="bg-hinted/50 p-4 border border-border">
+          <p className="font-mono text-[11px] uppercase tracking-[0.1em] font-bold text-secondary mb-1">
             {label1}
           </p>
-          <p className="text-2xl font-sans font-bold text-foreground/80">
+          <p className="font-mono text-2xl font-bold text-foreground/80">
             {value1}
           </p>
           {sub1 && (
@@ -82,21 +82,21 @@ function StatComparison({
         </div>
 
         {/* Satellite data */}
-        <div className="bg-accent-muted rounded-lg p-4 border border-accent/30">
-          <p className="text-sm font-sans uppercase tracking-wider text-accent/70 mb-1">
+        <div className="bg-accent-muted p-4 border border-accent/30">
+          <p className="font-mono text-[11px] uppercase tracking-[0.1em] font-bold text-accent-text/70 mb-1">
             {label2}
           </p>
-          <p className="text-2xl font-sans font-bold text-accent">
+          <p className="font-mono text-2xl font-bold text-accent-text">
             {value2}
           </p>
           {sub2 && (
-            <p className="text-sm text-accent/70 mt-1">{sub2}</p>
+            <p className="text-sm text-accent-text/70 mt-1">{sub2}</p>
           )}
         </div>
       </div>
 
       {conclusion && (
-        <p className="text-base text-foreground/80 leading-relaxed bg-cp-red/10 border border-cp-red/20 rounded-lg p-3">
+        <p className="text-base text-foreground/80 leading-relaxed bg-cp-red/10 border border-cp-red/20 p-3">
           {conclusion}
         </p>
       )}
@@ -114,7 +114,7 @@ function Step1Content() {
         <GlobeAltIcon className="w-8 h-8 text-accent" />
       </div>
 
-      <h2 className="text-2xl font-sans font-semibold text-foreground">
+      <h2 className="font-sans text-2xl font-bold tracking-tight text-foreground">
         {t("title")}
       </h2>
 
@@ -131,7 +131,7 @@ function Step2Content() {
 
   return (
     <div className="space-y-5">
-      <h2 className="text-xl font-sans font-semibold text-foreground text-center">
+      <h2 className="font-sans text-xl font-bold tracking-tight text-foreground text-center">
         {t("title")}
       </h2>
 
@@ -155,7 +155,7 @@ function Step3Content() {
   return (
     <div className="space-y-5">
       <div className="text-center">
-        <h2 className="text-xl font-sans font-semibold text-foreground">
+        <h2 className="font-sans text-xl font-bold tracking-tight text-foreground">
           {t("title")}
         </h2>
         <p className="text-sm text-secondary mt-1 font-sans">
@@ -179,7 +179,7 @@ function Step4Content() {
 
   return (
     <div className="space-y-5">
-      <h2 className="text-xl font-sans font-semibold text-foreground text-center">
+      <h2 className="font-sans text-xl font-bold tracking-tight text-foreground text-center">
         {t("title")}
       </h2>
 
@@ -200,20 +200,20 @@ function Step5Content() {
 
   return (
     <div className="space-y-5">
-      <h2 className="text-xl font-sans font-semibold text-foreground text-center">
+      <h2 className="font-sans text-xl font-bold tracking-tight text-foreground text-center">
         {t("title")}
       </h2>
 
       <div className="space-y-3">
-        <div className="flex items-center gap-3 bg-hinted/50 rounded-lg p-3 border border-muted">
+        <div className="flex items-center gap-3 bg-hinted/50 p-3 border border-border">
           <span className="text-lg">🔍</span>
           <span className="text-base text-foreground/80">{t("feature1")}</span>
         </div>
-        <div className="flex items-center gap-3 bg-hinted/50 rounded-lg p-3 border border-muted">
+        <div className="flex items-center gap-3 bg-hinted/50 p-3 border border-border">
           <span className="text-lg">📊</span>
           <span className="text-base text-foreground/80">{t("feature2")}</span>
         </div>
-        <div className="flex items-center gap-3 bg-hinted/50 rounded-lg p-3 border border-muted">
+        <div className="flex items-center gap-3 bg-hinted/50 p-3 border border-border">
           <span className="text-lg">🗺️</span>
           <span className="text-base text-foreground/80">{t("feature3")}</span>
         </div>
@@ -318,12 +318,12 @@ export function TutorialModal() {
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.9, opacity: 0, y: 20 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="relative w-full max-w-md mx-4 bg-surface-raised/95 backdrop-blur-md border border-muted rounded-xl shadow-2xl overflow-hidden pointer-events-auto"
+        className="relative w-full max-w-md mx-4 bg-surface/95 backdrop-blur-md border border-border md:shadow-[4px_4px_0_var(--border)] overflow-hidden pointer-events-auto"
       >
         {/* Close button (top right) - min 44px touch target */}
         <button
           onClick={handleSkip}
-          className="absolute top-2 right-2 w-11 h-11 flex items-center justify-center text-secondary hover:text-foreground/80 hover:bg-muted rounded-lg transition-colors z-10"
+          className="absolute top-2 right-2 w-11 h-11 flex items-center justify-center text-secondary hover:text-foreground transition-colors z-10"
           aria-label={t("skip")}
         >
           <XMarkIcon className="w-5 h-5" />
@@ -390,7 +390,7 @@ export function TutorialModal() {
             <div className="flex flex-col items-center gap-3">
               <button
                 onClick={handleNext}
-                className="px-6 py-2.5 text-sm font-sans font-medium rounded-lg bg-accent hover:bg-accent-hover text-background transition-colors"
+                className="px-6 py-2.5 font-mono text-xs uppercase tracking-[0.1em] font-bold bg-accent hover:bg-accent-hover text-white transition-colors"
               >
                 {t("start")}
               </button>
@@ -403,7 +403,7 @@ export function TutorialModal() {
                       setTutorialSeen(false);
                     }
                   }}
-                  className="w-3.5 h-3.5 rounded border-muted bg-hinted text-accent focus:ring-accent focus:ring-offset-0"
+                  className="w-3.5 h-3.5 rounded-none border-border bg-hinted text-accent focus:ring-accent focus:ring-offset-0"
                 />
                 <span>{t("dontShowAgain")}</span>
               </label>

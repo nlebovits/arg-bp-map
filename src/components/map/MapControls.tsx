@@ -52,10 +52,12 @@ export default function MapControls() {
         </div>
       )}
 
-      {/* Top right: Reset + Location buttons (below zoom controls) - hidden on mobile & during tutorial */}
-      {/* Position: zoom controls are 2×44px + borders ≈ 90px, plus 16px gap */}
+      {/* Top right: Reset + Location buttons - on mobile sits below the mobile header bar; on desktop below the zoom controls */}
       {!tutorialActive && (
-        <div className="absolute top-[106px] right-[10px] z-20 hidden md:flex flex-col bg-surface-raised border border-border rounded-lg overflow-hidden">
+        <div
+          className="absolute right-[10px] z-20 flex flex-col bg-surface-raised border border-border overflow-hidden md:top-[106px]"
+          style={{ top: "calc(env(safe-area-inset-top) + 72px)" }}
+        >
           {/* Reset view button - match zoom control size (44px) */}
           <button
             onClick={handleResetView}
@@ -126,7 +128,7 @@ export default function MapControls() {
         )}
         <button
           onClick={() => setAttributionExpanded(!attributionExpanded)}
-          className="w-11 h-11 flex items-center justify-center bg-surface-raised/90 backdrop-blur-sm border border-muted hover:border-secondary text-secondary hover:text-foreground transition-all rounded-sm"
+          className="w-11 h-11 flex items-center justify-center bg-surface-raised/90 backdrop-blur-sm border border-border hover:border-secondary text-secondary hover:text-foreground transition-all rounded-none"
           title={attributionExpanded ? t("hideAttribution") : t("showAttribution")}
         >
           <InformationCircleIcon className="w-5 h-5" />

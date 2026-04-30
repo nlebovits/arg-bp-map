@@ -70,18 +70,18 @@ export const INITIAL_VIEW = {
   zoom: 3.75,
 };
 
-// Styling - CarbonPlan-inspired palette
+// Styling - CNG palette (Bonus Blue accent)
 export const COLORS = {
   buildings: {
-    fill: "rgba(255, 255, 255, 0.25)", // White, subtle
-    outline: "rgba(255, 255, 255, 0.4)",
+    fill: "rgba(246, 245, 244, 0.22)",   // CNG soft-white at low alpha
+    outline: "rgba(246, 245, 244, 0.4)",
   },
   settlements: {
-    // Grey (match) -> Orange (undercount) per legend
-    match: "#808080",      // Grey - low discrepancy
-    undercount: "#ea9755", // CarbonPlan orange - high discrepancy
-    outline: "rgba(234, 151, 85, 0.9)", // Orange outline
-    highlight: "#fbbf24",  // amber-400 for tutorial highlight
+    // Grey (match) -> Bonus Blue (undercount) per legend
+    match: "#6B7079",                    // CNG ink-3 grey for low discrepancy
+    undercount: "#2126F7",               // CNG Bonus Blue for high discrepancy
+    outline: "rgba(33, 38, 247, 0.9)",
+    highlight: "#7B80FF",                // CNG link-on-dark blue for tutorial highlight
   },
 };
 

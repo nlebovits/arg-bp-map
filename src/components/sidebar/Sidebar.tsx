@@ -63,10 +63,13 @@ function SidebarComponent() {
 
   return (
     <>
-      {/* Mobile header bar - shows when sidebar closed */}
+      {/* Mobile header bar - shows when sidebar closed; respects safe-area-inset-top */}
       {!sidebarOpen && (
-        <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-[0_4px_12px_-2px_rgba(0,0,0,0.3)] px-4 h-14 flex items-center justify-between">
-          <h1 className="text-lg font-semibold text-foreground uppercase tracking-wide">
+        <div
+          className="md:hidden fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border px-4 flex items-center justify-between pt-[env(safe-area-inset-top)]"
+          style={{ height: "calc(56px + env(safe-area-inset-top))" }}
+        >
+          <h1 className="font-sans font-bold text-base tracking-tight text-foreground">
             Barrios Visibles
           </h1>
           <button
@@ -79,50 +82,66 @@ function SidebarComponent() {
         </div>
       )}
 
-      {/* Mobile close button - shows when sidebar open */}
-      {sidebarOpen && (
-        <button
-          onClick={() => setSidebarOpen(false)}
-          className="md:hidden fixed top-4 left-4 z-50 bg-surface-raised/95 backdrop-blur-sm p-3 rounded-lg border border-border shadow-xl min-w-[44px] min-h-[44px] flex items-center justify-center"
-          aria-label={t("closeSidebar")}
-        >
-          <XMarkIcon className="w-5 h-5 text-foreground" />
-        </button>
-      )}
-
       {/* Sidebar panel */}
       <aside
         className={`
           fixed md:relative z-40
-          w-[85vw] md:w-1/3 md:min-w-[320px] md:max-w-[480px] h-full
-          bg-background
+          w-[92vw] max-w-[420px] md:w-1/3 md:min-w-[320px] md:max-w-[480px] h-full
+          bg-surface
           border-r border-border
           shadow-[4px_0_24px_-2px_rgba(0,0,0,0.5)]
           transform transition-transform duration-300 ease-out
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
           flex flex-col
           overflow-hidden
+          pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]
         `}
       >
         {/* Header */}
-        <header className="px-6 py-6 border-b border-border">
-          <h1 className="text-5xl md:text-6xl font-semibold text-foreground uppercase tracking-wide leading-none">
-            <span className="block">Barrios</span>
-            <span className="block ml-8">Visibles</span>
+        <header className="relative px-6 py-6 border-b border-border">
+          {/* CNG attribution eyebrow */}
+          <div className="flex items-center gap-2 mb-3 font-mono text-[11px] uppercase tracking-[0.1em] text-secondary">
+            <svg
+              viewBox="0 0 96 96"
+              className="h-3 w-3"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path fill="#FFF" d="M0 0h96v96H0z" />
+              <path
+                fill="#2126F7"
+                d="M58.094 11.56a2.47 2.47 0 0 0-1.57-.56h-8.495c-.432 0-.86.095-1.251.275L18.722 24.23a3.37 3.37 0 0 0-1.934 2.682l-3.765 33.725a3.7 3.7 0 0 0 1.333 3.276l25 20.525c.445.364.998.563 1.573.563h7.64c.432 0 .862-.095 1.254-.275L78.46 71.468a3.17 3.17 0 0 0 1.813-2.517L83.97 35.55a4.73 4.73 0 0 0-1.703-4.178zM48.387 31c8.231 2.122 12.683 9.195 12.612 16.613-.066 7.076-4.464 14.363-12.455 16.387-16.944-4.6-16.453-28.356-.157-33"
+              />
+            </svg>
+            <span>Published with CNG · Radiant Earth</span>
+          </div>
+
+          {/* Mobile close X — inside sidebar top-right */}
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="md:hidden absolute top-4 right-4 w-11 h-11 flex items-center justify-center text-foreground"
+            aria-label={t("closeSidebar")}
+          >
+            <XMarkIcon className="w-5 h-5" />
+          </button>
+
+          <h1 className="font-sans font-bold text-[44px] sm:text-5xl md:text-6xl text-foreground tracking-[-0.025em] leading-[0.95]">
+            <span className="block">BARRIOS</span>
+            <span className="block ml-8">VISIBLES</span>
           </h1>
           <p className="text-lg text-secondary mt-8 leading-relaxed">
             {t("tagline")}{" "}
             {t("subheader.prefix")}{" "}
             <button
               onClick={() => setActiveModal("explainer")}
-              className="underline underline-offset-2 hover:text-foreground/80"
+              className="underline underline-offset-2 hover:text-cp-blue"
             >
               {t("subheader.explainer")}
             </button>
             {" "}{t("subheader.or")}{" "}
             <button
               onClick={() => setActiveModal("data")}
-              className="underline underline-offset-2 hover:text-foreground/80"
+              className="underline underline-offset-2 hover:text-cp-blue"
             >
               {t("subheader.data")}
             </button>
@@ -140,7 +159,7 @@ function SidebarComponent() {
             {/* Toggle header */}
             <button
               onClick={() => setParamsExpanded(!paramsExpanded)}
-              className="flex items-center gap-2 text-sm font-medium text-secondary uppercase tracking-widest hover:text-foreground transition-colors w-full"
+              className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.1em] font-bold text-secondary hover:text-foreground transition-colors w-full"
             >
               {paramsExpanded ? (
                 <ChevronUpIcon className="w-4 h-4" />
@@ -161,7 +180,7 @@ function SidebarComponent() {
                     </label>
                     <button
                       onClick={() => setMultiplierInfoExpanded(!multiplierInfoExpanded)}
-                      className="w-11 h-11 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors rounded hover:bg-muted -my-2"
+                      className="w-11 h-11 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors -my-2"
                       aria-label={multiplierInfoExpanded ? tPop("hideInfo") : tPop("showInfo")}
                       aria-expanded={multiplierInfoExpanded}
                     >
@@ -178,7 +197,7 @@ function SidebarComponent() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => setPopulationMultiplier(2.8)}
-                      className={`flex-1 px-3 py-2 min-h-[44px] text-sm rounded border transition-colors ${
+                      className={`flex-1 px-3 py-2 min-h-[44px] font-mono text-xs uppercase tracking-[0.04em] border transition-colors ${
                         populationMultiplier === 2.8
                           ? "bg-accent/20 border-accent text-foreground"
                           : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
@@ -188,7 +207,7 @@ function SidebarComponent() {
                     </button>
                     <button
                       onClick={() => setPopulationMultiplier(3.35)}
-                      className={`flex-1 px-3 py-2 min-h-[44px] text-sm rounded border transition-colors ${
+                      className={`flex-1 px-3 py-2 min-h-[44px] font-mono text-xs uppercase tracking-[0.04em] border transition-colors ${
                         populationMultiplier === 3.35
                           ? "bg-accent/20 border-accent text-foreground"
                           : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
@@ -207,7 +226,7 @@ function SidebarComponent() {
                     </label>
                     <button
                       onClick={() => setOccupationInfoExpanded(!occupationInfoExpanded)}
-                      className="w-11 h-11 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors rounded hover:bg-muted -my-2"
+                      className="w-11 h-11 flex items-center justify-center text-secondary/70 hover:text-foreground transition-colors -my-2"
                       aria-label={occupationInfoExpanded ? tPop("hideInfo") : tPop("showInfo")}
                       aria-expanded={occupationInfoExpanded}
                     >
@@ -222,7 +241,7 @@ function SidebarComponent() {
                           href="https://nlebovits.github.io/posts/writing/informal-settlements-argentina/"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="underline underline-offset-2 hover:text-foreground/80"
+                          className="underline underline-offset-2 hover:text-cp-blue"
                         >
                           {tPop("occupationInfoLink")}
                         </a>
@@ -234,7 +253,7 @@ function SidebarComponent() {
                       <button
                         key={rate}
                         onClick={() => setOccupationRate(rate)}
-                        className={`flex-1 px-2 py-2 min-h-[44px] text-sm rounded border transition-colors ${
+                        className={`flex-1 px-2 py-2 min-h-[44px] font-mono text-xs border transition-colors ${
                           occupationRate === rate
                             ? "bg-accent/20 border-accent text-foreground"
                             : "bg-hinted/50 border-border text-secondary hover:border-accent/50"
@@ -254,13 +273,13 @@ function SidebarComponent() {
         </div>
 
         {/* Attribution */}
-        <div className="px-6 py-2 text-sm text-secondary leading-relaxed">
+        <div className="px-6 py-2 font-mono text-xs leading-relaxed tracking-[0.02em] text-secondary">
           {tAttr("builtBy")}{" "}
           <a
             href="https://nlebovits.github.io/"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:text-foreground/80"
+            className="underline underline-offset-2 hover:text-cp-blue"
           >
             Nissim Lebovits
           </a>{" "}
@@ -269,7 +288,7 @@ function SidebarComponent() {
             href="https://source.coop/vida/google-microsoft-osm-open-buildings"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:text-foreground/80"
+            className="underline underline-offset-2 hover:text-cp-blue"
           >
             Google-Microsoft-OSM building footprints
           </a>{" "}
@@ -278,32 +297,31 @@ function SidebarComponent() {
             href="https://www.argentina.gob.ar/habitat/renabap"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:text-foreground/80"
+            className="underline underline-offset-2 hover:text-cp-blue"
           >
             RENABAP
           </a>.
         </div>
 
-        {/* Footer - Language toggle + Tutorial */}
+        {/* Footer - Language toggle (segmented) + Tutorial */}
         <footer className="px-6 py-4 border-t border-border flex items-center justify-between">
-          <div className="flex items-center gap-1 text-sm">
+          <div className="flex items-center font-mono text-[11px] uppercase tracking-[0.08em]">
             <button
               onClick={() => router.replace(pathname, { locale: "es" })}
-              className={`px-3 py-2 min-h-[44px] rounded transition-colors ${
+              className={`w-9 h-7 border min-h-[44px] md:min-h-0 transition-colors ${
                 locale === "es"
-                  ? "text-foreground font-medium bg-muted"
-                  : "text-secondary hover:text-foreground/80 hover:bg-muted/50"
+                  ? "bg-accent text-white border-accent"
+                  : "bg-transparent text-secondary border-border hover:text-foreground"
               }`}
             >
               ES
             </button>
-            <span className="text-secondary/50">|</span>
             <button
               onClick={() => router.replace(pathname, { locale: "en" })}
-              className={`px-3 py-2 min-h-[44px] rounded transition-colors ${
+              className={`w-9 h-7 border border-l-0 min-h-[44px] md:min-h-0 transition-colors ${
                 locale === "en"
-                  ? "text-foreground font-medium bg-muted"
-                  : "text-secondary hover:text-foreground/80 hover:bg-muted/50"
+                  ? "bg-accent text-white border-accent"
+                  : "bg-transparent text-secondary border-border hover:text-foreground"
               }`}
             >
               EN
@@ -311,18 +329,20 @@ function SidebarComponent() {
           </div>
           <button
             onClick={handleReplayTutorial}
-            className="w-11 h-11 flex items-center justify-center text-secondary hover:text-foreground/80 hover:bg-muted rounded-full transition-colors"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center text-secondary hover:text-foreground transition-colors"
             title={t("replayTutorial")}
             aria-label={t("replayTutorial")}
           >
-            <span className="text-sm font-medium">?</span>
+            <span className="w-7 h-7 border border-current rounded-full flex items-center justify-center text-sm font-medium">
+              ?
+            </span>
           </button>
         </footer>
       </aside>
 
       {/* Mobile overlay - CSS opacity transition instead of mount/unmount */}
       <div
-        className={`md:hidden fixed inset-0 bg-background/70 backdrop-blur-sm z-30 transition-opacity duration-300 ${
+        className={`md:hidden fixed inset-0 bg-background/85 backdrop-blur-md z-30 transition-opacity duration-300 ${
           sidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setSidebarOpen(false)}

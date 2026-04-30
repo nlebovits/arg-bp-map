@@ -310,7 +310,7 @@ export default function Map() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const buildingDiscrepancy: any = ["max", 0, ["-", ["get", "building_count"], ["get", "renabap_families"]]];
 
-      // Color expression: grey (match/overcounted) -> orange (undercount)
+      // Color expression: grey (match/overcounted) -> blue (undercount)
       // Based on log of discrepancy ratio
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const discrepancyColor: any = [
@@ -322,10 +322,9 @@ export default function Map() {
           ["max", 1, ["get", "renabap_families"]]
         ]]]],
         0, COLORS.settlements.match,      // ln(1) = 0 -> grey (match or overcounted)
-        0.4, "#909090",                   // slight undercount
-        0.7, "#a08060",                   // moderate
-        1.0, "#c08050",                   // significant
-        1.5, COLORS.settlements.undercount // ln(~4.5) -> orange (severe undercount)
+        0.4, "#7B80A0",                   // slight undercount (blue-grey)
+        0.8, "#5B60D0",                   // moderate (mid blue)
+        1.5, COLORS.settlements.undercount // ln(~4.5) -> Bonus Blue (severe undercount)
       ];
 
       // Population estimate for dot size: building_count * 3.3

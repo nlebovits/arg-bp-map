@@ -1,35 +1,36 @@
 @import "tailwindcss";
 
-/* CarbonPlan-inspired palette (MIT licensed) */
+/* CNG (Cloud-Native Geospatial Forum) palette */
 :root {
-  /* Core */
-  --background: #1b1e23;
-  --foreground: #ebebec;
-  --primary: #ebebec;
-  --secondary: #808080;
-  --muted: #393a3d;
-  --hinted: #2a2c30;
+  /* Core — CNG ink palette */
+  --background: #14191F;
+  --foreground: #F6F5F4;
+  --primary: #F6F5F4;
+  --secondary: #ACADAF;
+  --muted: #2A303A;
+  --hinted: #1C2128;
 
-  /* Accent - CarbonPlan orange (muted) */
-  --accent: #ea9755;
-  --accent-muted: rgba(234, 151, 85, 0.15);
-  --accent-hover: #f0a366;
+  /* Accent — Bonus Blue replaces CarbonPlan orange */
+  --accent: #2126F7;
+  --accent-muted: rgba(33, 38, 247, 0.15);
+  --accent-hover: #1B1FD4;
+  --accent-text: #7B80FF;  /* Higher luminance for text on dark — passes WCAG AA */
 
   /* Semantic */
-  --border: #393a3d;
-  --surface: #1b1e23;
-  --surface-raised: #2a2c30;
+  --border: #2A303A;
+  --surface: #14191F;
+  --surface-raised: #1C2128;
 
-  /* Extended palette */
-  --cp-red: #f07071;
-  --cp-orange: #ea9755;
-  --cp-yellow: #d4c05e;
-  --cp-green: #7eb36a;
+  /* Extended palette — retuned for CNG; names preserved for downstream callers */
+  --cp-red: #C8261E;
+  --cp-orange: #B87A00;
+  --cp-yellow: #FFD626;
+  --cp-green: #137A4D;
   --cp-teal: #64b9c4;
-  --cp-blue: #85a2f7;
+  --cp-blue: #7B80FF;
   --cp-purple: #bc85d9;
   --cp-pink: #e587b6;
-  --cp-grey: #a9b4c4;
+  --cp-grey: #ACADAF;
 }
 
 @theme inline {
@@ -42,11 +43,12 @@
   --color-accent: var(--accent);
   --color-accent-muted: var(--accent-muted);
   --color-accent-hover: var(--accent-hover);
+  --color-accent-text: var(--accent-text);
   --color-border: var(--border);
   --color-surface: var(--surface);
   --color-surface-raised: var(--surface-raised);
 
-  /* CarbonPlan accent colors */
+  /* Extended accent colors */
   --color-cp-red: var(--cp-red);
   --color-cp-orange: var(--cp-orange);
   --color-cp-yellow: var(--cp-yellow);
@@ -57,7 +59,8 @@
   --color-cp-pink: var(--cp-pink);
   --color-cp-grey: var(--cp-grey);
 
-  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-sans: var(--font-sans-cng), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-cng), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 /* Reset */
@@ -93,7 +96,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: var(--border);
-  border-radius: 3px;
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -117,7 +120,7 @@ body {
   overflow: hidden;
 }
 
-/* MapLibre overrides */
+/* MapLibre overrides — CNG hard edges */
 .maplibregl-map {
   font-family: inherit;
 }
@@ -125,7 +128,7 @@ body {
 .maplibregl-ctrl-group {
   background: var(--surface-raised) !important;
   border: 1px solid var(--border) !important;
-  border-radius: 8px !important;
+  border-radius: 0 !important;
   overflow: hidden;
 }
 
@@ -157,12 +160,12 @@ body {
 }
 
 .maplibregl-ctrl-attrib {
-  background: rgba(27, 30, 35, 0.85) !important;
+  background: rgba(20, 25, 31, 0.85) !important;
   backdrop-filter: blur(8px);
   font-size: 10px !important;
   color: var(--secondary) !important;
   padding: 4px 8px !important;
-  border-radius: 4px 0 0 0 !important;
+  border-radius: 0 !important;
 }
 
 .maplibregl-ctrl-attrib a {
@@ -192,7 +195,7 @@ body {
 /* Settlement popup styling - dark theme */
 .settlement-popup .maplibregl-popup-content {
   background: var(--surface-raised);
-  border-radius: 8px;
+  border-radius: 2px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
   padding: 0;
   border: 1px solid var(--border);
@@ -209,7 +212,7 @@ body {
 .settlement-popup .maplibregl-popup-close-button:hover {
   color: var(--foreground);
   background: var(--muted);
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 .settlement-popup .maplibregl-popup-tip {
@@ -262,9 +265,10 @@ body {
 .popup-value {
   font-weight: 500;
   color: var(--foreground);
+  font-family: var(--font-mono), ui-monospace, monospace;
 }
 
 .popup-value.popup-accent {
   color: var(--accent);
-  font-weight: 600;
+  font-weight: 700;
 }

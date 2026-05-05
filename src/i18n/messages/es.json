@@ -51,6 +51,7 @@
     "openSidebar": "Abrir barra lateral",
     "closeSidebar": "Cerrar barra lateral",
     "attribution": {
+      "radiantEarth": "Barrios Visibles es un proyecto de <link>Radiant Earth</link>",
       "builtBy": "Creado por",
       "withDataFrom": "con datos de",
       "and": "y"

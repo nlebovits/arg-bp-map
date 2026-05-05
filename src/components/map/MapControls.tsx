@@ -91,35 +91,35 @@ export default function MapControls() {
               SOURCE.COOP
             </a>
             {" "}
-            <span className="text-secondary/50">|</span>
+            <span className="text-muted">|</span>
             {" "}
             <a
               href="https://www.argentina.gob.ar/habitat/renabap"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-foreground/80 transition-colors"
+              className="hover:text-foreground transition-colors"
             >
               RENABAP
             </a>
             {" "}
-            <span className="text-secondary/50">|</span>
+            <span className="text-muted">|</span>
             {" "}
             <a
               href="https://protomaps.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-foreground/80 transition-colors"
+              className="hover:text-foreground transition-colors"
             >
               PROTOMAPS
             </a>
             {" "}
-            <span className="text-secondary/50">&copy;</span>
+            <span className="text-muted">&copy;</span>
             {" "}
             <a
               href="https://openstreetmap.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-foreground/80 transition-colors"
+              className="hover:text-foreground transition-colors"
             >
               OSM
             </a>

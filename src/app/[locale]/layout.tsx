@@ -7,6 +7,7 @@ import { getMessages, getTranslations, setRequestLocale } from "next-intl/server
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { routing, type Locale } from "@/i18n/routing";
+import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 
 const iaWriter = localFont({
   src: [
@@ -139,6 +140,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
+        <ServiceWorkerRegistration />
         <SpeedInsights />
         <Analytics />
       </body>

@@ -48,6 +48,10 @@ export const useMapStore = create<MapStore>((set, get) => ({
   mapLoading: true,
   setMapLoading: (mapLoading) => set({ mapLoading }),
 
+  // Map ready state - true after map fires 'load' event
+  mapReady: false,
+  setMapReady: (mapReady) => set({ mapReady }),
+
   // View state
   viewState: TUTORIAL_LOCATIONS.argentina,
   setViewState: (viewState) => set({ viewState }),
@@ -156,10 +160,10 @@ export function hydrateStore() {
   const tutorialSeen = localStorage.getItem("tutorialSeen") === "true";
   const isMobile = window.innerWidth < 768;
 
+  // Don't show tutorial yet - wait for map to be ready
+  // Map.tsx will trigger showTutorial after 'load' event
   useMapStore.setState({
     tutorialSeen,
-    showTutorial: !tutorialSeen,
-    tutorialActive: !tutorialSeen,
     tutorialStep: 0,
     sidebarOpen: !isMobile, // Start closed on mobile, open on desktop
   });

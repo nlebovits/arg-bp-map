@@ -71,9 +71,9 @@ function SidebarComponent() {
         >
 {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/logos/barrios-visibles-mark-white.svg"
+            src="/logos/barrios-visibles-lockup-white.svg"
             alt="Barrios Visibles"
-            className="h-8 w-auto"
+            className="h-10 w-auto"
           />
           <button
             onClick={() => setSidebarOpen(true)}

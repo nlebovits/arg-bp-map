@@ -104,16 +104,18 @@ function SidebarComponent() {
         <header className="relative px-6 py-5 border-b border-border">
           {/* Radiant Earth attribution */}
           <p className="mb-5 font-mono text-xs tracking-[0.02em] text-secondary">
-            Barrios Visibles is a{" "}
-            <a
-              href="https://radiant.earth"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-2 hover:text-foreground"
-            >
-              Radiant Earth
-            </a>{" "}
-            project
+            {t.rich("attribution.radiantEarth", {
+              link: (chunks) => (
+                <a
+                  href="https://radiant.earth"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2 hover:text-foreground"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
           </p>
 
           {/* Mobile close X — inside sidebar top-right */}

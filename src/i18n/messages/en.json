@@ -51,6 +51,7 @@
     "openSidebar": "Open sidebar",
     "closeSidebar": "Close sidebar",
     "attribution": {
+      "radiantEarth": "Barrios Visibles is a <link>Radiant Earth</link> project",
       "builtBy": "Built by",
       "withDataFrom": "with data from",
       "and": "and"

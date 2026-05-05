@@ -434,10 +434,28 @@ export default function Map() {
       setMapLoading(false);
     });
 
-    // Lazy-load buildings source when zoom >= 9 (visible at 10+)
+    // Prefetch buildings PMTiles header at zoom 7 (before source added at 8)
+    let headerPrefetched = false;
+    const prefetchBuildingsHeader = () => {
+      if (headerPrefetched) return;
+      if (mapInstance.getZoom() < 7) return;
+      headerPrefetched = true;
+
+      // Fetch first 16KB (PMTiles header + root directory)
+      const buildingsUrl = "https://data.source.coop/vida/google-microsoft-osm-open-buildings/pmtiles/by_country/country_iso=ARG/ARG.pmtiles";
+      fetch(buildingsUrl, {
+        method: "GET",
+        headers: { "Range": "bytes=0-16383" },
+      }).catch(() => {});
+    };
+
+    mapInstance.on("zoomend", prefetchBuildingsHeader);
+    mapInstance.on("load", prefetchBuildingsHeader);
+
+    // Lazy-load buildings source when zoom >= 8 (visible at 10+)
     const addBuildingsSource = () => {
       if (buildingsAddedRef.current) return;
-      if (mapInstance.getZoom() < 9) return;
+      if (mapInstance.getZoom() < 8) return;
 
       buildingsAddedRef.current = true;
 

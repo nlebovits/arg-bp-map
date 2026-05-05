@@ -316,54 +316,45 @@ export default function Map() {
       ];
 
       // Circle layer for points (z0-7) - sized by population, colored by discrepancy
-      mapInstance.addLayer(
-        {
-          id: LAYERS.settlements.fill,
-          type: "circle",
-          source: "settlements",
-          "source-layer": LAYERS.settlements.sourceLayer,
-          maxzoom: 8,
-          paint: {
-            "circle-color": discrepancyColor,
-            "circle-radius": populationRadius,
-            "circle-opacity": 0.85,
-          },
+      mapInstance.addLayer({
+        id: LAYERS.settlements.fill,
+        type: "circle",
+        source: "settlements",
+        "source-layer": LAYERS.settlements.sourceLayer,
+        maxzoom: 8,
+        paint: {
+          "circle-color": discrepancyColor,
+          "circle-radius": populationRadius,
+          "circle-opacity": 0.85,
         },
-        LAYERS.buildings.fill
-      );
+      });
 
       // Fill layer for polygons (z8+) - light wash, labels carry data now
-      mapInstance.addLayer(
-        {
-          id: LAYERS.settlements.outline,
-          type: "fill",
-          source: "settlements",
-          "source-layer": LAYERS.settlements.sourceLayer,
-          minzoom: 8,
-          paint: {
-            "fill-color": discrepancyColor,
-            "fill-opacity": 0.6,
-          },
+      mapInstance.addLayer({
+        id: LAYERS.settlements.outline,
+        type: "fill",
+        source: "settlements",
+        "source-layer": LAYERS.settlements.sourceLayer,
+        minzoom: 8,
+        paint: {
+          "fill-color": discrepancyColor,
+          "fill-opacity": 0.6,
         },
-        LAYERS.buildings.fill
-      );
+      });
 
       // Polygon outline (z8+)
-      mapInstance.addLayer(
-        {
-          id: "settlements-polygon-outline",
-          type: "line",
-          source: "settlements",
-          "source-layer": LAYERS.settlements.sourceLayer,
-          minzoom: 8,
-          paint: {
-            "line-color": COLORS.settlements.outline,
-            "line-width": 2,
-            "line-opacity": 0.9,
-          },
+      mapInstance.addLayer({
+        id: "settlements-polygon-outline",
+        type: "line",
+        source: "settlements",
+        "source-layer": LAYERS.settlements.sourceLayer,
+        minzoom: 8,
+        paint: {
+          "line-color": COLORS.settlements.outline,
+          "line-width": 2,
+          "line-opacity": 0.9,
         },
-        LAYERS.buildings.fill
-      );
+      });
 
       // Population-based discrepancy (will be updated dynamically via useEffect)
       // Default: mult=3.35, occ=1.0

@@ -27,6 +27,8 @@ export interface MapStore {
   // Loading states
   mapLoading: boolean;
   setMapLoading: (loading: boolean) => void;
+  mapReady: boolean;
+  setMapReady: (ready: boolean) => void;
 
   // View state
   viewState: MapViewState;

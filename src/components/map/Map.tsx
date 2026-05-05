@@ -27,14 +27,19 @@ import DiscrepancyLegend from "./DiscrepancyLegend";
 
 export default function Map() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const buildingsAddedRef = useRef(false);
   const map = useMapStore((s) => s.map);
   const setMap = useMapStore((s) => s.setMap);
   const setMapLoading = useMapStore((s) => s.setMapLoading);
+  const setMapReady = useMapStore((s) => s.setMapReady);
   const setCurrentZoom = useMapStore((s) => s.setCurrentZoom);
   const showSatellite = useMapStore((s) => s.showSatellite);
   const showSettlements = useMapStore((s) => s.showSettlements);
   const tutorialActive = useMapStore((s) => s.tutorialActive);
   const tutorialStep = useMapStore((s) => s.tutorialStep);
+  const tutorialSeen = useMapStore((s) => s.tutorialSeen);
+  const setShowTutorial = useMapStore((s) => s.setShowTutorial);
+  const setTutorialActive = useMapStore((s) => s.setTutorialActive);
   const populationMultiplier = useMapStore((s) => s.populationMultiplier);
   const occupationRate = useMapStore((s) => s.occupationRate);
 
@@ -57,7 +62,7 @@ export default function Map() {
         sources: {
           satellite: SOURCES.satellite,
           basemap: SOURCES.basemap,
-          buildings: SOURCES.buildings,
+          // Buildings source loaded lazily on zoom >= 9
           settlements: SOURCES.settlements,
         },
         layers: [
@@ -73,56 +78,7 @@ export default function Map() {
             },
           },
 
-          // Building footprints - fill
-          {
-            id: LAYERS.buildings.fill,
-            type: "fill",
-            source: "buildings",
-            "source-layer": LAYERS.buildings.sourceLayer,
-            paint: {
-              "fill-color": COLORS.buildings.fill,
-              "fill-opacity": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                10,
-                0,
-                12,
-                0.7,
-              ],
-            },
-            minzoom: 10,
-          },
-
-          // Building footprints - outline
-          {
-            id: LAYERS.buildings.outline,
-            type: "line",
-            source: "buildings",
-            "source-layer": LAYERS.buildings.sourceLayer,
-            paint: {
-              "line-color": COLORS.buildings.outline,
-              "line-width": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                12,
-                0.5,
-                16,
-                1.5,
-              ],
-              "line-opacity": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                10,
-                0,
-                12,
-                0.9,
-              ],
-            },
-            minzoom: 10,
-          },
+          // Building layers added dynamically when zoom >= 9
 
           // Boundaries (admin borders)
           {
@@ -474,11 +430,85 @@ export default function Map() {
       });
 
       setMapLoading(false);
+      setMapReady(true);
+
+      // Show tutorial after map is ready (if not seen before)
+      if (!useMapStore.getState().tutorialSeen) {
+        setShowTutorial(true);
+        setTutorialActive(true);
+      }
     });
 
     mapInstance.on("idle", () => {
       setMapLoading(false);
     });
+
+    // Lazy-load buildings source when zoom >= 9 (visible at 10+)
+    const addBuildingsSource = () => {
+      if (buildingsAddedRef.current) return;
+      if (mapInstance.getZoom() < 9) return;
+
+      buildingsAddedRef.current = true;
+
+      // Add buildings source
+      mapInstance.addSource("buildings", SOURCES.buildings);
+
+      // Add buildings layers (insert before settlements)
+      const firstSettlementLayer = LAYERS.settlements.fill;
+
+      mapInstance.addLayer(
+        {
+          id: LAYERS.buildings.fill,
+          type: "fill",
+          source: "buildings",
+          "source-layer": LAYERS.buildings.sourceLayer,
+          paint: {
+            "fill-color": COLORS.buildings.fill,
+            "fill-opacity": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              10, 0,
+              12, 0.7,
+            ],
+          },
+          minzoom: 10,
+        },
+        firstSettlementLayer
+      );
+
+      mapInstance.addLayer(
+        {
+          id: LAYERS.buildings.outline,
+          type: "line",
+          source: "buildings",
+          "source-layer": LAYERS.buildings.sourceLayer,
+          paint: {
+            "line-color": COLORS.buildings.outline,
+            "line-width": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              12, 0.5,
+              16, 1.5,
+            ],
+            "line-opacity": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              10, 0,
+              12, 0.9,
+            ],
+          },
+          minzoom: 10,
+        },
+        firstSettlementLayer
+      );
+    };
+
+    mapInstance.on("zoomend", addBuildingsSource);
+    // Check on load too in case initial zoom is high
+    mapInstance.on("load", addBuildingsSource);
 
     // Track zoom level for legend display
     mapInstance.on("zoomend", () => {
@@ -494,7 +524,7 @@ export default function Map() {
       removeProtocol("pmtiles");
       setMap(null);
     };
-  }, [setMap, setMapLoading, setCurrentZoom]);
+  }, [setMap, setMapLoading, setMapReady, setCurrentZoom, setShowTutorial, setTutorialActive]);
 
   // Toggle satellite visibility
   useEffect(() => {
